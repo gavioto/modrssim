@@ -1,0 +1,114 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_RSsim - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP16.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_RSsim.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\source\source\protdrv\UTILS\mod_RSsim\MemoryEditorList.cpp"
+"D:\source\source\protdrv\UTILS\mod_RSsim\MODEthCommsProcessor.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP16.tmp" 
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP17.tmp" with contents
+[
+wsock32.lib ..\mylib\release\mylib.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/mod_RSsim.pdb" /machine:I386 /out:"Release/mod_RSsim.exe" 
+.\Release\_README.OBJ
+.\Release\ABComms.obj
+.\Release\ABCommsProcessor.obj
+.\Release\About.obj
+.\Release\ActiveScriptHost.obj
+.\Release\AdvEmulationDlg.obj
+.\Release\AnimationSettings.obj
+.\Release\CreditStatic.obj
+.\Release\DDKSocket.obj
+.\Release\DDKSrvSocket.obj
+.\Release\EasterDlg.obj
+.\Release\EditMemoryDlg.obj
+.\Release\FaultsDlg.obj
+.\Release\htmloutput.obj
+.\Release\JoySCCEmulation.obj
+.\Release\MemoryEditorList.obj
+.\Release\MemWriteLock.obj
+.\Release\message.obj
+.\Release\MOD232CommsProcessor.obj
+.\Release\mod_RSsim.obj
+.\Release\mod_RSsimDlg.obj
+.\Release\MODEthCommsProcessor.obj
+.\Release\MyHostProxy.obj
+.\Release\PLCApplication.obj
+.\Release\RS232Noise.obj
+.\Release\RS232Port.obj
+.\Release\serverRS232array.obj
+.\Release\ServerSettings232Dlg.obj
+.\Release\ServerSettingsEthDlg.obj
+.\Release\ServerSocketArray.obj
+.\Release\simport.obj
+.\Release\Splash.obj
+.\Release\StarWarsCtrl.obj
+.\Release\StdAfx.obj
+.\Release\TrainingSimDlg.obj
+.\Release\UTIL.OBJ
+.\Release\mod_RSsim.res
+\source\source\protdrv\UTILS\MYLIB\Release\MYLIB.lib
+]
+Creating command line "link.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP17.tmp"
+<h3>Output Window</h3>
+Compiling...
+MemoryEditorList.cpp
+MODEthCommsProcessor.cpp
+Generating Code...
+Linking...
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP19.tmp" with contents
+[
+/nologo /o"Release/mod_RSsim.bsc" 
+.\Release\StdAfx.sbr
+.\Release\_README.SBR
+.\Release\ABComms.sbr
+.\Release\ABCommsProcessor.sbr
+.\Release\About.sbr
+.\Release\ActiveScriptHost.sbr
+.\Release\AdvEmulationDlg.sbr
+.\Release\AnimationSettings.sbr
+.\Release\CreditStatic.sbr
+.\Release\DDKSocket.sbr
+.\Release\DDKSrvSocket.sbr
+.\Release\EasterDlg.sbr
+.\Release\EditMemoryDlg.sbr
+.\Release\FaultsDlg.sbr
+.\Release\htmloutput.sbr
+.\Release\JoySCCEmulation.sbr
+.\Release\MemoryEditorList.sbr
+.\Release\MemWriteLock.sbr
+.\Release\message.sbr
+.\Release\MOD232CommsProcessor.sbr
+.\Release\mod_RSsim.sbr
+.\Release\mod_RSsimDlg.sbr
+.\Release\MODEthCommsProcessor.sbr
+.\Release\MyHostProxy.sbr
+.\Release\PLCApplication.sbr
+.\Release\RS232Noise.sbr
+.\Release\RS232Port.sbr
+.\Release\serverRS232array.sbr
+.\Release\ServerSettings232Dlg.sbr
+.\Release\ServerSettingsEthDlg.sbr
+.\Release\ServerSocketArray.sbr
+.\Release\simport.sbr
+.\Release\Splash.sbr
+.\Release\StarWarsCtrl.sbr
+.\Release\TrainingSimDlg.sbr
+.\Release\UTIL.SBR]
+Creating command line "bscmake.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP19.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+mod_RSsim.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,165 @@
+// EasterDlg.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "mod_rssim.h"
+#include "StarWarsCtrl.h"
+#include "EasterDlg.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CEasterDlg dialog
+
+
+CEasterDlg::CEasterDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CEasterDlg::IDD, pParent)
+{
+	//{{AFX_DATA_INIT(CEasterDlg)
+		// NOTE: the ClassWizard will add member initialization here
+	//}}AFX_DATA_INIT
+}
+
+
+void CEasterDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CEasterDlg)
+	DDX_Control(pDX, IDC_STARTSCTRL, m_starsCtrl);
+	//}}AFX_DATA_MAP
+}
+
+
+BEGIN_MESSAGE_MAP(CEasterDlg, CDialog)
+	//{{AFX_MSG_MAP(CEasterDlg)
+	ON_WM_LBUTTONDOWN()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CEasterDlg message handlers
+
+#define BANNER_LINES    58    // # lines of text
+#define _USER_EGG       "<<USER>>" 
+#define _AUTHOR_MAIL	"<<AUTHORMAIL>>"
+
+char starBannerText[BANNER_LINES][50] = 
+{
+   "In a galaxy far far away",   //0
+   "this app. was written by",   //1
+   "",                           //2
+   "Conrad Braam",               //3
+   "<<AUTHORMAIL>>",		     // 4 "conradb@adroit.co.za",       //3 !!!!!!
+   "",                           //5
+   "Dedicated to my son",
+   "Rhys",
+   "",
+   "",
+   "Credits:",   //10
+   "Pablo van der Meer -",   //6
+   " for this control",   //7
+   "Paul DiLascia -",   //8
+   " CStaticLink &",   //9
+   "\"If this code works...\"",   //15
+   "Baldvin Hansson -",   //16
+   " Colored ComboBox",    //17
+   "www.codeguru.com -",   //18
+   " Great sources",   //19
+   "www.codeproject.com -",   //20
+   " Great sources",   //16
+   "Hirofumi Fudoudou -",
+   "bug fixes",
+   "Álvaro Palma -",
+   "bug fixes",
+   "Patrick SAFORCADA -",
+   "bug fixes",
+   "Dmitry Kochin -",
+   "dialog resizer",
+   "Ernest Laurentin",
+   "Script Engine",
+   "",   //
+   "Thanks to:",
+   "My wife,", // 
+   "my mom",
+   "my cat",
+   "my dog",
+   "my boss",              //
+   "",
+   "Visit Adroit",
+   "on their website",
+   "www.adroitscada.com",
+   "follow the links to drivers",
+   "(you are running this",
+   "for the communications?)",
+   "and check out the page.",    //
+   "",
+   "<<USER>>", // Greets-
+   "",
+   "Also check out Adroit!",
+   "",
+   "",
+   "[ESC] key ends.",   // 
+   "",
+   "that's all",
+   "",
+   "."          // 
+};
+
+BOOL CEasterDlg::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	// TODO: Add extra initialization here
+	m_starsCtrl.SetStarSpeed(30);
+	m_starsCtrl.SetScrollSpeed(2);
+
+   for (int i=0; i < BANNER_LINES; i++)
+   {
+      if (0== strcmp(starBannerText[i], _USER_EGG))
+      {
+         m_starsCtrl.AddTextLine("Hi!");
+         m_starsCtrl.AddTextLine(m_userName);
+      }
+      else
+		  if (0==strcmp(starBannerText[i], _AUTHOR_MAIL))
+		  {
+			 m_starsCtrl.AddTextLine(lpAuthor_email);
+		  }
+		  else
+			  m_starsCtrl.AddTextLine(starBannerText[i]);
+   }
+	UpdateData(FALSE);
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+// ----------------------------- OnLButtonDown ----------------------------
+// left-click opens the website.
+//
+void CEasterDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+CString szLink;
+              
+   szLink.LoadString(IDS_ADROITWEBURL);
+
+   OnCancel();
+   //call base class
+   //CDialog::OnLButtonDown(nFlags, point);
+
+   HINSTANCE h = ShellExecute(NULL, "open", szLink, NULL, NULL, SW_SHOWNORMAL);
+   if ((UINT)h > 32) 
+   {
+      //OnCancel(); // success
+   } 
+   else 
+   {
+      MessageBeep(0);          // unable to execute file!
+      TRACE(_T("*** WARNING: CEasterDlg: unable to execute file %s\n"),
+               (LPCTSTR)szLink);
+      //OnCancel(); // close anyway
+   }
+}
