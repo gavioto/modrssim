@@ -77,11 +77,18 @@ CRS232Port* portPtr;
 } // AsyncFriend
 
 
-char commsParityStr[] = "NOEMS";   //NOPARITY ODDPARITY EVENPARITY MARKPARITY SPACEPARITY
+char commsParityStr[] = "NOEMS";   // Noparity Oddparity Evenparity Markparity Spaceparity
 char commsStopStr[][4] = {// ONESTOPBIT ONE5STOPBITS TWOSTOPBITS
    "1",
    "1.5",
    "2"
+};
+
+char commsRTSStr[][5] = {
+   "",            //  RTS_CONTROL_DISABLE 
+   "R-en",        // RTS_CONTROL_ENABLE   
+   "R-hs",        //   RTS_CONTROL_HANDSHAKE
+   "R-tg"         //   RTS_CONTROL_TOGGLE   
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -434,19 +441,7 @@ void CRS232Port::GenDataDebugger(const BYTE * buffer, LONG length, int transmit)
 CString debuggerString;
 BYTE *data;
 byte hiNib,loNib;
-   /*
-   //convert BIN-ary to ASCII for display
-   data = new BYTE[(length*2)+1];
-   for (int i = 0; i < length; i++)
-   {
-       hiNib = ( *(buffer+i) >>4) & 0x0f;
-       loNib = ( *(buffer+i)    ) & 0x0f;
-       data[(i*2)]   = ( (hiNib < 0x0A) ? ('0' + hiNib) : ('A' + hiNib-10) );
-       data[(i*2)+1] = ( (loNib < 0x0A) ? ('0' + loNib) : ('A' + loNib-10) );
-   }
 
-   data[(length*2)] = '\0';
-   */
    //convert BIN-ary to ASCII for display
    data = new BYTE[(length*3)+1];
    BYTE* pChar = data;

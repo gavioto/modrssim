@@ -59,8 +59,8 @@ CControllerMemoryArea::SetSize(const DWORD numWords)
 // read the array
 WORD CControllerMemoryArea::GetAt(const DWORD index)
 {  
-   ASSERT(index <= m_size);
-   if (index > m_numberRegistersLimit)
+   //ASSERT(index < m_size);
+   if (index >= m_numberRegistersLimit)
    {
       OutputDebugString("Attempt to read past PLC buffer end");
       return (0);
@@ -82,12 +82,12 @@ void CControllerMemoryArea::SetAt(const DWORD index, WORD data, CMutex *pMutex)
 {
 CMemWriteLock  lock(pMutex);  // interlock all writes to us
 
-   ASSERT(index < m_size);
    if (index >= m_numberRegistersLimit)
    {
       OutputDebugString("Attempt to write past PLC buffer end");
       return;  // do nothing when writting past the limit
    }
+   ASSERT(index < m_size);
    CWordArray::SetAt(index, data);
 }
 

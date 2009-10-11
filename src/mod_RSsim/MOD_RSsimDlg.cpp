@@ -21,6 +21,7 @@
 #include "TrainingSimDlg.h"
 #include "ABCommsProcessor.h"
 #include "JoySCCEmulation.h"
+#include "CSVFileImportDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,7 +30,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #define LOADREGMSGSTRING   "LOADREGISTERS"
-#define DEMOSECONDS        (60*30)     // 30 minutes
+#define DEMOSECONDS        (60*45)     // 45 minutes
 
 const UINT    wm_LoadRegisters = RegisterWindowMessage( LOADREGMSGSTRING );
 
@@ -88,6 +89,7 @@ DWORD PLCDataFormatsTable[] =
 };
 
 extern CHAR * ViewerFormatNames[6];
+
 
 CRegistrationTest::CRegistrationTest()
 {
@@ -170,9 +172,10 @@ void CRegistrationTest::RegistrationReminder()
 void CRegistrationTest::ShowRegistrationMessage()
 {
    AfxMessageBox("This is a fully functional version of MOD-SIM but without a key; \
-\nit will show this message after 30 minutes, and then just try to annoy U after that.\
-\n\nTo obtain a totally free key, see the help-about window!");
+\nit will show this message after 45 minutes, and then just try to annoy U after that.\
+\n\nTo obtain a totally free key, see the Help-About window!", MB_ICONINFORMATION );
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CMOD_simDlg dialog
@@ -250,6 +253,7 @@ CMOD_simDlg::CMOD_simDlg(CWnd* pParent /*=NULL*/)
    m_HTMLUpdateRate = 5;
    m_inputHTMLFilename = "input.html";
    m_outputHTMLFilename = "output.html";
+
 
    //m_startTime = GetTickCount();
    m_registerShow = TRUE;
@@ -350,6 +354,7 @@ BEGIN_MESSAGE_MAP(CMOD_simDlg, CDialog)
 	ON_COMMAND(IDH_INJECTERROR, OnInJecterror)
 	ON_COMMAND(IDC_OPEN, OnOpenPort)
 	ON_COMMAND(IDC_CLOSE, OnClosePort)
+	ON_COMMAND(IDM_TOGGLEPORT, OnTogglePortState)
 	ON_COMMAND(IDH_EMULATION, OnEmulation)
 	ON_COMMAND(IDH_SETTINGS, OnSettings)
 	ON_COMMAND(IDH_LOAD, OnLoad)
@@ -358,7 +363,7 @@ BEGIN_MESSAGE_MAP(CMOD_simDlg, CDialog)
 	ON_COMMAND(IDH_ERASE, OnZeroes)
 	ON_COMMAND(IDH_HELP, OnAbout)
 	ON_BN_CLICKED(IDB_TOGGLEDISP, OnToggleDisplay)
-	ON_COMMAND(IDM_TOGGLEPORT, OnTogglePortState)
+	ON_COMMAND(IDC_CSVIMPORT, OnCsvImportPop)
 	//}}AFX_MSG_MAP
    ON_WM_GETMINMAXINFO()
    ON_REGISTERED_MESSAGE( wm_LoadRegisters, OnLoad )
@@ -514,7 +519,7 @@ void CMOD_simDlg::SetupMySystemMenu(CMenu *pSysMenu)
 	if (pSysMenu != NULL)
 	{
    CString strAboutMenu, strOnTop, strEmulation;
-   CString strToggle;
+   CString strToggle, strReadOnly;
 		strAboutMenu.LoadString(IDS_ABOUTBOX);
       strOnTop.LoadString(IDS_MNU_ONTOP);
       strEmulation.LoadString(IDS_EMULATION);
@@ -531,8 +536,15 @@ void CMOD_simDlg::SetupMySystemMenu(CMenu *pSysMenu)
          // emu. settings
 		   pSysMenu->AppendMenu(MF_STRING, IDM_EMULATE, strEmulation);
          pSysMenu->CheckMenuItem(IDM_EMULATE, MF_UNCHECKED);
+         // Vinay
+         strToggle.LoadString(IDC_CSVIMPORT);
+         pSysMenu->AppendMenu(MF_STRING, IDM_CSVIMPORT, strToggle);
+
+         
+         strReadOnly.LoadString(IDM_READONLY);
+         pSysMenu->AppendMenu(MF_STRING, IDM_READONLY, strReadOnly);
       
-         m_portToggleMnuIndex = 6;  // index of the port open/close item
+         m_portToggleMnuIndex = 8;  // index of the port open/close item
          // The window transparency code for XP and 2000 users comes in here....
          GetTNImport();
          if (NULL != m_pSetLayeredWindowAttributes)
@@ -562,7 +574,6 @@ void CMOD_simDlg::SetupMySystemMenu(CMenu *pSysMenu)
          // port open/close menu item
          strToggle.LoadString(IDS_PORTTOGGLE);
          pSysMenu->AppendMenu(MF_STRING, IDM_TOGGLEPORT, strToggle);
-
 		}
 	}
 
@@ -976,6 +987,7 @@ BOOL ret;
    CSplashWnd::m_splashShowDelay = 1;
    CSplashWnd::ShowSplashScreen(this); 	
       
+   // start preparing the window-sizer
    m_dragCorner.SubclassDlgItem(IDC_DRAG, this);
    m_dragCorner.SetCornerType(CDragSizerBmp::CORNER_BOTTOMRIGHT, IDB_DRAGSE, TRUE);
 
@@ -990,9 +1002,19 @@ BOOL ret;
    m_hAccel = ::LoadAccelerators(AfxGetResourceHandle(), 
                                  m_lpszTemplateName); 
    ASSERT(m_hAccel);
-	// TODO: Add extra initialization here
    // load user settings from registry
    LoadApplicationSettings();
+
+   // parse the command-line
+   m_commandLine.SetPortParams(m_baud, m_byteSize, m_parity, m_stopBits, m_rts); // pass serial settings in
+   AfxGetApp()->ParseCommandLine( this->m_commandLine );
+
+   m_commandLine.GetProtocol(m_selectedProtocol);
+   // get any serial settings that changed on the commandline.
+   m_commandLine.GetPortSettings(m_portNameShort, m_baud, m_byteSize, m_parity, m_stopBits, m_rts);
+   m_commandLine.GetIPSettings(m_localPort);
+
+   SaveApplicationSettings();
 
    // set mem sizes
    PLCMemory.SetSize(GetNumMemoryAreas());
@@ -1009,7 +1031,7 @@ BOOL ret;
    }
 
 
-   // set protcol selection in the list-box
+   // set protocol selection in the list-box
    m_protocolCombo.SetCurSel(m_selectedProtocol);
 
    //IDC_DATAFORMAT
@@ -1055,13 +1077,13 @@ BOOL ret;
    m_lampTraining.SetONcolor(RGB(0,200,0)); // set the ON color for this lamp to be GREEN
    m_lampTraining.SetOFFcolor(RGB(0,110,0));
 
+   SetupMyToolBar();
+
    // start the comms side
    InitiateCommsProcessors(m_selectedProtocol);
    OnSelchangeProtocol();  // update icon
 
-   //m_listCtrlData.SetAreaDisplayed(m_startUpRegisterArea);
    OnSelchangeComboArea();
-   //SetupListViewControl(10);//NUMBER_LISTCOLS);
 
    //TOOLTIPS START
    m_ToolTip.Create (this);
@@ -1081,30 +1103,31 @@ BOOL ret;
 
    ConfigureStationButtons();
 
-   SetupMyToolBar();
 
    // Animation and updates timer
    SetTimer(0, 500, NULL);
+	SetTimer(3, 30000,0); // 30 seconds
+   PostMessage(WM_TIMER,3);
+
 
    // load registers if we have to now.
    if (m_autoLoad)
       PostMessage(wm_LoadRegisters); //calls OnLoad();
 
    SetDisplayToggleButton();
-//   SetDlgItemText(IDB_TOGGLEDISP, (m_registerShow ?"Comms":"Registers"));
+
    SetDlgItemText(IDC_TRACKCOMMS, (m_commsTobottom? "Stop tracking" : "Track comms"));
    SetDlgItemText(IDC_PAUSECOMMS, (m_paused? "Resume" : "Pause"));
 
 
+
+   { // position our window
+   CString registryPath;
+   DRegKey key;
    CRect rect;
    DWORD x=0,y=0;
 
-   {
-   CString registryPath;
-   DRegKey key;
-
       m_appSettingAdressHex = m_listCtrlData.IsAddressFormatHex();
-      // Save the baud rate etc
       registryPath = APPREGISTRY_SETTINGSKEY;
       key.Open(DRegKey::local_machine, registryPath);
       key.QueryValue("WindowPositionX", &x);//(rect.left+ rect.right<<16)); 
@@ -1113,20 +1136,20 @@ BOOL ret;
       rect.right = x >> 16;
       rect.top = y & 0xFFFF;
       rect.bottom = y >> 16;
-   }
-   if (x && y)
-   {
-   int cx,cy;
-      CWnd *pTop = FindWindow(SIMULATOR_WINDOW_CLASSNAME, NULL);
-      cx = GetSystemMetrics(SM_CXFULLSCREEN);
-      cy = GetSystemMetrics(SM_CYFULLSCREEN);
 
-      if ((rect.left >=0) && (rect.right <= cx) && (rect.top >=0) && (rect.bottom <= cy))
-         SetWindowPos(&CWnd::wndTop, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, SWP_SHOWWINDOW);
+      if (x && y)
+      {
+      int cx,cy;
+         CWnd *pTop = FindWindow(SIMULATOR_WINDOW_CLASSNAME, NULL);
+         cx = GetSystemMetrics(SM_CXFULLSCREEN);
+         cy = GetSystemMetrics(SM_CYFULLSCREEN);
 
+         if ((rect.left >=0) && (rect.right <= cx) && (rect.top >=0) && (rect.bottom <= cy))
+            SetWindowPos(&CWnd::wndTop, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, SWP_SHOWWINDOW);
+
+      }
    }
-   // tell the splash screen to close by sending a click
-   //PostMessage(WM_NCLBUTTONDOWN,0,0);  
+     
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 } // OnInitDialog
@@ -1202,7 +1225,7 @@ void CMOD_simDlg::SetupListViewControl(const DWORD cols)
 {
 
    m_isClone = IsDlgButtonChecked(IDC_CLONE);
-   m_listCtrlData.SetupColumns(LONG (cols+1), m_isClone);
+   m_listCtrlData.SetupColumns(LONG (cols+1), IsClone());
 } // SetupListViewControl
 
 
@@ -1215,8 +1238,7 @@ DRegKey key;
 DWORD len = sizeof(m_portNameShort);
 DWORD animationType;
 
-   ////////////////////////////////////////////////////
-   // set default values
+   // 1. set default values
    strcpy(m_portNameShort, "COM1");
    m_baud = CBR_9600;
    m_byteSize = 8;
@@ -1224,7 +1246,6 @@ DWORD animationType;
    m_stopBits = ONESTOPBIT;
    m_rts = RTS_CONTROL_ENABLE;
 
-   registryPath = APPREGISTRY_SETTINGSKEY;
    // colors
    m_mTickColorActive =   RGB(0xFF, 0xFF, 0x00);   // yellow
    m_mTickColorInactive = RGB(0x80, 0x80, 0x80);   // gray
@@ -1253,8 +1274,19 @@ DWORD animationType;
    m_linger = FALSE;
    m_localId = 1;
 
+   m_animationON = FALSE;
+   m_plantAnimation = FALSE;
+   m_animationBYTE = FALSE;
+   m_animationWORD = FALSE;
+   // Vinay
+   m_importFolder = "CSVdata";
+   m_logFileName = "csreport.log";
+   m_csvImportEnable = FALSE;
+
    //////////////////////////////////////////////////
-   // load the baud rate etc
+   // 2. load the settings, baud rate etc
+   registryPath = APPREGISTRY_SETTINGSKEY;
+
    key.Open(DRegKey::local_machine, registryPath);
    key.QueryValue("Port", m_portNameShort, &len); 
    key.QueryValue("BaudRate",    &m_baud);
@@ -1327,10 +1359,6 @@ DWORD animationType;
    else
       CSplashWnd::GetSWnd()->InvalidateRect(NULL); // Force a splash re-paint with registration info
 
-   m_animationON = FALSE;
-   m_plantAnimation = FALSE;
-   m_animationBYTE = FALSE;
-   m_animationWORD = FALSE;
    key.QueryValue("AnimationType", &animationType);
    switch (animationType)
    {
@@ -1346,7 +1374,12 @@ DWORD animationType;
    if (m_animationBYTE || m_animationWORD || m_plantAnimation)
       m_animationON = TRUE;
    key.QueryValue("AnimationScript", m_animationScriptFile);
-//   m_checkParity = (NOPARITY==m_parity?FALSE;TRUE);
+
+   //Vinay
+   key.QueryValue("CSVImportFolder", m_importFolder);
+   key.QueryValue("CSVImportLogName", m_logFileName);
+   key.QueryValue("CSVImportEnable", &m_csvImportEnable);
+
 
 } // LoadApplicationSettings
 
@@ -1431,6 +1464,11 @@ DWORD animationType;
    key.SetValue("HTMLUpdateRate", m_HTMLUpdateRate);
    key.SetValue("InputHTMLFilename", m_inputHTMLFilename);
    key.SetValue("OuputHTMLFilename", m_outputHTMLFilename);
+
+   key.SetValue("CSVImportFolder", m_importFolder);
+   key.SetValue("CSVImportLogName", m_logFileName);
+   key.SetValue("CSVImportEnable", m_csvImportEnable);
+
 } // SaveApplicationSettings
 
 
@@ -1461,6 +1499,55 @@ void CMOD_simDlg::OnSysCommand(UINT nID, LPARAM lParam)
    case IDM_TOGGLEPORT:
       OnTogglePortState();
       break;
+      // Vinay
+   case IDM_CSVIMPORT:
+      OnCsvImportPop();
+      break;
+   case IDM_READONLY:
+      {
+         CWnd *start = GetWindow(GW_CHILD);
+         int b = !start->IsWindowEnabled();
+
+         CWnd *next = start;
+         do {
+            next->EnableWindow(b);
+            next = next->GetNextWindow();
+         }
+         while (( next !=start) && (next));
+         // turn menu items on/off
+         CMenu* mnu = this->GetSystemMenu(FALSE);
+         if (b)
+         {
+            mnu->InsertMenu(0, MF_BYPOSITION | MF_GRAYED, SC_RESTORE , "Restore");
+            mnu->InsertMenu(1, MF_BYPOSITION, SC_MOVE , "Move");
+            mnu->InsertMenu(2, MF_BYPOSITION,SC_SIZE ,  "Size");
+            mnu->InsertMenu(3, MF_BYPOSITION, SC_MINIMIZE, "Minimize");
+            mnu->InsertMenu(4, MF_BYPOSITION, SC_MAXIMIZE, "Maximize");
+            mnu->InsertMenu(5, MF_BYPOSITION, MF_SEPARATOR );
+
+            mnu->InsertMenu(5, MF_BYPOSITION, SC_CLOSE, "Close" );
+            mnu->InsertMenu(5, MF_BYPOSITION, MF_SEPARATOR );
+         }
+         else
+         {
+            //mnu->DeleteMenu(5, MF_BYPOSITION);
+            mnu->DeleteMenu(SC_CLOSE, MF_BYCOMMAND );
+            mnu->DeleteMenu(SC_RESTORE ,MF_BYCOMMAND );
+            mnu->DeleteMenu(SC_MOVE ,MF_BYCOMMAND );
+            mnu->DeleteMenu(SC_SIZE ,MF_BYCOMMAND );
+            mnu->DeleteMenu(SC_MINIMIZE,MF_BYCOMMAND );
+            mnu->DeleteMenu(SC_MAXIMIZE ,MF_BYCOMMAND );
+            mnu->DeleteMenu(0, MF_BYPOSITION);
+            mnu->DeleteMenu(0, MF_BYPOSITION);
+            WINDOWPLACEMENT wndpl;
+            GetWindowPlacement( &wndpl );
+            wndpl.showCmd = SW_MINIMIZE;
+            SetWindowPlacement( &wndpl );
+
+         }
+      }
+      break;
+
    default:
       CDialog::OnSysCommand(nID, lParam);
       break;
@@ -1535,7 +1622,6 @@ CWaitCursor wait;    // put up a wait cursor
          {
             m_pServerSockArray->kill = TRUE;
             m_pServerSockArray->CloseAll();
-//            while (m_pServerSockArray->initiating) Sleep(100); // wait for any start-up to complete
             delete m_pServerSockArray;
          }
          m_pServerSockArray = NULL;
@@ -1546,6 +1632,7 @@ CWaitCursor wait;    // put up a wait cursor
          ASSERT(0);
          break;
    }
+   m_loadedProtocol = PROTOCOL_SELNONE;
 } // UnloadCommsProcessors
 
 
@@ -1605,11 +1692,13 @@ CString csNewTitle, portName;
                                         );
          //update title bar
          csTitle.LoadString(IDS_TITLE); //MODBUS %s PLC - Simulator (%s %s %d,%d,%c,%s)
-         portName.Format("port: %s %d,%d,%c,%s", m_portNameShort, 
+         portName.Format("port: %s %d,%d,%c,%s,%s", m_portNameShort, 
                                               m_baud, 
                                               m_byteSize, 
                                               commsParityStr[m_parity], 
-                                              commsStopStr[m_stopBits]);
+                                              commsStopStr[m_stopBits],
+                                              commsRTSStr[m_rts]
+                                              );
          //
          if (PROTOCOL_SELMOD232 == protocol)
             csNewTitle.Format(csTitle, ((CMOD232CommsProcessor*)m_pServerRS232Array->GetAt(0))->ProtocolName(),"RS-232", portName);
@@ -1643,13 +1732,73 @@ CString csNewTitle, portName;
    m_loadedProtocol = protocol;
 } // InitiateCommsProcessors
 
+CString &CMOD_simDlg::LogFileName()
+{
+   return(this->m_logFileName);
+}
+
+
+//----------------------------------------------------------------------------------------
+// this 'callback' class implements the interface for setting registers and for debug strings
+// Vinay
+
+
+void CRegisterUpdaterIMP::DebugMessage(LPCTSTR message)
+{
+SYSTEMTIME  sTime;
+CString fmt;
+
+   GetLocalTime(&sTime);
+   fmt.Format("%02d/%02d %02d:%02d:%02d - %s\r\n", sTime.wMonth, sTime.wDay, sTime.wHour, sTime.wMinute, sTime.wSecond, message);
+   pDlg->AddCommsDebugString(message);
+   // todo: log to the text file
+   // CFile :: pDlg->m_logFileName
+   CFile logFile;
+   logFile.Open(pDlg->LogFileName(), CFile::modeWrite|CFile::modeNoTruncate|CFile::modeCreate);
+   if (logFile.m_hFile != (int)INVALID_HANDLE_VALUE)
+   {
+      logFile.SeekToEnd();
+      logFile.Write(fmt, fmt.GetLength());
+   }
+}
+
+BOOL CRegisterUpdaterIMP::SetRegister(LONG index, WORD value) 
+{ 
+   CMemWriteLock lk(PLCMemory.GetMutex());
+   PLCMemory.SetAt(MODBUS_MEM_REGISTERS, index, value);
+
+   return(true);
+}
+
+BOOL CRegisterUpdaterIMP::ModbusClone()
+{
+   return(pDlg->IsClone());
+}
+
+// end Vinay
 
 // ------------------------------------ OnTimer ---------------------------------
 void CMOD_simDlg::OnTimer(UINT nIDEvent) 
 {
-//DWORD    chkTime;
 static int tickerCount=0;
 int stationIndex, firstVisibleStation, lastVisibleStation;
+
+   // Vinay
+   if (3== nIDEvent)
+   {
+      if ((m_csvImportEnable) &&  // CSV import only supported for modbus!
+         ((m_selectedProtocol == PROTOCOL_SELMOD232 )||(m_selectedProtocol== PROTOCOL_SELMODETH)) ) 
+
+      {
+         CRegisterUpdaterIMP imp(this);
+         if (m_CSVImporter.HandleTimer(m_importFolder, &imp))
+         {
+            // update modbus registers
+            m_CSVImporter.UpdateRegisters();
+         }
+      }
+      return;
+   }
 
    tickerCount++;
    // update TX/RX lamps
@@ -1681,7 +1830,7 @@ int stationIndex, firstVisibleStation, lastVisibleStation;
 
    if (0==tickerCount%5)
    {
-      // if not reigstered ,then a Dialog appears
+      // if not registered ,then a Dialog appears
       m_registration.RegistrationReminder();
 
       firstVisibleStation = GetFirstVisibleStation();
@@ -1708,13 +1857,11 @@ int stationIndex, firstVisibleStation, lastVisibleStation;
          if (!m_microTicksBackState[stationIndex])
             invalidateCtl = TRUE;
          m_microTicksCountDown[stationIndex]--;
-         //m_microTicks[stationIndex].SetBorderState(TRUE);//m_backgroundState=1= //active
          SetTickBorderState(stationIndex, TRUE);
          m_microTicksBackState[stationIndex] = TRUE;
       }
       else
       {
-         //m_microTicks[stationIndex].SetBorderState(FALSE);//m_backgroundState=0= //inactive
          if (m_microTicksBackState[stationIndex])
             invalidateCtl = TRUE;
 
@@ -1722,14 +1869,13 @@ int stationIndex, firstVisibleStation, lastVisibleStation;
          m_microTicksBackState[stationIndex] = FALSE;
       }
       if (invalidateCtl)
-         //m_microTicks[stationIndex].InvalidateRect(NULL);
          InvalidateTick(stationIndex);
    }
    LeaveCriticalSection(&dispCritSection);
 
    UpdateStatusLine();
    
-   // do animations and value zeroing
+   // do animations and value zeroing + execute simulation script
    DoAnimations();
 
    CDialog::OnTimer(nIDEvent);
@@ -2087,11 +2233,12 @@ DWORD dwRuntime = GetTickCount();
 
    if (m_ScriptProxy.IsRunning())
    {
-      AddCommsDebugString("Animation Script overrun!");
+      AddCommsDebugString("WARNING! Animation Script overrun!");
 
       SetLastRuntime(-1);
       return(TRUE);
    }
+
    if (moduleName)
    {
       if (m_reloadAnimationScript)
@@ -2099,7 +2246,7 @@ DWORD dwRuntime = GetTickCount();
       CFile file;
       CFileStatus moduleFileStatus;
       CString szBuf;
-      long nBuf=0;
+      long nBuf=0, lengthTest;
 
          deb.Format("Load script file '%s'", moduleName);
          //
@@ -2114,10 +2261,13 @@ DWORD dwRuntime = GetTickCount();
          else
          {
             LPTSTR sBuf = szBuf.GetBufferSetLength( nBuf );
-            file.Read( sBuf, nBuf );
+            file.ReadHuge(sBuf, (DWORD)nBuf); 
+            //file.Read( sBuf, nBuf );
             file.Close();
             sBuf[nBuf - 1] = '\0';
             szBuf.ReleaseBuffer();
+            lengthTest = szBuf.GetLength();
+            ASSERT(lengthTest == nBuf-1);
             szBuf.TrimRight();
          }
          m_animationScriptText = szBuf;
@@ -2238,18 +2388,22 @@ void CMOD_simDlg::DoAnimations()
 
       if ((m_plantAnimation) && (!m_zeroValues))
       {
-      BOOL  scriptedOK;
+      BOOL  scriptedOK = FALSE;
+      BOOL  initOK = TRUE;
 
          if (m_animationScriptFile.GetLength())
          {
             if (!m_scriptEngineInitilized)
             {
-             	m_ScriptProxy.CreateEngine( L"VBScript" );
-               // TODO!!! check error codes
-               m_scriptEngineInitilized = TRUE;
+               // check error, and do not bother loading text
+             	initOK = m_ScriptProxy.CreateEngine( L"VBScript" );
+
+               m_scriptEngineInitilized = TRUE; // do not try init things twice. It is not use.
             }
+
             // try to run the script
-            scriptedOK = RunAnimationScript(m_animationScriptFile);
+            if (initOK)
+               scriptedOK = RunAnimationScript(m_animationScriptFile);
             // if it fails do the normal stuff anyway
             if (!scriptedOK)
                DoPlantSimulation();
@@ -2311,88 +2465,9 @@ void CMOD_simDlg::DoAnimations()
       // reset the count-down to the next animation cycle
       m_animationCounter = m_animationPeriod; //m_animationRefreshes;
 
-      // Test sample messages here
-#ifdef __TEST_INJECTMSG
-      TestInjectMessage();
-#endif //
    }
 } // DoAnimations
 
-
-// --------------------------------- TestInjectMessage ------------------------
-#ifdef __TEST_INJECTMSG
-// Method used to test message-frames as sent in by users or for arbitrary testing.
-// Normally called on the Main app thread in the Timer handler
-void CMOD_simDlg::TestInjectMessage()
-{
-BYTE testFrame[MAX_MODBUS_MESSAGELEN];
-DWORD testFrameLength;
-
-/*6AB3 	0000 	0009 	01 	0F	0000	000E	02
-//FFFF
-   testFrame[0] = 0x6A;
-   testFrame[1] = 0xB3;
-   testFrame[2] = 0x00;
-   testFrame[3] = 0x00;
-   testFrame[4] = 0x00;
-   testFrame[5] = 0x09;
-   testFrame[6] = 0x01;
-   testFrame[7] = 0x0F;
-   testFrame[8] = 0x00;
-   testFrame[9] = 0x00;
-   testFrame[10] = 0x00;
-   testFrame[11] = 0x0E;
-   testFrame[12] = 0x02;
-   testFrame[13] = 0xFF;
-   testFrame[14] = 0xFF;
-   testFrameLength = 15;
-*/
-
-
-   testFrame[0] = 0x6A;
-   testFrame[1] = 0xB3;
-   testFrame[2] = 0x00;
-   testFrame[3] = 0x00;
-   testFrame[4] = 0x00;
-   testFrame[5] = 0x06;
-   testFrame[6] = 0x01;
-   testFrame[7] = 0x05;//cmd
-   testFrame[8] = 0x00;//start
-   testFrame[9] = 0x0F;//start
-   testFrame[10] = 0xFF;//data
-   testFrame[11] = 0x00;//data
-
-   testFrameLength = 12;
-
-   switch (m_loadedProtocol)
-   {
-      case PROTOCOL_SELMOD232 :
-      case PROTOCOL_SELABMASTER232 :
-      case PROTOCOL_SELAB232 :
-         {
-            SimulationSerialPort *pObj = (SimulationSerialPort *)(*m_pServerRS232Array)[0];
-            // TODO inject RS232 frame here
-            ASSERT(0); // not implemented
-         }
-         break;
-      case PROTOCOL_SELMODETH:
-
-         ASSERT(m_pServerSockArray);
-         {
-            CMODEthCommsProcessor *pObj = (CMODEthCommsProcessor *)(*m_pServerSockArray)[0];
-            pObj->SockDataMessage("__TEST_INJECTMSG");
-            pObj->SockDataDebugger((char*)testFrame, testFrameLength, FALSE);// a leettel debugger msg
-            
-            pObj->ProcessData(0, (char*)testFrame, testFrameLength);
-         }
-         break;
-      default:
-         ASSERT(0);
-         break;
-   }
-} // TestInjectMessage
-
-#endif // __TEST_INJECTMSG
 
 
 // ------------------------------ GetConnectionIPAddresses ------------------
@@ -2403,7 +2478,11 @@ SOCKET peerSock = INVALID_SOCKET;
 
    // the exception handlers are to cope if the socket or some pointers get nuked by 
    // the server threads while we are in here.
-   ASSERT(m_pServerSockArray);
+   if (!m_pServerSockArray)  // user has closed the port
+   {
+      local = remote = "no host";
+      return;
+   }
 
    // get our local name
    try
@@ -2800,7 +2879,6 @@ BOOL CMOD_simDlg::PreTranslateMessage(MSG* pMsg)
       m_ToolTip.RelayEvent (pMsg);
       return CDialog::PreTranslateMessage(pMsg);
    }
-   //return (FALSE);
    // TOOLTIPS END
 
    // call the base class as well
@@ -2876,7 +2954,6 @@ static char toolTiptext[160];
        // CDB : The controls in the toolbar do not have the TTF_IDISHWND flag  
        pTTT->lpszText = MAKEINTRESOURCE(nID);
        pTTT->hinst = AfxGetResourceHandle();
-       //return(TRUE);
     }
     return(FALSE);
 } // OnTTN_NeedText
@@ -3434,7 +3511,6 @@ void CMOD_simDlg::OnToggleDisplay()
    }
    
    SetDisplayToggleButton();
-//   SetDlgItemText(IDB_TOGGLEDISP, (m_registerShow ?"Comms":"Registers"));
 }
 
 #define MAX_COMMSDEBUGGER_ENTRIES      1000
@@ -3860,7 +3936,10 @@ DWORD sel;
          break;
    }
    m_protocolCombo.SetCurSel(m_selectedProtocol);
-   
+   // reset the port open/close toolbar button to be 'Close'
+   m_ToolBar.SetButtonInfo(10, IDC_CLOSE,  TBBS_BUTTON, 13);
+
+
    // refresh the list-view control
    OnSelchangeComboArea();
 
@@ -3997,28 +4076,21 @@ CHAR debugBuffer[MAX_DEBUG_STR_LEN];
 
 void CMOD_simDlg::OnOpenPort() 
 {
-//CMenu* pSysMenu = GetSystemMenu(FALSE);
-//CString descr;
-//   descr.LoadString(IDS_CLOSE);
 
-	ASSERT(m_loadedProtocol == PROTOCOL_SELNONE);
+	if(m_loadedProtocol == PROTOCOL_SELNONE) // port not loaded
+      InitiateCommsProcessors(m_selectedProtocol);
 
-   InitiateCommsProcessors(m_selectedProtocol);
 	// update GUI
    m_ToolBar.SetButtonInfo(10, IDC_CLOSE,  TBBS_BUTTON, 13);
    m_ToolBar.GetToolBarCtrl().EnableButton(3, TRUE);
    m_ToolBar.GetToolBarCtrl().EnableButton(4, TRUE);
    m_ToolBar.GetToolBarCtrl().EnableButton(5, TRUE);
    m_ToolBar.GetToolBarCtrl().EnableButton(9, TRUE);
-
-   //pSysMenu->ModifyMenu(IDM_TOGGLEPORT, MF_BYCOMMAND, 0, descr);
 }
+
 
 void CMOD_simDlg::OnClosePort() 
 {
-//CMenu* pSysMenu = GetSystemMenu(FALSE);
-//CString descr;
-//   descr.LoadString(IDS_OPEN);
 
 	ASSERT(m_loadedProtocol != PROTOCOL_SELNONE);
 
@@ -4030,10 +4102,13 @@ void CMOD_simDlg::OnClosePort()
    m_ToolBar.GetToolBarCtrl().EnableButton(4, FALSE);
    m_ToolBar.GetToolBarCtrl().EnableButton(5, FALSE);
    m_ToolBar.GetToolBarCtrl().EnableButton(9, FALSE);
-   
-//   pSysMenu->ModifyMenu(IDM_TOGGLEPORT, MF_BYCOMMAND, 0, descr);
 }
 
+
+/* Open/Close comm channel-server ports.
+ * this is a port open/close toggle - not used by the toolbar, since the toolbar switches it's 
+ * message-handler ID on the fly between OnClosePort() and OnOpenPort() .
+ */
 void CMOD_simDlg::OnTogglePortState() 
 {
 	if (m_loadedProtocol == PROTOCOL_SELNONE)
@@ -4041,3 +4116,24 @@ void CMOD_simDlg::OnTogglePortState()
    else
       OnClosePort();
 }
+
+
+// Vinay
+void CMOD_simDlg::OnCsvImportPop() 
+{
+CCSVFileImportDlg dlg;
+
+   dlg.m_importFolder = m_importFolder;//"D:\\source\\source\\adroit\\protdrv\\UTILS\\mod_RSsim\\CSVdata";
+   dlg.m_logFileName = m_logFileName;//"D:\\source\\source\\adroit\\protdrv\\UTILS\\mod_RSsim\\csreport.log";
+   dlg.m_csvImportEnable =  m_csvImportEnable;
+   if (IDOK == dlg.DoModal())
+   {
+      AddCommsDebugString(dlg.m_importFolder);
+      AddCommsDebugString(dlg.m_logFileName);
+
+      m_importFolder = dlg.m_importFolder;
+      m_logFileName = dlg.m_logFileName;
+      m_csvImportEnable =  dlg.m_csvImportEnable;
+   }   
+}
+

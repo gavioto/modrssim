@@ -246,8 +246,11 @@ long CMyHostProxy::xTransmitRegisters(short sourceStation,
 // add a message to the comms debugger
 void CMyHostProxy::xAddDebugString(LPCTSTR text) 
 {
+CString debugText;
+   // added ## prefix, docs indicate that text has a ## in front of it
+   debugText.Format("##%s", text);
 	// TODO: Add your dispatch handler code here
-  pGlobalDialog->AddCommsDebugString(text);
+  pGlobalDialog->AddCommsDebugString(debugText);
 }
 
 // ----------------------------- MasterBusy -----------------------------------

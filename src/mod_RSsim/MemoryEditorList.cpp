@@ -265,6 +265,29 @@ LPCTSTR CMemoryEditorList::GetFormatName()
    return (ViewerFormatNames[GetViewFormat()]);
 }
 
+
+/*static */
+BOOL CMemoryEditorList::Is32BitFormat(ListViewFormats_ format)
+{
+   switch (format)
+   {
+   case VIEWFORMAT_DWORD:
+   case VIEWFORMAT_LONG:
+   case VIEWFORMAT_FLOAT:
+      return(TRUE);
+      break;
+   case VIEWFORMAT_WORD:
+   case VIEWFORMAT_DECIMAL:
+      return(FALSE);
+      break;
+   default:
+      ASSERT(0);
+      break;
+   }
+   return(FALSE);
+}
+
+
 // ------------------------------ SetupColumns --------------------------------
 // populate the control's headdings
 void CMemoryEditorList::SetupColumns(LONG width, BOOL cloneAddressing)
@@ -451,17 +474,17 @@ LONG absItemNumber;
 // **** 20021101 mod by HF end
       memPrefix = PLCMemPrefixes[m_memAreaDisplayed];
       descrFormat.Format("Edit %s value at %s", GetFormatName(), GetAddressFormat());
-      description.Format(descrFormat, (IsAddressFormatHex()?0:memPrefix*10000) + absItemNumber+1);
+      description.Format(descrFormat, (IsAddressFormatHex()?0:memPrefix*100000) + absItemNumber+1);
       if ((pGlobalDialog->m_seperateRegisters) && 
           ((PROTOCOL_SELMOD232 == pGlobalDialog->m_selectedProtocol)||
            (PROTOCOL_SELMODETH == pGlobalDialog->m_selectedProtocol)))
-      {  // work out which station and register # this item belongs to if we are iusing seperate modbus reg. /station
+      {  // work out which station and register # this item belongs to if we are using seperate modbus reg. /station
          registerName.Format("Station #%d , I/O #%d", 
                      (WORD)(absItemNumber / pGlobalDialog->m_numSeperate), 
                      (WORD)(absItemNumber % pGlobalDialog->m_numSeperate));
       }
       else
-         if (pGlobalDialog->InPlantSimulation()) 
+         if (pGlobalDialog->InPlantSimulation()) // retrieve a "juice-plant" name instead
             pGlobalDialog->GetRegisterName(m_memAreaDisplayed, absItemNumber, registerName);
 
       if (htInfo.iSubItem)
@@ -537,12 +560,35 @@ LONG absItemNumber;
 #endif
                if (IDOK==memEditor.DoModal())
                {
-                  // fetch the item based on it's display formatting
-                  PLCMemory.SetAt(m_memAreaDisplayed,
+                  // CMemoryEditorList::ListViewFormats_ CMemoryEditorList::GetViewFormat()
+                  if (CMemoryEditorList::Is32BitFormat(GetViewFormat()))
+                  {
+                  DWORD dwValueToSave = memEditor.m_value;
+                     if (CMemoryEditorList::VIEWFORMAT_FLOAT == GetViewFormat())
+                     {
+                        if (pGlobalDialog->IsClone())
+                           SwopWords(&dwValueToSave);          //clone PLC's have a swapped float
+                     }
+
+                     PLCMemory.SetAt(m_memAreaDisplayed,
+                                  absItemNumber, 
+                                  (WORD)(dwValueToSave >>16));
+                     PLCMemory.SetAt(m_memAreaDisplayed,
+                                  absItemNumber+1, 
+                                  (WORD)dwValueToSave );
+
+                     // invalidate the item itself
+                     RedrawItems(htInfo.iItem, htInfo.iItem+1);
+                  }
+                  else
+                  {
+                     // SET the 16-bit item based on it's display formatting and size
+                     PLCMemory.SetAt(m_memAreaDisplayed,
                                   absItemNumber, 
                                   (WORD)memEditor.m_value);
-                  // invalidate the item itself
-                  RedrawItems(htInfo.iItem, htInfo.iItem);
+                     // invalidate the item itself
+                     RedrawItems(htInfo.iItem, htInfo.iItem);
+                  }
                }
             }
          }

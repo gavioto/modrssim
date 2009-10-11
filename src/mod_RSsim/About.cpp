@@ -16,35 +16,6 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog
-/*
-char *pArrCredit = { "NETBAS FOR WINDOWS NT\t||Copyright (c) 1998|"
-        "Test Data AS|All Rights Reserved||"
-        "BITMAP1^|||"    // this is a quoted bitmap resource 
-        "Project Lead\r||Kjetil Kvamme|||"
-        "Technical Lead\r||Kjetil Kvamme|||"
-        "Engineering Lead\r||Paul K. Tonder|||"
-        "Product Lead\r||Tom Rotting|||"
-        "Engineering\r||Paul K. Tonder,  Rolf T. Wold,  Sigbjorn Helset|"
-        "Reidar Ognedal,  Kjetil Kvamme, Arne Bakken|||"
-        "BITMAP2^|||"  // this is a quoted bitmap resource 
-        "QA\r||Mary Hech,  Sam Bamnm,  Ron Fonn,  Steve Waeve|"
-        "Igor Borisnoff,  FellaB |||"
-        "Documentation\r||"
-        "Arvid Molnvik,  Joanne Hone,  Annette Fune|||"
-        "Technical Program Office\r||Burf Murphy, Foll Roller||||"
-        "Systems Support\r||Bendy Land|||"
-        "Administrative Support\r||Donna Fonna|||"
-        "* * * * * * * * *\t|||"
-        "BITMAP3^||"
-        "Project Manager\r||Dwain Kinghorn|||"
-        "Engineering\r||"
-        "Hank Bank,  Ray Fay,  Bill Sill,  Mark Dark,  Peter Leter|"
-        "Lev Bef|||Quality Assurance\r||"
-        "Biff Bin||||"
-        "BITMAP4^|||||"
-        };
-
-*/
 char *pArrCreditPre = { "MOD_RSSIM Version %s\t||"
       "IDB_CREDITBMP1^|"
       "Simulator for MODBUS RTU, Ethernet,$|"
@@ -57,7 +28,7 @@ char *pArrCreditPre = { "MOD_RSSIM Version %s\t||"
       "<CTRL>-C = Comms/values toggle`|<CTRL>-J = insert random RS232 error-char`||"
       "IDB_CREDITBMP4^|"
       "About\r|"
-      "This cool mini protcol test program was written by|"
+      "This cool protocol test program was written by|"
       "Conrad Braam.|"
       "For a PDF format document of the MODBUS protocol, $|"
       "open your browser and type www.modicon.com, go to $|"
@@ -128,8 +99,8 @@ CString title;
    m_emaillink1.SubclassDlgItem(IDC_EMAILLINK, this);
    m_emaillink1.SetHoverCursorHandle(AfxGetApp()->LoadCursor(IDC_MYHANDCURSOR));
    m_emaillink1.SetWindowText(lpAuthor_email);
+
    // set the URL that we will actually go to here
-   //GetDlgItemText(IDC_ABOUTHEADDING, versionStr);  // get our version from this dialog
    mailLink.Format("mailto:%s?subject=%s%s", lpAuthor_email, "mod_rssim", lpsMyAppVersion);  // append it
    m_emaillink1.m_link = mailLink;
 
@@ -153,9 +124,8 @@ CString title;
        pWnd = pWnd->GetWindow (GW_HWNDNEXT);
    }
    //TOOLTIPS END
-   //GetDlgItem(IDC_SINKSTAT1)->ModifyStyle(0, WS_CLIPSIBLINGS);
+
    GetDlgItem(IDC_SINKSTAT2)->ModifyStyle(0, WS_CLIPSIBLINGS);
-   //GetDlgItem(IDC_SINKSTAT3)->ModifyStyle(0, WS_CLIPSIBLINGS);
 
 	m_static.SubclassDlgItem(IDC_CREDITSTATIC, this);
    CString pArrCredit;
@@ -217,7 +187,15 @@ void CAboutDlg::OnOK()
 CEasterDlg dlg;
 short state;
 
-   dlg.m_userName = this->m_registeredUser;	
+   if (m_registeredUser.GetLength())
+   {
+      dlg.m_userName = m_registeredUser;	
+   }
+   else
+   {
+      dlg.m_userName = "Unregistered user";
+   }
+
    // show the easter egg if user holds down any Shift key while hitting this button
 	state = GetKeyState(VK_LSHIFT) | GetKeyState(VK_RSHIFT);
    if (state <0)

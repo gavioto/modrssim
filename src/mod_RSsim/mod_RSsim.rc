@@ -79,7 +79,7 @@ IDR_MAINJOY             ICON    DISCARDABLE     "res\\ico00002.ico"
 IDD_ABOUTBOX DIALOGEX 0, 0, 305, 177
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About MOD_RSsim"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,248,7,50,14,WS_GROUP
     LTEXT           "Visit our website at",IDC_STATIC,13,136,66,8
@@ -99,7 +99,7 @@ STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION |
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "MODBUS PLC - Simulator"
 CLASS "MYSimulator_Window_Classname"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     EDITTEXT        IDC_SERVERSTATS,2,3,228,12,ES_AUTOHSCROLL | ES_READONLY | 
                     NOT WS_BORDER
@@ -118,7 +118,7 @@ BEGIN
     COMBOBOX        IDC_COMBOAREA,132,18,83,78,CBS_DROPDOWNLIST | 
                     CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Fmt:",IDC_STATIC_3,233,21,14,8
-    COMBOBOX        IDC_DATAFORMAT,252,18,54,54,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_DATAFORMAT,252,18,54,87,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Clone",IDC_CLONE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     398,20,34,10
@@ -688,6 +688,8 @@ BEGIN
         MENUITEM "Save",                        IDC_SAVE
         MENUITEM "Load",                        IDC_LOAD
         MENUITEM "Zero values",                 IDC_ZEROES
+        MENUITEM "CSV Import...",               IDM_CSVIMPORT
+        MENUITEM "Read-only view",              IDM_READONLY
         MENUITEM SEPARATOR
         MENUITEM "Port settings...",            IDC_SETTINGS
         MENUITEM "Animation...",                IDC_SIMULATE
@@ -721,6 +723,7 @@ BEGIN
     BUTTON      IDC_NOISY
     BUTTON      IDC_EMULATION
     BUTTON      IDC_CLOSE
+    BUTTON      ID_BUTTONHELP
 END
 
 
@@ -952,8 +955,11 @@ BEGIN
     IDS_NOTSUPPORTEDETH     "This function is not supported in the Modbus Ethernet PLC simulation mode!"
     IDS_ABDF1SETUPTITLE     "RS-232 Allen-bradley DF1 PLC Sim-server Settings"
     IDS_JOYSETUPTITLE       "RS-232 AB-DF1 (Joy SCC) Sim-server Settings"
+    IDC_CLOSE               "Toggle port open/close"
     IDS_CLOSE               "Close port"
     IDS_OPEN                "Open port"
+    IDC_CSVIMPORT           "CSV Import..."
+    IDS_MSGCSVSTARTPROCESSING "Help"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1018,7 +1024,78 @@ BEGIN
     IDS_SEPERATED           "I/O req. for seperate stations use (station ID x Num) for actual address."
 END
 
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_CSVIMPORT           "CSV Import..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MSGCSVSTARTPROCESSING_MAN "Start processing manual loaded '%s'"
+    IDS_MYBLOGURL           "http://www.zaphodikusrealm.blogspot.com"
+    IDS_HOMEPAGEURL         "http://www.plcsimulator.org"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_READONLY            "Read-only toggle"
+END
+
 #endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CSV_IMPORTDLG DIALOG DISCARDABLE  0, 0, 426, 81
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "CSV Import"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,369,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,369,24,50,14
+    LTEXT           "Import files from ",IDC_STATIC,17,39,52,8
+    EDITTEXT        IDC_IMPORTFOLDER,80,34,268,14,ES_AUTOHSCROLL
+    GROUPBOX        "Import settings",IDC_STATIC,7,7,352,67
+    LTEXT           "Report log (.log)",IDC_STATIC,18,54,51,8
+    EDITTEXT        IDC_IMPORTLOGNAME,80,51,268,14,ES_AUTOHSCROLL
+    CONTROL         "Enable CSV importing (alpha)",IDC_IMPORTENABLED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,21,107,10
+    PUSHBUTTON      "Load File...",IDC_QUICKIMPORT,369,42,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CSV_IMPORTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 419
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.K.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

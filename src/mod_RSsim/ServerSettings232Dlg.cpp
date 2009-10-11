@@ -37,7 +37,7 @@ DWORD    BaudTable[] = // please add any extra ones if U need in future
    19200,
    38400, 
    56000,
-   64800,
+   57600, //64800,
    115200,
    128000,
    256000 

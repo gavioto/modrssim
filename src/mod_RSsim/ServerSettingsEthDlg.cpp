@@ -78,12 +78,16 @@ CString format;
 CString result;
 
 	CDialog::OnInitDialog();
-	
    m_topic.SetHelpTopic("Ethernet Setup");
-	// TODO: Add extra initialization here
-   GetDlgItemText(IDC_SERVERLINE, format);
 
-   result.Format(format, pGlobalDialog->m_pServerSockArray->GetUpperBound()+1);
+   if (!pGlobalDialog->m_pServerSockArray) // offline
+      result = "offline (not listening)";
+   else
+   {
+      GetDlgItemText(IDC_SERVERLINE, format);
+
+      result.Format(format, pGlobalDialog->m_numServers);
+   }
    SetDlgItemText(IDC_SERVERLINE, result);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

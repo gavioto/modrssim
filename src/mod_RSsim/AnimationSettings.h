@@ -56,6 +56,12 @@ public:
    COLORREF    m_mTickColorText;
    COLORREF    m_mTickDisColorText;
 
+   // file browse boxes
+   CFileEditCtrl m_ScriptNameEditCtrl;
+   CFileEditCtrl m_HtmlInEditCtrl;
+   CFileEditCtrl m_HtmlOutEditCtrl;
+
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAnimationSettingsDlg)

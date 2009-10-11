@@ -36,6 +36,9 @@
 #include "ServerSocketArray.h"
 #include "util.h"          // globally used application functions & macros
 
+// Vinay
+#include "CsvReader.h"
+
 #include "MemWriteLock.h"
 #include "MemoryEditorList.h"
 #include "ServerRS232Array.h"
