@@ -203,7 +203,7 @@ BOOL CActiveScriptHost::AddScriptCode(LPCOLESTR pstrScriptCode)
 			HRESULT hr;
 			EXCEPINFO ei = { 0 };
 			hr = m_pAxsParse->ParseScriptText(pstrScriptCode, 0, 0, 0, 0, 0, 
-								SCRIPTTEXT_ISPERSISTENT|SCRIPTTEXT_ISVISIBLE,
+								/*SCRIPTTEXT_ISPERSISTENT|*/SCRIPTTEXT_ISVISIBLE,  // CDB removed SCRIPTTEXT_ISPERSISTENT flag for Marc M
 								0, &ei);
 			HRESULT_EXCEPTION::CheckError( hr ); // will throw an exception if failed
 
@@ -535,6 +535,10 @@ STDMETHODIMP CActiveScriptHost::XActiveScriptSite::OnScriptError(
 	LONG      ichError;
 	BSTR      bstrLine = NULL;
 	CString strError;
+   CString strErrorName;
+	CString strError1;
+	CString strError2;
+	CString strError3;
 
 	pse->GetExceptionInfo(&ei);
 	pse->GetSourcePosition(&dwSrcContext, &ulLine, &ichError);
@@ -547,10 +551,19 @@ STDMETHODIMP CActiveScriptHost::XActiveScriptSite::OnScriptError(
 	src = (LPCWSTR)ei.bstrSource;
 
 	strError.Format("%s\nSrc: %s\nLine:%d Error:%d Scode:%x", desc, src, ulLine, (int)ei.wCode, ei.scode);
-
-   pGlobalDialog->AddCommsDebugString("SCRIPT ERROR!!!!!!");
-   pGlobalDialog->AddCommsDebugString(strError);
+	strError1.Format("%s", desc);
+   strError2.Format("Src: %s\nLine:%d", src, ulLine);
+   strError3.Format("Error:%d Scode:%x", (int)ei.wCode, ei.scode);
+   
+   ASSERT(pGlobalDialog);
+   pGlobalDialog->AddCommsDebugString(strErrorName);
+   strErrorName.Format("SCRIPT ERROR %s!!!!!!", pGlobalDialog->GetScriptFileName());
+   pGlobalDialog->AddCommsDebugString(strErrorName);
+   pGlobalDialog->AddCommsDebugString(strError1);
+   pGlobalDialog->AddCommsDebugString(strError2);
+   pGlobalDialog->AddCommsDebugString(strError3);
    pGlobalDialog->SetLastScriptErrorString(strError);
+
    m_running = FALSE;
 
 	TRACE(strError);

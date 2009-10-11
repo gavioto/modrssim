@@ -44,7 +44,7 @@ public:
       VIEWFORMAT_WORD,
       VIEWFORMAT_DWORD,
       VIEWFORMAT_LONG,
-      VIEWFORMAT_FLOAT,
+      VIEWFORMAT_FLOAT,    // 6 "%f"
       VIEWFORMAT_CHAR      // text-mode
    };
 
@@ -55,6 +55,7 @@ public:
 // helpers
    static void Format(DWORD memoryValue, ListViewFormats_ format, CString& text);
    static void Convert(DWORD memoryValue, ListViewFormats_ format, CString& text);
+   static BOOL Is32BitFormat(ListViewFormats_ format);
 
 // Attributes
    LONG GetAreaDisplayed() {return (m_memAreaDisplayed);};

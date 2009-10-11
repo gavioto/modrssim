@@ -73,21 +73,19 @@ LONG n=GetUpperBound(),i=0;
 // close them all
 void CServerRS232Array::CloseAll()
 {
-//CDDKSrvSocket * sockPtr, *sockPtr1;
+
 CRS232Port *pPort,*pPort1;
 LONG n=GetUpperBound(); 
 
    // go backwards through the list so that the objects
    // are destroyed in reverse order of creation.
-   pPort1 = (CRS232Port *)GetAt(0);  // Make sure to delete all items this array holds 
+   pPort1 = (CRS232Port *)GetAt(0);  
    while (n>=0)
    {
-      pPort = (CRS232Port *)GetAt(n);  // Make sure to delete all items this array holds 
-      //Remove((HANDLE)n);               // remove from the list
+      pPort = (CRS232Port *)GetAt(n);  // Make sure to close all items this array holds 
       pPort->keepPolling = FALSE;
       if (NULL != pPort)
          pPort->ClosePort();
-         //sockPtr->CloseSocket(TRUE, *sockPtr1->m_pSocket);
       n--;                             
    }
 } // CloseAll

@@ -43,6 +43,7 @@
 #define IDD_EASTEREGG                   141
 #define IDD_ADVEMULATION                142
 #define IDD_SERVERSETTINGS_ETH          144
+#define IDM_CSVIMPORT                   0x0090
 #define IDB_SPLASH                      146
 #define IDD_TRAININGSIM                 147
 #define IDR_HELPHTM                     149
@@ -57,7 +58,9 @@
 #define IDR_ADVMBUS                     157
 #define IDR_TOOLBARSHOT                 158
 #define IDB_MULTISLAVEMODE              160
+#define IDM_READONLY                    0x00A0
 #define IDB_SINGLESLAVEMODE             161
+#define IDD_CSV_IMPORTDLG               161
 #define IDC_DATALIST                    1000
 #define IDC_COMBOAREA                   1001
 #define IDC_SETTINGS                    1002
@@ -292,6 +295,10 @@
 #define IDC_BMPMODE                     1219
 #define IDS_SEPERATED                   1220
 #define IDC_ENABLEHTMLGUI               1220
+#define IDC_IMPORTFOLDER                1221
+#define IDC_IMPORTLOGNAME               1222
+#define IDC_IMPORTENABLED               1223
+#define IDC_QUICKIMPORT                 1224
 #define IDC_SHOWCOMMSTIME               1300
 #define IDB_ALPHABLEND60                32779
 #define IDB_ALPHABLEND70                32780
@@ -314,18 +321,24 @@
 #define IDH_TOGGLEDISP                  32792
 #define IDH_INJECTERROR                 32793
 #define IDC_CLOSE                       32794
-#define IDS_CLOSE                       32794
-#define IDC_OPEN                        32795
-#define IDS_OPEN                        32795
+#define IDS_CLOSE                       32795
+#define IDC_OPEN                        32796
+#define IDS_OPEN                        32797
+#define IDC_CSVIMPORT                   32798
+#define IDS_MSGCSVSTARTPROCESSING       32799
+#define ID_BUTTONHELP                   32799
+#define IDS_MSGCSVSTARTPROCESSING_MAN   32800
+#define IDS_MYBLOGURL                   32801
+#define IDS_HOMEPAGEURL                 32802
 #define IDH_SETTINGS                    57664
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        161
-#define _APS_NEXT_COMMAND_VALUE         32797
-#define _APS_NEXT_CONTROL_VALUE         1221
-#define _APS_NEXT_SYMED_VALUE           115
+#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_CONTROL_VALUE         1225
+#define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

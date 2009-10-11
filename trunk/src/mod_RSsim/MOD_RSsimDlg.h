@@ -21,6 +21,8 @@ class CMOD_simDlg;
 class CControllerMemory;
 class CRS232Noise;
 
+#include "SimCmdLine.h"
+
 extern CMOD_simDlg * pGlobalDialog;    // global ptr to the dialog
 extern CControllerMemory PLCMemory;
 extern WORD PLCMemPrefixes[MAX_MOD_MEMTYPES];
@@ -66,6 +68,23 @@ private:
 // PreTranslateMessage, before calling the inherited one.
 void HandleTooltipsActivation(MSG *pMsg, CWnd *This, CWnd *disabledCtrls[], int numOfCtrls, CToolTipCtrl *pTooltip);
 
+
+// Vinay
+// this class implements register get/set for various protocols (in this case modbus)
+class CRegisterUpdaterIMP : public CRegisterUpdaterIF
+{
+public:
+   CRegisterUpdaterIMP(CMOD_simDlg *Dlg) :pDlg(Dlg) {}
+   void DebugMessage(LPCTSTR message);
+   BOOL SetRegister(LONG index, WORD value);
+
+   BOOL ModbusClone();
+
+private:
+   CMOD_simDlg *pDlg;
+};
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CMOD_simDlg dialog
 
@@ -88,10 +107,6 @@ public:
    void UpdateStatusLine();
    void DoAnimations();
    void ZeroRegisterValues() { m_zeroValues = TRUE;};
-
-#ifdef __TEST_INJECTMSG
-   void TestInjectMessage();
-#endif
 
    BOOL RunAnimationScript(LPCTSTR moduleName, LPCTSTR moduleText = NULL);
    void RedrawListItems(int area, int nFirst, int nLast) 
@@ -181,6 +196,11 @@ public:
    void InvalidateTick(int stationID);    // repaints the station if it is visible
    LPCTSTR GetToolTipForStation(int index);      // return tick-mark's tooltip
 
+   CString &LogFileName();
+   LPCTSTR GetScriptFileName() {return(m_animationScriptFile);};
+
+   void SetEnableHTMLGUI(bool en) { m_enableHTMLGUI = en;};
+
    LONG        m_microTicksCountDown[STATIONTICKBOXESMAX];  // "GUI" delay on activity
    BOOL        m_microTicksBackState[STATIONTICKBOXESMAX];  // station was active, back-light it
    BOOL        m_microTicksEnableState[STATIONTICKBOXESMAX];// station enabled/disabled
@@ -245,6 +265,8 @@ public:
 
    CMemoryEditorList m_listCtrlData;// the big listview control
 
+   CSimCmdLine    m_commandLine; // CCommandLineInfo object
+
 protected:
    CRITICAL_SECTION  dispCritSection;
 
@@ -283,6 +305,13 @@ protected:
    void  ToggleOnTop();    // "stay on top" done in here
    BOOL  m_stayOnTop;
    LONG  m_appSettingAdressHex;  // load/save only
+
+   // Vinay
+	CString	m_importFolder;
+	CString	m_logFileName;
+   LONG     m_csvImportEnable;
+   CCSVTextImporter  m_CSVImporter;
+
 
    // STATION Activity indicators
 private:
@@ -394,6 +423,7 @@ public:
 	afx_msg void OnOpenPort();
 	afx_msg void OnClosePort();
 	afx_msg void OnTogglePortState();
+	afx_msg void OnCsvImportPop();
 	//}}AFX_MSG
    afx_msg void OnGetMinMaxInfo( MINMAXINFO FAR* lpMMI );
 

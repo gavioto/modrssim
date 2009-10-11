@@ -101,7 +101,7 @@ static BYTE EthernetHeadder[4]= {
          byteCount = UnPackField(&pTelePtr, 2); // 2 chars, the count is in bits
          count = byteCount;
          overalLen = (WORD)ceil(byteCount/8.0);
-         pTelePtr++; // increment past the #bytes byte which is the # bytes of data to expect (max 255)
+         coilByteCount = *pTelePtr++; // increment past the #bytes byte which is the # bytes of data to expect (max 255)
          overalLen += 3;
          break;
       case MOD_READ_COILS  : 
@@ -124,6 +124,12 @@ static BYTE EthernetHeadder[4]= {
       case MOD_WRITE_SINGLEHOLDING:
          byteCount = 2; // 2 chars, only 1 register
          overalLen = byteCount;
+         break;
+      case MOD_MASKEDWRITE_HOLDING:
+         byteCount = 4; // 2 masks
+         overalLen = byteCount;
+         m_andMask = UnPackField(&pTelePtr, 2); // 2 bytes, word
+         m_orMask  = UnPackField(&pTelePtr, 2); // 2 bytes, word
          break;
       default   : //All other commands not supported
          //ASSERT (0);
@@ -188,6 +194,8 @@ CMODMessage::CMODMessage(const CMODMessage & oldMODMessage)
    this->functionCode = oldMODMessage.functionCode;
    this->address = oldMODMessage.address;       // where to copy data from
    this->byteCount = oldMODMessage.byteCount;   // length of data to copy
+   this->m_andMask = oldMODMessage.m_andMask;
+   this->m_orMask  = oldMODMessage.m_orMask;
    
    this->overalLen = 0;   //New message so 0 for now!
    
@@ -230,6 +238,16 @@ BYTE numBytesData;
              *pWorkArea++ = LOBYTE(address);
              //*pWorkArea++ = HIBYTE(PLCMemory[GetAddressArea(functionCode)][address]);
              //*pWorkArea++ = LOBYTE(PLCMemory[GetAddressArea(functionCode)][address]);
+             break;
+          case MOD_MASKEDWRITE_HOLDING:
+             *pWorkArea++ = HIBYTE(address);
+             *pWorkArea++ = LOBYTE(address);
+             //add the masks
+             *pWorkArea++ = HIBYTE(m_andMask);
+             *pWorkArea++ = LOBYTE(m_andMask);
+             *pWorkArea++ = HIBYTE(m_orMask);
+             *pWorkArea++ = LOBYTE(m_orMask);
+
              break;
           case MOD_WRITE_MULTIPLE_COILS : 
              *pWorkArea++ = HIBYTE(address);
@@ -312,6 +330,7 @@ WORD CMODMessage::GetAddressArea(WORD classCode //  modbus command byte
       // write commands      
       case MOD_WRITE_HOLDING        : return(3); break;
       case MOD_WRITE_SINGLEHOLDING  : return(3); break;
+      case MOD_MASKEDWRITE_HOLDING  : return(3); break;
       case MOD_WRITE_SINGLE_COIL    : return(0); break;
       case MOD_WRITE_MULTIPLE_COILS : return(0); break;
       case MOD_WRITE_EXTENDED       : return(4); break;
@@ -494,7 +513,8 @@ BOOL MBUSError = FALSE;
        (modMsg.functionCode == MOD_WRITE_SINGLE_COIL)||     // 05
        (modMsg.functionCode == MOD_WRITE_MULTIPLE_COILS)||  // 0F
        (modMsg.functionCode == MOD_WRITE_HOLDING)||         // 10
-       (modMsg.functionCode == MOD_WRITE_SINGLEHOLDING)||         // 06 (testing)
+       (modMsg.functionCode == MOD_WRITE_SINGLEHOLDING)||   // 06
+       (modMsg.functionCode == MOD_MASKEDWRITE_HOLDING)||   // 16 (testing)
        (modMsg.functionCode == MOD_WRITE_EXTENDED)          // 15
       )
    {
@@ -553,6 +573,7 @@ BOOL MBUSError = FALSE;
    if ((m_disableWrites) &&
        ((modMsg.functionCode == MOD_WRITE_SINGLE_COIL) ||
         (modMsg.functionCode == MOD_WRITE_SINGLEHOLDING) ||
+        (modMsg.functionCode == MOD_MASKEDWRITE_HOLDING) ||
         (modMsg.functionCode == MOD_WRITE_MULTIPLE_COILS) ||
         (modMsg.functionCode == MOD_WRITE_HOLDING) ||
         (modMsg.functionCode == MOD_WRITE_EXTENDED) 
@@ -566,7 +587,19 @@ BOOL MBUSError = FALSE;
       OutputDebugString(deb);
       RSDataMessage(deb);
    }
-   
+
+   if (modMsg.functionCode == MOD_WRITE_MULTIPLE_COILS) 
+   {
+      if (modMsg.coilByteCount != (modMsg.overalLen-7))
+      {    
+      CString deb;
+         MBUSError = TRUE;
+         MBUSerrorCode = MOD_EXCEPTION_ILLEGALFUNC;   // 02
+         deb.Format("Invalid I/O length!\n");
+         OutputDebugString(deb);
+         RSDataMessage(deb);
+      }
+   }
    // do a address+length range check too
    if (!MBUSError)
       if (PLCMemory[requestMemArea].GetSize() < endRegister)
@@ -774,41 +807,45 @@ CString deb;
                      break;
                  case MOD_WRITE_MULTIPLE_COILS  :
                     // unpack into the SIMul memory on WORD of sim memory for every BIT in the data 
-                    //WORD numBytes;
-
-                     numBytesInReq = modMsg.count/8;
-                     if (modMsg.count%8)  // if we overflow a byte
-                        numBytesInReq++;
-
                      {
-                     CString deb;
-                        deb.Format("Write multiple outputs from %d for %d bits.\n", modMsg.address, modMsg.count);
-                        OutputDebugString(deb);
-                        RSDataMessage(deb);
-                     }
-                     numRegs = numBytesInReq;   // repaint X bits
+                        int coilCount = modMsg.byteCount;
+                        numBytesInReq = modMsg.count/8;
+                        if (modMsg.count%8)  // if we overflow a byte
+                           numBytesInReq++;
 
-                     for (i=0;i<numBytesInReq;i++)
-                     {
-                     WORD bitOffset;
-                        for (bitOffset=0;bitOffset<8;bitOffset++)
                         {
-                           if ((i*8)+bitOffset <= modMsg.count)
+                        CString deb;
+                           deb.Format("Write multiple outputs from %d for %d bits.\n", modMsg.address, modMsg.count);
+                           OutputDebugString(deb);
+                           RSDataMessage(deb);
+                        }
+                        numRegs = numBytesInReq;   // repaint X bits (modMsg.coilByteCount)
+                     
+                        while (coilCount>0)
+                        {
+                           for (i=0;i<numBytesInReq;i++)
                            {
-                              if (*(BYTE*)modMsg.dataPtr & (0x01<<bitOffset))
-                                 PLCMemory.SetAt(requestMemArea, seperationOffset +modMsg.address+(i*8)+bitOffset, 1);
-                              else
-                                 PLCMemory.SetAt(requestMemArea, seperationOffset +modMsg.address+(i*8)+bitOffset, 0);
+                           WORD bitOffset;
+
+                              for (bitOffset=0;bitOffset<8;bitOffset++)
+                              {
+                                 if (coilCount >0)
+                                 {
+                                    coilCount--;
+                                    if (*(BYTE*)modMsg.dataPtr & (0x01<<bitOffset))
+                                       PLCMemory.SetAt(requestMemArea, seperationOffset +modMsg.address+(i*8)+bitOffset, 1);
+                                    else
+                                       PLCMemory.SetAt(requestMemArea, seperationOffset +modMsg.address+(i*8)+bitOffset, 0);
+                                 }
+                              }
+                              modMsg.dataPtr++;
                            }
                         }
-                        modMsg.dataPtr++;
                      }
                      break;
+
                  case MOD_WRITE_HOLDING : //WRITE multiple holdings
                  case MOD_WRITE_EXTENDED:
-                     //PLCMemory[requestMemArea][modMsg.address] = SwapBytes(*(WORD*)modMsg.dataPtr);
-                     //break;
-
                      numRegs = modMsg.byteCount/2;
 
                      {
@@ -823,6 +860,7 @@ CString deb;
                         modMsg.dataPtr +=2;   // inc pointer by 2 bytes
                      }
                      break;
+
                  case MOD_WRITE_SINGLEHOLDING : //WRITE single holding reg.
                      {
                      CString deb;
@@ -846,6 +884,44 @@ CString deb;
 
                      }
                      break;
+
+                 case MOD_MASKEDWRITE_HOLDING : // WRITE with MASK single holding reg.
+                     {
+                     CString deb;
+                     WORD memValueTemp, memValueResult;
+                     WORD orMask, andMask;
+
+                        deb.Format("Write Mask register %d.\n", modMsg.address);
+                        OutputDebugString(deb);
+                        RSDataMessage(deb);
+                        // fetch it
+                        memValueTemp = PLCMemory[requestMemArea][(seperationOffset +modMsg.address)];
+                        // 
+                        andMask = SwapBytes(*(WORD*)modMsg.dataPtr);
+                        modMsg.dataPtr+= sizeof(WORD);
+                        orMask = SwapBytes(*(WORD*)modMsg.dataPtr);
+                        modMsg.dataPtr+= sizeof(WORD);
+                        memValueResult = ( memValueTemp & andMask) | ( orMask & (~andMask));
+
+                        deb.Format("In=%04X And=%04X Or=%04X Out=%04X.\n", memValueTemp, andMask, orMask, memValueResult);
+                        OutputDebugString(deb);
+                        RSDataMessage(deb);
+
+                        //*(WORD*)pDataPortion =  SwapBytes( memValueTemp );
+
+                        numRegs = 1;   //repaint 1 register
+
+                        PLCMemory.SetAt(requestMemArea, seperationOffset + modMsg.address , SwapBytes(memValueResult));
+
+
+//                        modMsg.dataPtr +=2;   // inc pointer by 2 bytes
+//                        pDataPortion += 2;
+
+                     }
+                     break;
+                 default:
+                    ASSERT(0);
+                    break;
                  }
           }
           // we can only call on the GUI thread once we have un-locked

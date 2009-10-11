@@ -238,7 +238,8 @@ BOOL transmitted = TRUE;
        (modMsg.functionCode == MOD_WRITE_SINGLE_COIL)||     // 05
        (modMsg.functionCode == MOD_WRITE_MULTIPLE_COILS)||  // 0F
        (modMsg.functionCode == MOD_WRITE_HOLDING)||         // 10
-       (modMsg.functionCode == MOD_WRITE_SINGLEHOLDING)||         // 06 (testing)
+       (modMsg.functionCode == MOD_WRITE_SINGLEHOLDING)||   // 06 
+       (modMsg.functionCode == MOD_MASKEDWRITE_HOLDING)||   // 16 (new/testing)
        (modMsg.functionCode == MOD_WRITE_EXTENDED)          // 15
       )
    {
@@ -316,6 +317,7 @@ BOOL transmitted = TRUE;
       if ((m_disableWrites) &&
           ((modMsg.functionCode == MOD_WRITE_SINGLE_COIL) ||
            (modMsg.functionCode == MOD_WRITE_SINGLEHOLDING) ||
+           (modMsg.functionCode == MOD_MASKEDWRITE_HOLDING) ||
            (modMsg.functionCode == MOD_WRITE_MULTIPLE_COILS) ||
            (modMsg.functionCode == MOD_WRITE_HOLDING) ||
            (modMsg.functionCode == MOD_WRITE_EXTENDED) 
@@ -565,6 +567,9 @@ BOOL transmitted = TRUE;
                         pDataPortion += 2;
                      }
                      break;
+                 case MOD_MASKEDWRITE_HOLDING:
+                    ASSERT(0); // TODO
+                    break;
                  }
           }
           // we can only call on the GUI thread once we have un-locked

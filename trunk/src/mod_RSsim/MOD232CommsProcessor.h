@@ -27,6 +27,7 @@
 #define MOD_WRITE_SINGLEHOLDING  0x06     // tested, preset single register
 #define MOD_WRITE_MULTIPLE_COILS 0x0F
 #define MOD_WRITE_HOLDING        0x10
+#define MOD_MASKEDWRITE_HOLDING  0x16     // AND,OR mask
 // Extended registers
 #define MOD_READ_EXTENDED        0x14
 #define MOD_WRITE_EXTENDED       0x15
@@ -141,7 +142,11 @@ public:
    WORD address;
    WORD count;          // # of data words?
    WORD byteCount;      // # of items, (if In/Outputs), then it is the # of bits.
+   BYTE coilByteCount;
    WORD totalLen;
+   // mask
+   WORD m_andMask;
+   WORD m_orMask;
 
    // Ethernet
    BYTE * preambleLenPtr; 

@@ -2,10 +2,9 @@
 // Splash.cpp : implementation file
 //
 
-#include "stdafx.h"  // e. g. stdafx.h
-#include "resource.h"  // e.g. resource.h
-
-#include "Splash.h"  // e.g. splash.h
+#include "stdafx.h"  
+#include "resource.h"
+#include "Splash.h"  
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,7 +25,6 @@ int   CSplashWnd::m_splashShowDelay=1;
 // constructor
 CSplashWnd::CSplashWnd()
 {
-   //m_splashShowDelay = 1;   //default value
    m_pFont = NULL;
    m_pLargeFont = NULL;
 }
@@ -144,6 +142,7 @@ int CSplashWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 }
 
 #define LEFTMARGIN 45
+
 // --------------------------------- OnPaint ------------------------------
 void CSplashWnd::OnPaint()
 {
@@ -165,20 +164,19 @@ CString tempText;
 	dc.BitBlt(0, 0, bm.bmWidth, bm.bmHeight, &dcImage, 0, 0, SRCCOPY);
 
    ///////////////////////////////////////////////////////////
-   // FIDDLE WITH TEXT ON TOP OF THE SPLASH
+   // Draw some text over the splash bitmap
    if (NULL == m_pFont)
    {
-   //CFont * pFont = GetFont(); // based on current font
    LOGFONT logFont;
 
       memset(&logFont,0,sizeof(logFont));
-      logFont.lfHeight=18;
+      logFont.lfHeight = 18;
       logFont.lfWeight = 700;
       strcpy(logFont.lfFaceName, "Arial");
       m_pFont = new CFont;
       m_pFont->CreateFontIndirect(&logFont);
       
-      logFont.lfHeight=26;
+      logFont.lfHeight = 26;
       logFont.lfWeight = 400; //normal
       m_pLargeFont = new CFont;
       m_pLargeFont->CreateFontIndirect(&logFont);
@@ -188,16 +186,17 @@ CString tempText;
    pOldFont = (CFont*)dc.SelectObject(m_pLargeFont);
    GetClientRect(&clientRect);
 
+   // blue text
    dc.SetBkMode(TRANSPARENT);
    dc.SetTextColor(RGB(5,5,255));
    tempText = "MODBUS Serial-RTU, TCP/IP and";
-   dc.TextOut(LEFTMARGIN,170, tempText);
+   dc.TextOut(LEFTMARGIN, 170, tempText);
    tempText = "Allen Bradley DF1 Protocols with \"Simulation\"";
-   dc.TextOut(LEFTMARGIN,200, tempText);
+   dc.TextOut(LEFTMARGIN, 200, tempText);
    tempText.Format("Version %s", lpsMyAppVersion);
    dc.TextOut(LEFTMARGIN, 230, tempText);
 
-   //smaller white text
+   // smaller white text
    dc.SetTextColor(RGB(255,255,255));
    dc.SelectObject(m_pFont);
    tempText = "MOD_SIM is an unsupported utility, created";
@@ -208,12 +207,12 @@ CString tempText;
    dc.TextOut(LEFTMARGIN,345, tempText);
    tempText = "compilation as long as this notice is not removed.";
    dc.TextOut(LEFTMARGIN,365, tempText);
-   tempText = "Copyright subsists with Adroit Technologies(r). www.adroit.co.za";
+   tempText = "HOME: www.plcsimulator.org";
    dc.TextOut(LEFTMARGIN,385, tempText);
    tempText.Format("Comments, mail the author : %s", lpAuthor_email); //conradb@adroit.co.za";
    dc.TextOut(LEFTMARGIN,425, tempText);
    
-   //registration code
+   // registration code
    dc.SetTextColor(RGB(175,5,5));
    if (pGlobalDialog->m_registration.IsRegistered())
       tempText.Format("Registered user: %s   Key: %s", pGlobalDialog->m_registeredUser, pGlobalDialog->m_registeredKey);

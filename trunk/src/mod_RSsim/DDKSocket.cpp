@@ -302,17 +302,11 @@ int numberOfBytesWritten;
       WSASetLastError(0);
       OutputDebugString(debugStrPtr);
       SockDataMessage(debugStrPtr);
-#ifndef __TEST_INJECTMSG
-      return(-1);
-#endif
    }
 
 
    // a leettel debugger msg
    SockDataDebugger(BufferPtr, numberOfBytesWritten, dataDebugTransmit);
-#ifdef __TEST_INJECTMSG
-   SockDataDebugger(BufferPtr, numberOfBytesToWrite, TRUE);
-#endif
    // on mismatch
    if (numberOfBytesWritten != numberOfBytesToWrite)
    {

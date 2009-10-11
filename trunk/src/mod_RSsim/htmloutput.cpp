@@ -92,6 +92,11 @@ DWORD length, startTicks, currentTicks, interValTicks;
 
    // Do the first 'read' of the file now
    startTicks = GetTickCount(); // we use this to time how long it really did take first around
+   if (!ExistFile(m_inputFileName))
+   {
+      pGlobalDialog->SetEnableHTMLGUI(FALSE);
+      return(0);
+   }
    RefreshOutput();
 
    // set up watch on the input file's folder

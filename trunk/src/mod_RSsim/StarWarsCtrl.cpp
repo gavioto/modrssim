@@ -59,10 +59,10 @@ END_MESSAGE_MAP()
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : PreSubclassWindow								*/
-/* Description   : Initialize some stuff							*/
-/*																	*/
+/*																	                 */
+/* Function name : PreSubclassWindow								        */
+/* Description   : Initialize some stuff							        */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::PreSubclassWindow() 
 {
@@ -93,27 +93,20 @@ void CStarWarsCtrl::PreSubclassWindow()
 */	
 	m_nScrollPos = m_rectClient.Height();
 
-	// calculate speed so that it scroll the same speed on a different machine
-	DWORD t1 = GetTickCount();
-	InvalidateCtrl();
-	DWORD t2 = GetTickCount();
+	m_nScrollSpeed = 2;
 
-	t2 -= t1; // = 50 on my system
-
-	m_nScrollSpeed = (m_nScrollSpeed * t2)/50;
-
-	SetTimer(1, 75, NULL);
+	SetTimer(1, 75, NULL);  // 75ms
 
 	CStatic::PreSubclassWindow();
 }
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : OnPaint											*/
-/* Description   : Called when the application makes a request to	*/
-/*				   repaint a portion of the window.					*/
-/*																	*/
+/*																	                 */
+/* Function name : OnPaint											           */
+/* Description   : Called when the application makes a request to	  */
+/*				   repaint a portion of the window.					        */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::OnPaint() 
 {
@@ -123,7 +116,7 @@ void CStarWarsCtrl::OnPaint()
 	CBitmap memBitmap;
 	CBitmap* oldBitmap;
 
-	// to avoid flicker, establish a memory dc, draw to it 
+	// to avoid flicker, establish a memory DC, draw to it 
 	// and then BitBlt it to the client
 	memDC.CreateCompatibleDC(&dc);
 	memBitmap.CreateCompatibleBitmap(&dc, m_rectClient.Width(), m_rectClient.Height());
@@ -131,9 +124,9 @@ void CStarWarsCtrl::OnPaint()
 
 	if (memDC.GetSafeHdc() != NULL)
 	{
-		// first drop the bitmap on the memory dc
+		// first drop the bitmap on the memory DC
 		memDC.BitBlt(0, 0, m_rectClient.Width(), m_rectClient.Height(), &m_MainDC, 0, 0, SRCCOPY);
-		// finally send the result to the display
+		// finally send the result to the display DC
 		dc.BitBlt(0, 0, m_rectClient.Width(), m_rectClient.Height(), &memDC, 0, 0, SRCCOPY);
 	}
 	memDC.SelectObject(oldBitmap);
@@ -141,11 +134,11 @@ void CStarWarsCtrl::OnPaint()
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : OnSize											*/
-/* Description   : The framework calls this member function after	*/
-/*				   the window’s size has changed.					*/
-/*																	*/
+/*																	                 */
+/* Function name : OnSize											           */
+/* Description   : The framework calls this member function after	  */
+/*				   the window’s size has changed.					        */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::OnSize(UINT nType, int cx, int cy) 
 {
@@ -167,10 +160,10 @@ void CStarWarsCtrl::OnSize(UINT nType, int cx, int cy)
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : DoStars											*/
-/* Description   : Draw stars										*/
-/*																	*/
+/*																	                 */
+/* Function name : DoStars											           */
+/* Description   : Draw stars										           */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::DoStars(CDC *pDC)
 {
@@ -208,10 +201,10 @@ void CStarWarsCtrl::DoStars(CDC *pDC)
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : InvalidateCtrl									*/
-/* Description   : Draw the Matrix to a bitmap.						*/
-/*																	*/
+/*					                  											  */
+/* Function name : InvalidateCtrl         								  */
+/* Description   : Draw the Matrix to a bitmap.			      		  */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::InvalidateCtrl()
 {
@@ -235,10 +228,10 @@ void CStarWarsCtrl::InvalidateCtrl()
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : OnTimer											*/
-/* Description   : Update display									*/
-/*																	*/
+/*																	                 */
+/* Function name : OnTimer											           */
+/* Description   : Update display									        */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::OnTimer(UINT nIDEvent) 
 {
@@ -267,26 +260,26 @@ int RGcomponent;
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : DoScrollText										*/
-/* Description   : Do scrolling text like in the movie 'Star Wars'	*/
-/*																	*/
+/*																	                 */
+/* Function name : DoScrollText										        */
+/* Description   : Do scrolling text like in the movie 'Star Wars'  */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::DoScrollText(CDC *pDC)
 {
-	int nPosX =0;
-	int nPosY =0;
+int nPosX =0;
+int nPosY =0;
 
-	CDC memDC;
-	CBitmap memBitmap;
-	CFont *oldFont;
+CDC memDC;
+CBitmap memBitmap;
+CFont *oldFont;
 
 	memDC.CreateCompatibleDC(pDC);
 	memBitmap.CreateCompatibleBitmap(pDC, m_rectClient.Width(), m_rectClient.Height());
 	memDC.SelectObject(&memBitmap);
 	memDC.SetBkColor(RGB(0,0,0));
 	memDC.SetTextColor(RGB(0,255,0));
-    memDC.SetBkMode(TRANSPARENT);
+   memDC.SetBkMode(TRANSPARENT);
 
 	oldFont = memDC.SelectObject(&m_Font);
 
@@ -297,12 +290,16 @@ void CStarWarsCtrl::DoScrollText(CDC *pDC)
 	for(int i=0; i < m_TextLines.GetSize(); i++)
 	{
    int waveEffect;   // CDB makes the text wave a little bit, and not move smooth
+   CString currentTextLine(m_TextLines.GetAt(i));
 		// set position for this line
-		CSize size = memDC.GetTextExtent(m_TextLines.GetAt(i));
+		CSize size = memDC.GetTextExtent(currentTextLine);
 
 		nPosY = m_nScrollPos + (i * size.cy);
+      if (nPosY > m_rectClient.Height())
+         break;
+
       // CDB
-      // this next bit will confuse most folk looking, but the original banners
+      // this next bit will confuse most folk looking, but the original Star Wars Scroller
       // used to have this wavy motion too.
       waveEffect = getrandom(0,1);
       if (0 == getrandom(0,1))
@@ -311,21 +308,18 @@ void CStarWarsCtrl::DoScrollText(CDC *pDC)
 		if (nPosY > 0)
 		{
 			nPosX = (m_rectClient.Width() / 2) - (size.cx / 2);
-         /*
-			if (nPosY > 255)
-			{
-				memDC.SetTextColor(RGB(255, 255, 255));
-			}
-			else
-			{
-				// set fade color
-				memDC.SetTextColor(RGB(nPosY, nPosY, nPosY));
-			}
-         */
          memDC.SetTextColor(RGBFor(nPosY));
 			
 			// print text
-			memDC.TextOut(nPosX, nPosY, m_TextLines.GetAt(i));
+         currentTextLine = m_TextLines.GetAt(i);
+			memDC.TextOut(nPosX, nPosY, currentTextLine); 
+#ifdef _DEBUG
+         {
+            CString deb;
+            deb.Format("% 2d (%d) %s  \n", i, nPosY, currentTextLine);
+            OutputDebugString(deb);
+         }
+#endif
 		}
 		else
 		{
@@ -344,9 +338,15 @@ void CStarWarsCtrl::DoScrollText(CDC *pDC)
 	for (int y=0; y <nHeight; y++)
 	{
 		double nScale = (double)y/(double)nHeight;
-		int nOffset = (int)(nWidth - nWidth*nScale)/2;
-		m_MainDC.StretchBlt(nOffset, y, (int)(nWidth*nScale), 1, &memDC, 0, y, nWidth, 1, SRCPAINT);
+
+		int nCentreX = (int)(nWidth - nWidth*nScale)/2;
+		m_MainDC.StretchBlt(nCentreX, y, (int)(nWidth*nScale), 1, 
+                          &memDC, 0, y, nWidth, 1, SRCPAINT);
 	}
+   
+	//	m_MainDC.StretchBlt(0, 0, (const int)m_rectClient.Width(), (const int)m_rectClient.Height(), 
+   //                       &memDC, 0, 0, nWidth, nHeight, SRCPAINT);
+
 
 	// restore the font
 	memDC.SelectObject(oldFont);
@@ -357,10 +357,10 @@ void CStarWarsCtrl::DoScrollText(CDC *pDC)
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : SetScrollSpeed									*/
-/* Description   : Set speed of scrolling							*/
-/*																	*/
+/*																	                 */
+/* Function name : SetScrollSpeed									        */
+/* Description   : Set speed of scrolling							        */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::SetScrollSpeed(int nSpeed)
 {
@@ -369,10 +369,10 @@ void CStarWarsCtrl::SetScrollSpeed(int nSpeed)
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : SetStarSpeed										*/
-/* Description   : Set speed of the stars							*/
-/*																	*/
+/*																	                 */
+/* Function name : SetStarSpeed										        */
+/* Description   : Set speed of the stars							        */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::SetStarSpeed(int nSpeed)
 {
@@ -381,12 +381,13 @@ void CStarWarsCtrl::SetStarSpeed(int nSpeed)
 
 
 /********************************************************************/
-/*																	*/
-/* Function name : AddTextLine										*/
-/* Description   : Add line to credits								*/
-/*																	*/
+/*																	                 */
+/* Function name : AddTextLine										        */
+/* Description   : Add line to credits								        */
+/*																	                 */
 /********************************************************************/
 void CStarWarsCtrl::AddTextLine(LPCTSTR lpszText)
 {
 	m_TextLines.Add(lpszText);
 }
+

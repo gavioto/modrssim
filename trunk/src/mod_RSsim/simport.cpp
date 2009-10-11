@@ -96,6 +96,9 @@ DWORD numItems;   // Modbus command length
                   numItems = 1;  // writes 1 register
                   raLength = MODBUS_CRC_LEN + 1 + (numItems*2);   // CRC + 2 data bytes 
                   break;
+               case MOD_MASKEDWRITE_HOLDING:
+                  numItems = 1;
+                  raLength = MODBUS_CRC_LEN + 1 + (numItems*2*2); // holds 2 masks
                default:
                   break;
             }

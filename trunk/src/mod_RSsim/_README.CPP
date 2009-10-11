@@ -155,13 +155,39 @@
 //         <merge>
 //         7.7     22/07/07   CDB merged branched code, added HTML output GUI feature; disabled the ERROR-simulation function for now.
 //                            Nag-screen no longer 'spams' and locks the UI.
+//         7.8     09/09/07   CDB - floating-point editing values in the table "never really worked", was displaying 0 and putting 0 in.
+//                            telegram Data to have spaces between bytes 00 00 00 = (seems to be in now)
+//         7.9     03/02/08   Baud Rate is 57600 not 64800 (Ken Robbins)
 //
-// TODO: telegram Data to have spaces between bytes 00 00 00
+//         8.0     10/2/08 - started CSV importer for Vinay Kumar
+//         8.1     28/3/08 - improved debugging msgs for VB script scriptlet errors
+//         8.2     05/05/08 - CDB : Added RS232 Modbus support for function 16 Write mask holding register
+//         8.3                CDB , ExistFile() moved from csvreader.cpp into mylib.lib
+//         8.4     15/06/08 - CDB __TEST_INJECTMSG macro removed now that I have a integration-test app. Adding commandline support
+//                            for Leendert in't Veld . Demo interval increased from 30 to 45 minutes.
+//         8.5     17/06/08 - CDB Toggling channel closed then opening a dialog raised an exception, reported by Steve Bardsley. fixed.
+//                            Help text updated to show command-line stuff from rev 8.04
+//         8.6     26/06/08 - CDB released a debug build by mistake. Fixed ASSERTion in the animation dialog. Fixed Easter-egg scroller only
+//                            showling first 11 lines of text.
+//         8.7     30/06/08 - CDB Added RTS indication on serial modbus protocol title-bar text R-en/R-tg...
+//         8.8     14/08/08 - CDB Removed SCRIPTTEXT_ISPERSISTENT flag from scripting site since it caused creep (it now has a CPU load hit)
+//         8.09    25/11/08 - CDB addresses as displayed in the edit item dialog are now 400000 not 40000 to cattter for >10000 registers.
+//         8.10    29/03/09 - CDB force multiple coils no longer forces a multiple of 8 coils (thanks to Alex Shinkin)
+//
 // TODO: Settable timout for 'lost' tcp client socket recovery
+//       Allow bitswize 1/0 entry for integer values as 16-bit
+//       use 1 socket as template for listen-servers instead of creating duplicate server sockets ; goal is to allow 254 servers at once.
+//       bug : reported by Vladimir, Gazprom - 2..Appeared the new error when striking button "Simulation" but then button "OK" (the file 
+//             Modbus_Error_#2). Program gives report on error for sending in corporation Microsoft
+//       bug also by vladimir, unsupported commands do not result in exception 80 responses!.
+//    feature: display 16 bit registers and toggle individual bits
+//    feature: A way to make quick-changes on running values... with a USER-created forms
+// TODO:
+//       UDP support for WAGO controllers
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"  // ha ha
 
-const CHAR lpsMyAppVersion[10] = "7.7\0";
+const CHAR lpsMyAppVersion[10] = "8.10\0";
 

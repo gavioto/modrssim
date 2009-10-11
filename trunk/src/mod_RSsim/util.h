@@ -8,6 +8,8 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SIMUL_UTIL_H_INCLUDED
+#define _SIMUL_UTIL_H_INCLUDED
 
 /////////////////////////////////////////////////////////////////////////////
 // GLOBAL Constants
@@ -57,17 +59,12 @@
 /////////////////////////////////////////////////////////////////////////////
 // Utility functions implemented in UTIL.CPP
 //
-LONG CalcCRC( BYTE * crcStartPtr,   //  ->
-                    DWORD  buffLen,       //  ->
-                    WORD * crc            // <->
-                   );
 
 WORD UnPackField(BYTE **pBuffer, WORD length);
 WORD UnPackASCIIField(BYTE **pBuffer, WORD length, BOOL &);
 
 WORD SwapBytes(WORD wrd);
 
-void PackField(CHAR **pBuffer, WORD value, WORD length);
 void PackASCIIField(CHAR **pBuffer, WORD value, WORD length);
 
 LONG RegDelete(  HKEY hParentKey,	// handle of open key 
@@ -98,10 +95,6 @@ void FillDWordCBox(CComboBox * cBox,      // ptr to the CComboBox
                    DWORD currentsetting   // current selection item in the box 
                   );
 
-void FillSerialCBox(CComboBox * cBox,     // ptr to the CComboBox
-                    LPCTSTR currentselection // current selection item in the box 
-                   );
-
 BOOL PortInUse(LPCTSTR portName);   // return TRUE/FALSE if port is in use
 
 // Show using a "*" which ports are currently in use
@@ -116,3 +109,5 @@ BOOL LoadDATAResource(int resourceID, char **pBuffer, DWORD* resSize);
 BOOL FindFragment(const BYTE * buffer, DWORD length, 
                   const BYTE *pSearchBuff, DWORD mSearchLength, 
                   DWORD *pos);
+
+#endif //_SIMUL_UTIL_H_INCLUDED

@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CEasterDlg message handlers
 
-#define BANNER_LINES    58    // # lines of text
+#define BANNER_LINES    66    // # lines of text
 #define _USER_EGG       "<<USER>>" 
 #define _AUTHOR_MAIL	"<<AUTHORMAIL>>"
 
@@ -67,10 +67,12 @@ char starBannerText[BANNER_LINES][50] =
    "\"If this code works...\"",   //15
    "Baldvin Hansson -",   //16
    " Colored ComboBox",    //17
-   "www.codeguru.com -",   //18
-   " Great sources",   //19
-   "www.codeproject.com -",   //20
-   " Great sources",   //16
+   "JP Arendse",
+   "CFileEditCtrl",
+   "www.codeguru.com -",   
+   " Great sources",   
+   "www.codeproject.com -",   
+   " Great sources",   
    "Hirofumi Fudoudou -",
    "bug fixes",
    "Álvaro Palma -",
@@ -79,9 +81,9 @@ char starBannerText[BANNER_LINES][50] =
    "bug fixes",
    "Dmitry Kochin -",
    "dialog resizer",
-   "Ernest Laurentin",
-   "Script Engine",
-   "",   //
+   "Ernest Laurentin - ",
+   "Script engine addition",
+   "",   //            TODO: Add credits here...
    "Thanks to:",
    "My wife,", // 
    "my mom",
@@ -99,7 +101,8 @@ char starBannerText[BANNER_LINES][50] =
    "",
    "<<USER>>", // Greets-
    "",
-   "Also check out Adroit!",
+   "Also check out the ",
+   "Adroit products!",
    "",
    "",
    "[ESC] key ends.",   // 
@@ -144,11 +147,10 @@ void CEasterDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 CString szLink;
               
-   szLink.LoadString(IDS_ADROITWEBURL);
+   szLink.LoadString(IDS_HOMEPAGEURL);
 
    OnCancel();
-   //call base class
-   //CDialog::OnLButtonDown(nFlags, point);
+
 
    HINSTANCE h = ShellExecute(NULL, "open", szLink, NULL, NULL, SW_SHOWNORMAL);
    if ((UINT)h > 32) 
@@ -158,7 +160,7 @@ CString szLink;
    else 
    {
       MessageBeep(0);          // unable to execute file!
-      TRACE(_T("*** WARNING: CEasterDlg: unable to execute file %s\n"),
+      TRACE(_T("*** WARNING: CEasterDlg: unable to execute file/URL %s\n"),
                (LPCTSTR)szLink);
       //OnCancel(); // close anyway
    }

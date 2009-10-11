@@ -125,6 +125,14 @@ SOURCE=.\CreditStatic.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\CSVFileImportDlg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CSVReader.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\DDKSocket.cpp
 # End Source File
 # Begin Source File
@@ -217,6 +225,10 @@ SOURCE=.\ServerSocketArray.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SimCmdLine.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\simport.cpp
 # End Source File
 # Begin Source File
@@ -267,6 +279,10 @@ SOURCE=.\AnimationSettings.h
 # Begin Source File
 
 SOURCE=.\CreditStatic.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\CSVFileImportDlg.h
 # End Source File
 # Begin Source File
 
@@ -371,6 +387,10 @@ SOURCE=.\ServerSettingsEthDlg.h
 # Begin Source File
 
 SOURCE=.\ServerSocketArray.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SimCmdLine.h
 # End Source File
 # Begin Source File
 

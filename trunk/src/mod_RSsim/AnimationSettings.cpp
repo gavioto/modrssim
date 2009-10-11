@@ -54,6 +54,9 @@ void CAnimationSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_HTML_UPDATERATE, m_HtmlUpdateRate);
 	DDV_MinMaxDWord(pDX, m_HtmlUpdateRate, 1, 30);
 	//}}AFX_DATA_MAP
+   DDX_FileEditCtrl(pDX, IDC_SCRIPTNAME, m_ScriptNameEditCtrl, FEC_FILEOPEN);
+   DDX_FileEditCtrl(pDX, IDC_INPUT_HTMLNAME, m_HtmlInEditCtrl, FEC_FILEOPEN);
+   DDX_FileEditCtrl(pDX, IDC_OUTPUT_HTMLNAME, m_HtmlOutEditCtrl, FEC_FILESAVEAS);
 }
 
 
@@ -154,10 +157,27 @@ BOOL CAnimationSettingsDlg::OnInitDialog()
 
 void CAnimationSettingsDlg::OnOK() 
 {
-	// TODO: Add extra validation here
    UpdateData(TRUE);
    m_plantAnimation = FALSE;
-   GetDlgItemText(IDC_SCRIPTNAME, m_scriptFile);
+
+   POSITION pos = m_ScriptNameEditCtrl.GetStartPosition();
+   if(pos)
+   {
+      m_scriptFile = m_ScriptNameEditCtrl.GetNextPathName(pos);
+   }
+   // HTML inpout template file
+   pos = m_HtmlInEditCtrl.GetStartPosition();
+   if(pos)
+   {
+      m_inputHtmlFilename = m_HtmlInEditCtrl.GetNextPathName(pos);
+   }
+   
+   // HTML output file
+   pos = m_HtmlOutEditCtrl.GetStartPosition();
+   if(pos)
+   {
+      m_outputHtmlFilename = m_HtmlOutEditCtrl.GetNextPathName(pos);
+   }
 
 	if (IsDlgButtonChecked(IDC_NOANIMATE))
       m_animationON = FALSE;

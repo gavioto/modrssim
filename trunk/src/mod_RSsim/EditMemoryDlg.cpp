@@ -20,7 +20,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CEditMemoryDlg::CEditMemoryDlg(LPCTSTR formatting, 
-                               LPCTSTR registerName, 
+                               LPCTSTR registerName, // the 'name' if this is a juice-plant register
                                DWORD memoryValue, 
                                WORD valueType, 
                                LPCTSTR description,
@@ -79,7 +79,7 @@ float *pFloatVal;
       break;
    case CMemoryEditorList::VIEWFORMAT_FLOAT:
       pFloatVal = (float*)&m_value;
-      valStr.Format(m_formatting, m_value);
+      valStr.Format(m_formatting, *pFloatVal);
       break;
    case CMemoryEditorList::VIEWFORMAT_CHAR:
       ConvertWordToASCIICS(valStr, (WORD)m_value);

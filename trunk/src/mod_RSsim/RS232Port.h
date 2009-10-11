@@ -40,6 +40,7 @@ extern CHAR * FixComPortName(CHAR *portName);
 
 extern char commsParityStr[];   //NOPARITY ODDPARITY EVENPARITY MARKPARITY SPACEPARITY
 extern char commsStopStr[][4];
+extern char commsRTSStr[][5];
 
 
 class CRS232Port : public CObject  
