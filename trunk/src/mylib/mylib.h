@@ -22,6 +22,8 @@
 #ifndef __MYLIB_H__
 #define __MYLIB_H__
 
+#include <afxwin.h>         // MFC core and standard components
+#include <afxdlgs.h>
 #include "ado.h"
 #include "statlink.h"
 #include "colorstatic.h"
@@ -29,6 +31,7 @@
 #include "tools.h"
 #include "commslamp.h"
 #include "colorpickercb.h"
+#include "FileEditCtrl.h"
 
 #define SUCCESS                     0
 
@@ -56,7 +59,17 @@ double Round(double val);
 
 #define MAX_ERROR_STR_LEN     256
 
+CHAR * GetLongComPortName(LPCTSTR portName, LPSTR newName);
+LONG EnumerateSerialPorts (char *deviceName, //port name
+                           DWORD maxLen,     //length of above string
+                           DWORD index);     // index, called in a loop (0...) until this fails
 
+LONG CalcCRC( BYTE * crcStartPtr,   //  ->
+                    DWORD  buffLen,       //  ->
+                    WORD * crc            // <->
+                   );
+
+BOOL ExistFile(const CHAR * fN);
 
 
 /////////////////////////////////////////////////////////////////////////////

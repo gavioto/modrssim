@@ -412,3 +412,26 @@ CHAR temp[256];
          cBox->SetCurSel(count);
    }
 } // FillDWordCBox
+
+// utilities
+// -------------------------------- ExistFile ------------------------------
+BOOL ExistFile(const CHAR * fN)
+{
+   HANDLE h = NULL;
+   WIN32_FIND_DATA wfd;
+   DWORD err;
+
+   h = FindFirstFile(fN, &wfd);
+   if (h == INVALID_HANDLE_VALUE)
+   {
+      err = GetLastError();
+      return(FALSE);
+   }
+   else
+   {
+      FindClose(h);
+      return(TRUE);
+   }
+} // ExistFile
+
+
