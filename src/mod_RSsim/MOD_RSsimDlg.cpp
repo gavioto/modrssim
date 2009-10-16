@@ -31,6 +31,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define LOADREGMSGSTRING   "LOADREGISTERS"
 #define DEMOSECONDS        (60*45)     // 45 minutes
+#define ASSERTMICROBOX(a) ASSERT(a >=0);ASSERT(a <STATIONTICKBOXES);
 
 const UINT    wm_LoadRegisters = RegisterWindowMessage( LOADREGMSGSTRING );
 
@@ -247,7 +248,7 @@ CMOD_simDlg::CMOD_simDlg(CWnd* pParent /*=NULL*/)
    m_animationCounter = m_animationRefreshes;
    m_busyCreatingServers = FALSE;
    m_animationPeriod = 5; //
-   m_animationScriptFile = "";
+   m_animationScriptFile = L"";
 
    m_enableHTMLGUI = FALSE;
    m_HTMLUpdateRate = 5;
@@ -366,7 +367,7 @@ BEGIN_MESSAGE_MAP(CMOD_simDlg, CDialog)
 	ON_COMMAND(IDC_CSVIMPORT, OnCsvImportPop)
 	//}}AFX_MSG_MAP
    ON_WM_GETMINMAXINFO()
-   ON_REGISTERED_MESSAGE( wm_LoadRegisters, OnLoad )
+   ON_REGISTERED_MESSAGE( wm_LoadRegisters, OnLoad_ )
 END_MESSAGE_MAP()
 
 CMOD_simDlg *pGlobalDialog;
@@ -994,7 +995,7 @@ BOOL ret;
    CMenu* pSysMenu = GetSystemMenu(FALSE);
    SetupMySystemMenu(pSysMenu);
 	
-   const nSize = sizeof(s_bi)/sizeof(s_bi[0]);
+   const int nSize = sizeof(s_bi)/sizeof(s_bi[0]);
    //Second we initialize resizer with this array. 
    //At the same time it will store the original controls positions.
    m_resizer.Init(m_hWnd, NULL, s_bi, nSize);
@@ -1239,7 +1240,7 @@ DWORD len = sizeof(m_portNameShort);
 DWORD animationType;
 
    // 1. set default values
-   strcpy(m_portNameShort, "COM1");
+   strcpy_s(m_portNameShort, MAX_COMPORT_NAME, "COM1");
    m_baud = CBR_9600;
    m_byteSize = 8;
    m_parity = NOPARITY;
@@ -1755,7 +1756,7 @@ CString fmt;
    // CFile :: pDlg->m_logFileName
    CFile logFile;
    logFile.Open(pDlg->LogFileName(), CFile::modeWrite|CFile::modeNoTruncate|CFile::modeCreate);
-   if (logFile.m_hFile != (int)INVALID_HANDLE_VALUE)
+   if (logFile.m_hFile != INVALID_HANDLE_VALUE)
    {
       logFile.SeekToEnd();
       logFile.Write(fmt, fmt.GetLength());
@@ -1837,10 +1838,12 @@ int stationIndex, firstVisibleStation, lastVisibleStation;
       lastVisibleStation = GetLastVisibleStation();
       for (stationIndex=firstVisibleStation;stationIndex <lastVisibleStation; stationIndex++) 
       {
+         ASSERTMICROBOX(stationIndex-firstVisibleStation)
          if (m_microTicks[stationIndex-firstVisibleStation].GetCheck() != m_microTicksEnableState[stationIndex])
          {
             m_microTicksEnableState[stationIndex] = !m_microTicksEnableState[stationIndex];
             //update tooltip
+            ASSERTMICROBOX(stationIndex-firstVisibleStation)
             m_ToolTip.UpdateTipText(GetToolTipForStation(stationIndex), &m_microTicks[stationIndex-firstVisibleStation], 0);
          }
       }
@@ -2253,15 +2256,15 @@ DWORD dwRuntime = GetTickCount();
 
          file.Open(moduleName, CFile::shareDenyNone | CFile::modeRead | CFile::typeBinary);
          file.GetStatus( moduleFileStatus );
-         nBuf = moduleFileStatus.m_size + 1;
-         if (file.m_hFile == (DWORD)INVALID_HANDLE_VALUE)
+         nBuf = (long)(moduleFileStatus.m_size + 1);
+         if (file.m_hFile == INVALID_HANDLE_VALUE)
          {
             deb.Format("Error opening script file '%s'", moduleName);
          }
          else
          {
             LPTSTR sBuf = szBuf.GetBufferSetLength( nBuf );
-            file.ReadHuge(sBuf, (DWORD)nBuf); 
+            file.Read(sBuf, (DWORD)nBuf); 
             //file.Read( sBuf, nBuf );
             file.Close();
             sBuf[nBuf - 1] = '\0';
@@ -2584,7 +2587,7 @@ int retCode;
 
             m_responseDelay = dlg.m_responseDelay;
 
-            strcpy(m_portNameShort,dlg.m_portName);
+            strcpy_s(m_portNameShort, MAX_COMPORT_NAME, dlg.m_portName);
             m_baud         = dlg.m_baud;
             m_byteSize     = dlg.m_dataBits;
             m_parity       = dlg.m_parity;
@@ -2719,6 +2722,13 @@ void CMOD_simDlg::OnZeroes()
 {
    ZeroRegisterValues();
 }
+
+LRESULT CMOD_simDlg::OnLoad_(WPARAM,LPARAM)
+{
+   OnLoad();
+   return(0);
+}
+
 
 // --------------------------------- OnLoad ----------------------------
 // load register values from file
@@ -3019,7 +3029,7 @@ BOOL CMOD_simDlg::SetAlphaBlendHigh()
    alphaBlendFactor = 70;
    // Check the current state of the dialog, and then add the WS_EX_LAYERED attribute
    SetWindowLong(m_hWnd, GWL_EXSTYLE, GetWindowLong(m_hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
-   m_pSetLayeredWindowAttributes(m_hWnd, 0, (255 / alphaBlendFactor) * 100, LWA_ALPHA);
+   m_pSetLayeredWindowAttributes(m_hWnd, 0, (BYTE)((255 / alphaBlendFactor) * 100), LWA_ALPHA);
    alphaBlendON = TRUE;
    // HF fixed index of bitmaps  m_ToolBar.SetButtonInfo(8, IDB_ALPHABLEND,  TBBS_BUTTON, 7);
    m_ToolBar.SetButtonInfo(8, IDB_ALPHABLEND,  TBBS_BUTTON, 9);
@@ -3033,7 +3043,7 @@ BOOL CMOD_simDlg::SetAlphaBlendLow()
    alphaBlendFactor = 60;
    // Check the current state of the dialog, and then add the WS_EX_LAYERED attribute
    SetWindowLong(m_hWnd, GWL_EXSTYLE, GetWindowLong(m_hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
-   m_pSetLayeredWindowAttributes(m_hWnd, 0, (255 / alphaBlendFactor) * 100, LWA_ALPHA);
+   m_pSetLayeredWindowAttributes(m_hWnd, 0, (BYTE)((255 / alphaBlendFactor) * 100), LWA_ALPHA);
    alphaBlendON = TRUE;
    // HF fixed index of bitmaps  m_ToolBar.SetButtonInfo(8, IDB_ALPHABLEND,  TBBS_BUTTON, 9);
    m_ToolBar.SetButtonInfo(8, IDB_ALPHABLEND,  TBBS_BUTTON, 8);
@@ -3674,6 +3684,7 @@ int firstTick, lastTick, stationID;
 	   lastTick = GetLastVisibleStation();
       for (stationID = firstTick; stationID<lastTick;stationID++)
       {
+         ASSERTMICROBOX(stationID-firstTick)
          m_microTicksEnableState[stationID] = m_microTicks[stationID-firstTick].GetCheck();
       }
    }
@@ -3732,7 +3743,10 @@ int firstTick;
    m_microTicksEnableState[station] = state;
    firstTick = GetFirstVisibleStation();
    if ((station >= firstTick) && (station < GetLastVisibleStation()))
+   {
+      ASSERTMICROBOX(station-firstTick)
       m_microTicks[station-firstTick].SetCheck(state);
+   }
 };
 
 
@@ -3768,14 +3782,16 @@ void CMOD_simDlg::ConfigureStationButtons()
 int firstTick, lastTick;
 int pos, count=0;
 CString tickText;
+int stationIndex;
    
    //work out first and last tick-box
    pos = m_vScrollBarStations.GetScrollPos();
    firstTick = GetFirstVisibleStation();
    lastTick = GetLastVisibleStation();
 
-   for (int stationIndex = firstTick; stationIndex<lastTick ; stationIndex++) 
+   for (stationIndex = firstTick; stationIndex<lastTick ; stationIndex++) 
    {
+      ASSERTMICROBOX(stationIndex-firstTick)
       m_microTicks[stationIndex-firstTick].ShowWindow(SW_SHOW);
       tickText.Format("%02d", stationIndex);
       m_microTicks[stationIndex-firstTick].SetCheck(m_microTicksEnableState[stationIndex]); //ver 3.1
@@ -3789,12 +3805,14 @@ CString tickText;
    }
    while (count < STATIONTICKBOXES)
    {
+      ASSERTMICROBOX(stationIndex-firstTick)
       m_microTicks[stationIndex-firstTick].ShowWindow(SW_HIDE);
       m_microTicks[stationIndex-firstTick].InvalidateRect(NULL);
       stationIndex++;
       count++;
    }
 }
+
 
 // -------------------------- SetTickBorderState -------------------
 // set enable/disable for this tick
@@ -3805,7 +3823,10 @@ int firstTick;
    firstTick = GetFirstVisibleStation();
 
    if ((stationID >= firstTick) && (stationID <=GetLastVisibleStation()))
+   {
+      ASSERTMICROBOX(stationID-firstTick) 
       m_microTicks[stationID-firstTick].SetBorderState(active);
+   }
 }
 
 // ------------------------- InvalidateTick -----------------------------
@@ -3816,7 +3837,10 @@ int firstTick;
    firstTick = GetFirstVisibleStation();
 
    if ((stationID >= firstTick) && (stationID <= GetLastVisibleStation()))
+   {
+      ASSERTMICROBOX(stationID-firstTick)
       m_microTicks[stationID-firstTick].InvalidateRect(NULL);
+   }
 }
 
 // ------------------------ StationEnabled ------------------------------
@@ -3828,7 +3852,10 @@ int firstTick;
    // may not yet have occured.
    firstTick = GetFirstVisibleStation();
    if ((stationID >= firstTick) && (stationID <=GetLastVisibleStation()))
+   {
+      ASSERTMICROBOX(stationID-firstTick)
       return(m_microTicks[stationID-firstTick].GetCheck());
+   }
    
    // station is not currently displayed, return it from the full listing
    return(m_microTicksEnableState[stationID]);

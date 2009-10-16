@@ -243,7 +243,7 @@ public:
    DWORD m_ABmasterIDLETime;
    DWORD m_ABtimeoutValue;
 
-   CHAR  m_portNameShort[MAX_PORT_NAME];
+   CHAR  m_portNameShort[MAX_COMPORT_NAME];
    DWORD m_baud;
    DWORD m_byteSize;
    DWORD m_parity;
@@ -399,6 +399,7 @@ public:
 	afx_msg void OnSimulate();
 	afx_msg void OnZeroes();
 	afx_msg void OnLoad();
+	afx_msg LRESULT OnLoad_(WPARAM,LPARAM);
 	afx_msg void OnSave();
 	virtual void OnCancel();
 	afx_msg void OnClose();

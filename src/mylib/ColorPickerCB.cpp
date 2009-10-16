@@ -205,7 +205,7 @@ CString		CColorPickerCB::GetSelectedColorName( void )
 	int		iSelectedItem = GetCurSel();					// Get Selected Item
 
 	if( iSelectedItem == CB_ERR )							// If Nothing Selected
-		return( m_sColorName = afxEmptyString );			// Return Nothing (Not "Black!")
+		return( m_sColorName = _T(""));//afxEmptyString );			// Return Nothing (Not "Black!")
 
 	GetLBText( iSelectedItem, m_sColorName );				// Store Name Of Color
 

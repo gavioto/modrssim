@@ -41,7 +41,7 @@
 #define FAILED                   -1
 
 #define MAX_VALUE_NAME           256
-#define MAX_PORT_NAME            256
+#define MAX_COMPORT_NAME            256
 
 // dialog-box constants
 #define PORT_INUSESTR      " *"     // appended to LB for used comm ports

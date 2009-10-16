@@ -157,7 +157,7 @@ void FillSerialCBox(CComboBox * cBox, LPCTSTR currentselection)
 {
 DWORD count;
 LONG retCode;
-CHAR portname[MAX_PORT_NAME];
+CHAR portname[MAX_COMPORT_NAME];
 
    ASSERT(cBox->m_hWnd!=0);
    cBox->ResetContent();
@@ -184,14 +184,14 @@ CHAR portname[MAX_PORT_NAME];
 // without lengthening it in-correctly.
 CHAR * FixComPortName(CHAR *portName)
 {
-CHAR tempPortName[MAX_PORT_NAME];
+CHAR tempPortName[MAX_COMPORT_NAME];
 
    if (strlen(portName) > strlen("COM1"))
    {
       if (0==strncmp(portName, "COM",3))
       {
-         sprintf(tempPortName, "\\\\.\\%s", portName);
-         strcpy(portName, tempPortName);
+         sprintf_s(tempPortName, MAX_COMPORT_NAME, "\\\\.\\%s", portName);
+         strcpy_s(portName, MAX_COMPORT_NAME, tempPortName);
       }
    }
    return (portName);
@@ -205,7 +205,7 @@ CHAR tempPortName[MAX_PORT_NAME];
 // RETURNS: newName -
 CHAR * GetLongComPortName(LPCTSTR portName, LPSTR newName)
 {
-   strcpy(newName,portName);
+   strcpy_s(newName, MAX_COMPORT_NAME, portName);
    return (FixComPortName(newName));
 } // GetLongComPortName
 
@@ -216,7 +216,7 @@ CHAR * GetLongComPortName(LPCTSTR portName, LPSTR newName)
 BOOL PortInUse(LPCTSTR portName)
 {
 //CHAR * GetLongComPortName(LPCTSTR portName, LPSTR newName);
-CHAR port[MAX_PORT_NAME];
+CHAR port[MAX_COMPORT_NAME];
 HANDLE   hPort;
 
    GetLongComPortName(portName, port);

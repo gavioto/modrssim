@@ -138,6 +138,8 @@ CAB232CommsProcessor::CAB232CommsProcessor(LPCTSTR portNameShort,
                                                                             disableWrites,
 														                    					bcc)
 {
+   m_protocolName = "Allen-Bradley DF1";
+
    InitializeCriticalSection(&stateCS);
 
    m_responseDelay = responseDelay;

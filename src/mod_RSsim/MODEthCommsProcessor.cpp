@@ -59,6 +59,7 @@ CMODEthCommsProcessor::CMODEthCommsProcessor(int responseDelay,
                                              WORD portNum) : CDDKSrvSocket(portNum)
 {
 CString description;
+ m_protocolName = "MODBUS Eth.";
 
    InitializeCriticalSection(&stateCS);
    description.Format("Starting comms emulation : %s", "MODBUS TCP/IP [host]");
@@ -251,7 +252,7 @@ BOOL transmitted = TRUE;
          numBytesInReq = modMsg.byteCount/8; // # bits
          break;
       case MOD_WRITE_MULTIPLE_COILS:  // 0F
-         numBytesInReq = (WORD)ceil(modMsg.byteCount/8); // # bits
+         numBytesInReq = (WORD)ceil((double)modMsg.byteCount/8); // # bits
          break;
       case MOD_WRITE_SINGLE_COIL:
          numBytesInReq = 1;

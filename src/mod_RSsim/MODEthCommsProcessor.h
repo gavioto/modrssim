@@ -71,7 +71,7 @@ public:
    LPCTSTR ProtocolName() { return(m_protocolName);};
 
 private:
-   static CString m_protocolName;
+ CString m_protocolName;
    DWORD m_PDUSize;
    CRITICAL_SECTION stateCS;
 

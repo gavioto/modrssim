@@ -117,7 +117,7 @@ void GetFirstFreePort(LPSTR freePortName)
 {
 DWORD count;
 LONG retCode;
-CHAR portname[MAX_PORT_NAME];
+CHAR portname[MAX_COMPORT_NAME];
 
    freePortName[0] = '\0';
    count = 0;

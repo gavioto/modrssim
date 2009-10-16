@@ -157,7 +157,7 @@ void CServerSettings232Dlg::OnOK()
 {
 //BOOL  errorFlag;
 WORD  selection;
-CHAR  shortPortName[MAX_PORT_NAME]; // displayable name for port
+CHAR  shortPortName[MAX_COMPORT_NAME]; // displayable name for port
 // COM ports >COM9 Windows uses a different naming format, hence this 
 // little catch
 

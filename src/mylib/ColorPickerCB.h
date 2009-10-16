@@ -38,7 +38,7 @@ struct	SColorAndName
 	{
 		ZeroMemory( this, sizeof( SColorAndName ) );		// Init Structure
 		m_crColor = crColor;								// Set Color RGB Value
-		strncpy( m_cColor, cpColor, CCB_MAX_COLOR_NAME );	// Set Color Name
+		strncpy_s( m_cColor, sizeof(m_cColor), cpColor, CCB_MAX_COLOR_NAME );	// Set Color Name
 	};
 	COLORREF	m_crColor;									// Actual Color RGB Value
 	char		m_cColor[ CCB_MAX_COLOR_NAME ];				// Actual Name For Color

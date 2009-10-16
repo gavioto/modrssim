@@ -191,7 +191,7 @@ BOOL CADORecordset::GetFieldValue(LPCTSTR lpFieldName, double& dbValue)
 			//Corrected by José Carlos Martínez Galán
 			val = vtFld.decVal.Lo32;
 			val *= (vtFld.decVal.sign == 128)? -1 : 1;
-			val /= pow(10, vtFld.decVal.scale); 
+         val /= ::pow((double)10, vtFld.decVal.scale); 
 			break;
 		case VT_UI1:
 			val = vtFld.iVal;
@@ -242,7 +242,7 @@ BOOL CADORecordset::GetFieldValue(int nIndex, double& dbValue)
 			//Corrected by José Carlos Martínez Galán
 			val = vtFld.decVal.Lo32;
 			val *= (vtFld.decVal.sign == 128)? -1 : 1;
-			val /= pow(10, vtFld.decVal.scale); 
+         val /= ::pow((double)10, vtFld.decVal.scale); 
 			break;
 		case VT_UI1:
 			val = vtFld.iVal;
@@ -464,7 +464,7 @@ BOOL CADORecordset::GetFieldValue(LPCTSTR lpFieldName, CString& strValue, CStrin
 			//Corrected by José Carlos Martínez Galán
 			double val = vtFld.decVal.Lo32;
 			val *= (vtFld.decVal.sign == 128)? -1 : 1;
-			val /= pow(10, vtFld.decVal.scale); 
+         val /= ::pow((double)10, vtFld.decVal.scale); 
 			str = DblToStr(val);
 			}
 			break;
@@ -533,7 +533,7 @@ BOOL CADORecordset::GetFieldValue(int nIndex, CString& strValue, CString strDate
 			//Corrected by José Carlos Martínez Galán
 			double val = vtFld.decVal.Lo32;
 			val *= (vtFld.decVal.sign == 128)? -1 : 1;
-			val /= pow(10, vtFld.decVal.scale); 
+         val /= ::pow((double)10, vtFld.decVal.scale); 
 			str = DblToStr(val);
 			}
 			break;
@@ -2153,7 +2153,7 @@ BOOL CADOParameter::GetValue(double& dbValue)
 			//Corrected by José Carlos Martínez Galán
 			dblVal = vtVal.decVal.Lo32;
 			dblVal *= (vtVal.decVal.sign == 128)? -1 : 1;
-			dblVal /= pow(10, vtVal.decVal.scale); 
+         dblVal /= ::pow((double)10, vtVal.decVal.scale); 
 			break;
 		case VT_UI1:
 			dblVal = vtVal.iVal;
@@ -2210,7 +2210,7 @@ BOOL CADOParameter::GetValue(CString& strValue, CString strDateFormat)
 			//Corrected by José Carlos Martínez Galán
 			double val = vtVal.decVal.Lo32;
 			val *= (vtVal.decVal.sign == 128)? -1 : 1;
-			val /= pow(10, vtVal.decVal.scale); 
+         val /= ::pow((double)10, vtVal.decVal.scale); 
 			strVal = DblToStr(val);
 			}
 			break;
