@@ -18,16 +18,16 @@
 // PURPOSE: packs the value into ASCII-HEX into the telegram
 // NOTE:
 //    Unused
-void PackField(CHAR **pBuffer, WORD value, WORD length)
+void PackField(CHAR **pBuffer, size_t buffSize, int bufferSize, WORD value, WORD length)
 {
 CHAR tempStr[80];
 CHAR formatStr[80];
 
    // build a format string
-   sprintf(formatStr, "%%0%dX", length);
+   sprintf_s(formatStr, sizeof(formatStr), "%%0%dX", length);
    // plonk it in
-   sprintf(tempStr, formatStr, value);
-   strncpy(*pBuffer, tempStr, length);
+   sprintf_s(tempStr, sizeof(tempStr), formatStr, value);
+   strncpy_s(*pBuffer, buffSize, tempStr, length);
    // increment pointer
    *pBuffer+=length;
    **pBuffer = '\0'; // add a null
@@ -128,7 +128,7 @@ CHAR portname[MAX_COMPORT_NAME];
          break;
       if (PortAvailable(portname))
       {
-         strcpy(freePortName, portname);
+         strcpy_s(freePortName, MAX_COMPORT_NAME, portname);
          return;
       }
       // try next port

@@ -50,7 +50,7 @@ CString dcbTok[] = {
    if (0==strncmp("MODTCP", paramUp, 6))
    {
       m_protocol = PROTOCOL_SELMODETH;
-      sscanf(paramUp.Mid(7), "%d", &m_ipPort);
+      sscanf_s(paramUp.Mid(7), "%d", &m_ipPort);
    }
    if (0==strcmp("MODRTU", paramUp))
    {
@@ -124,7 +124,7 @@ bool CSimCmdLine::GetPortSettings(char aPortName[MAX_COMPORT_NAME],
 {
    if (m_portName.GetLength() )
    {
-      strncpy(aPortName , m_portName, MAX_COMPORT_NAME);
+      strncpy_s(aPortName , MAX_COMPORT_NAME, m_portName, MAX_COMPORT_NAME);
       aBaudRate = m_baud;
       aByteSize = m_byte;
       aParity = m_parity;

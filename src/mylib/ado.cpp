@@ -989,7 +989,7 @@ BOOL CADORecordset::GetFieldInfo(FieldPtr pField, CADOFieldInfo* fldInfo)
 {
 	memset(fldInfo, 0, sizeof(CADOFieldInfo));
 
-	strcpy(fldInfo->m_strName, (LPCTSTR)pField->GetName());
+	strcpy_s(fldInfo->m_strName, sizeof(fldInfo->m_strName), (LPCTSTR)pField->GetName());
 	fldInfo->m_lDefinedSize = pField->GetDefinedSize();
 	fldInfo->m_nType = pField->GetType();
 	fldInfo->m_lAttributes = pField->GetAttributes();
@@ -1203,7 +1203,7 @@ CString IntToStr(int nVal)
 	CString strRet;
 	char buff[10];
 	
-	itoa(nVal, buff, 10);
+	_itoa_s(nVal, buff, sizeof(buff), 10);
 	strRet = buff;
 	return strRet;
 }
@@ -1213,7 +1213,7 @@ CString LongToStr(long lVal)
 	CString strRet;
 	char buff[20];
 	
-	ltoa(lVal, buff, 10);
+	_ltoa_s(lVal, buff, sizeof(buff), 10);
 	strRet = buff;
 	return strRet;
 }
@@ -1223,7 +1223,7 @@ CString ULongToStr(unsigned long ulVal)
 	CString strRet;
 	char buff[20];
 	
-	ultoa(ulVal, buff, 10);
+	_ultoa_s(ulVal, buff, sizeof(buff), 10);
 	strRet = buff;
 	return strRet;
 
@@ -1235,7 +1235,7 @@ CString DblToStr(double dblVal, int ndigits)
 	CString strRet;
 	char buff[50];
 
-   _gcvt(dblVal, ndigits, buff);
+   _gcvt_s(buff, sizeof(buff), dblVal, ndigits);
 	strRet = buff;
 	return strRet;
 }
@@ -1245,7 +1245,7 @@ CString DblToStr(float fltVal)
 	CString strRet = _T("");
 	char buff[50];
 	
-   _gcvt(fltVal, 10, buff);
+   _gcvt_s(buff, sizeof(buff), fltVal, 10);
 	strRet = buff;
 	return strRet;
 }

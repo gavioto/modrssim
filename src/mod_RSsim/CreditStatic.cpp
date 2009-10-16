@@ -120,7 +120,7 @@ void CCreditStatic::SetCredits(LPCTSTR credits,char delimiter)
     
 	ASSERT(credits);
 
-	if((str = strdup(credits)) == NULL)
+	if((str = _strdup(credits)) == NULL)
 		return;
 
 	m_ArrCredit.RemoveAll();

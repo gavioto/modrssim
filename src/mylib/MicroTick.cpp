@@ -181,7 +181,7 @@ LOGFONT logFont;
    pFont->GetLogFont(&logFont);
    logFont.lfWidth=0;
    logFont.lfHeight=-9;
-   strcpy(logFont.lfFaceName, "Terminal");
+   strcpy_s(logFont.lfFaceName, sizeof(logFont.lfFaceName), "Terminal");
    m_pFont = new CFont;
    m_pFont->CreateFontIndirect(&logFont);
 	CButton::PreSubclassWindow();
