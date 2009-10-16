@@ -1938,6 +1938,7 @@ LONG     conServers, totServers;
 // The next bit of code performs PLC Simulation for training purposes
 //
 #include "plantsim.h"
+#include "MOD_RSsimDlg.h"
 
 #define getrandom(min,max) ((rand()%(int)(((max)+1)-(min)))+(min))
 
@@ -3729,9 +3730,9 @@ int CMOD_simDlg::GetLastVisibleStation()
 {
 int lastTick;
 
-   lastTick = GetFirstVisibleStation()+STATIONTICKBOXES; // 
-   if (lastTick>STATIONTICKBOXESMAX)
-      lastTick = STATIONTICKBOXESMAX;
+   lastTick = GetFirstVisibleStation()+STATIONTICKBOXES-1; // 
+   if (lastTick>=STATIONTICKBOXESMAX)
+      lastTick = STATIONTICKBOXESMAX-1;
    return(lastTick);
 }
 
@@ -4163,4 +4164,5 @@ CCSVFileImportDlg dlg;
       m_csvImportEnable =  dlg.m_csvImportEnable;
    }   
 }
+
 
