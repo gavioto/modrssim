@@ -115,7 +115,7 @@ CString dcbTok[] = {
    }
 }
 
-bool CSimCmdLine::GetPortSettings(char aPortName[MAX_PORT_NAME],
+bool CSimCmdLine::GetPortSettings(char aPortName[MAX_COMPORT_NAME],
                                   DWORD &aBaudRate, 
                                   DWORD &aByteSize, 
                                   DWORD &aParity, 
@@ -124,7 +124,7 @@ bool CSimCmdLine::GetPortSettings(char aPortName[MAX_PORT_NAME],
 {
    if (m_portName.GetLength() )
    {
-      strncpy(aPortName , m_portName, MAX_PORT_NAME);
+      strncpy(aPortName , m_portName, MAX_COMPORT_NAME);
       aBaudRate = m_baud;
       aByteSize = m_byte;
       aParity = m_parity;

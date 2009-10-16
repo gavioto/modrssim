@@ -35,7 +35,7 @@
 #define SEVENDATABITS            7  // used in the Serial-port Combo-box
 #define EIGHTDATABITS            8
 
-#define MAX_PORT_NAME            256   // serial port names may not be longer than this
+#define MAX_COMPORT_NAME            256   // serial port names may not be longer than this
 #define MAX_VALUE_NAME           256   // ditto
 #define MAX_DEBUG_STR_LEN        256   //
 

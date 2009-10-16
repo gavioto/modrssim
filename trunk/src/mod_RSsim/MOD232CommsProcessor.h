@@ -119,7 +119,7 @@ public:
    DWORD m_noiseLength;
 
 private:
-   static CString m_protocolName;
+ CString m_protocolName;
 
 
    DWORD m_PDUSize;

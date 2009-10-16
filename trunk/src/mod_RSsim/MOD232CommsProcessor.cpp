@@ -18,9 +18,6 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 
-CString CAB232CommsProcessor::m_protocolName = "Allen-Bradley DF1";
-CString CMOD232CommsProcessor::m_protocolName = "MODBUS RTU";
-CString CMODEthCommsProcessor::m_protocolName = "MODBUS Eth.";
 
 // English meanings for MODBUS (Exception) error codes
 PCHAR MODBUSplcError[9] =     
@@ -357,6 +354,7 @@ CMOD232CommsProcessor::CMOD232CommsProcessor(LPCTSTR portNameShort,
                                      BOOL disableWrites) : SimulationSerialPort()
 {
 CString description;
+ m_protocolName = "MODBUS RTU";
 
    InitializeCriticalSection(&stateCS);
    

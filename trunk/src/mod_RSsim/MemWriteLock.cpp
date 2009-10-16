@@ -48,7 +48,7 @@ CControllerMemoryArea::CControllerMemoryArea()
 }
 
 // --------------------------- SetSize ------------------------------
-CControllerMemoryArea::SetSize(const DWORD numWords)
+void CControllerMemoryArea::SetSize(const DWORD numWords)
 {
    CWordArray::SetSize(numWords);
    m_size = numWords;
@@ -118,7 +118,7 @@ CControllerMemory::~CControllerMemory()
 }
 
 // --------------------------- SetSize -----------------------------
-CControllerMemory::SetSize(const DWORD numAreas)
+void CControllerMemory::SetSize(const DWORD numAreas)
 {
 
    FreeOldMemory();
@@ -170,7 +170,7 @@ void CControllerMemory::IncrementAt(const DWORD index, const DWORD subIndex,  WO
 
 // ---------------------------- FreeOldMemory ---------------------------
 // free all CControllerMemoryArea objects
-CControllerMemory::FreeOldMemory()
+void CControllerMemory::FreeOldMemory()
 {
 LONG size;
 CControllerMemoryArea *pWordArr;
@@ -188,7 +188,7 @@ CControllerMemoryArea *pWordArr;
 // ---------------------------- AllocateNewMemory ------------------------
 // allocates CControllerMemoryArea Objects the required # of memory areas
 //
-CControllerMemory::AllocateNewMemory(const DWORD areas)
+void CControllerMemory::AllocateNewMemory(const DWORD areas)
 {
 LONG index;
 CControllerMemoryArea *pWordArr;

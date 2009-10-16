@@ -23,7 +23,7 @@ public:
                          const DWORD & aStop, 
                          const DWORD &aRTS);
 
-   bool GetPortSettings(char aPortName[MAX_PORT_NAME] , 
+   bool GetPortSettings(char aPortName[MAX_COMPORT_NAME] , 
                          DWORD &aBaudRate, 
                          DWORD &aByteSize, 
                          DWORD &aParity, 

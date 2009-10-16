@@ -184,7 +184,7 @@ LONG tick = (LONG)GetTickCount();
 // called in the IDLE state
 void CABCommsProcessor::DoMaster()
 {
-static m_masterTN[256];
+//static WORD m_masterTN[256];
 
    //check if scripts are running
    if (pGlobalDialog->ScriptIsRunning())

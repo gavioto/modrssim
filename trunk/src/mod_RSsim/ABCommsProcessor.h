@@ -234,9 +234,10 @@ private:
    DWORD m_guardJunk;
    DWORD m_noiseLength;
 
-   static CString m_protocolName;
 
 protected:
+ CString m_protocolName;
+
    WORD m_masterTN[256];   // transaction numbers are kept per station
    WORD m_masterRandom;    // pseudo-random sequence variable
 

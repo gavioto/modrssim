@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="mod_RSsim"
 	ProjectGUID="{7690E3EF-B981-43F5-A13D-A7C70A56C000}"
+	RootNamespace="mod_RSsim"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="0"
 	>
@@ -377,6 +378,22 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\CSVFileImportDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CSVFileImportDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CSVReader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CSVReader.h"
+				>
+			</File>
+			<File
 				RelativePath="DDKSocket.cpp"
 				>
 				<FileConfiguration
@@ -475,6 +492,14 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\FileEditCtrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FileEditCtrl.h"
+				>
 			</File>
 			<File
 				RelativePath="htmloutput.cpp"
@@ -837,6 +862,14 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\SimCmdLine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SimCmdLine.h"
+				>
 			</File>
 			<File
 				RelativePath="simport.cpp"
@@ -1229,11 +1262,11 @@
 					>
 				</File>
 				<File
-					RelativePath="help\images\anim.gif"
+					RelativePath="help\anim.gif"
 					>
 				</File>
 				<File
-					RelativePath="help\anim.gif"
+					RelativePath="help\images\anim.gif"
 					>
 				</File>
 				<File
@@ -1245,11 +1278,11 @@
 					>
 				</File>
 				<File
-					RelativePath="help\juice.gif"
+					RelativePath="help\images\juice.gif"
 					>
 				</File>
 				<File
-					RelativePath="help\images\juice.gif"
+					RelativePath="help\juice.gif"
 					>
 				</File>
 				<File
@@ -1261,19 +1294,19 @@
 					>
 				</File>
 				<File
-					RelativePath="res\shot1.gif"
-					>
-				</File>
-				<File
 					RelativePath="help\images\shot1.gif"
 					>
 				</File>
 				<File
-					RelativePath="help\shot2.gif"
+					RelativePath="res\shot1.gif"
 					>
 				</File>
 				<File
 					RelativePath="help\images\shot2.gif"
+					>
+				</File>
+				<File
+					RelativePath="help\shot2.gif"
 					>
 				</File>
 				<File

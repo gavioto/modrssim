@@ -40,7 +40,7 @@ class CControllerMemoryArea : private CWordArray
 public:
    CControllerMemoryArea();
 
-   SetSize(const DWORD numWords);  // set array depth
+   void SetSize(const DWORD numWords);  // set array depth
    int GetSize() {return(CWordArray::GetSize());}
    
    WORD GetAt(const DWORD index);            // read the array
@@ -70,7 +70,7 @@ public:
    CControllerMemory();
    ~CControllerMemory();
 
-   SetSize(const DWORD numAreas);  // set array depth
+   void SetSize(const DWORD numAreas);  // set array depth
    
    CControllerMemoryArea& GetAt(const DWORD index);
    CControllerMemoryArea& operator [](const DWORD index);
@@ -81,8 +81,8 @@ public:
    CMutex *GetMutex() {return(&m_Mutex);};
 private:
    //methods
-   FreeOldMemory();
-   AllocateNewMemory(const DWORD areas);
+   void FreeOldMemory();
+   void AllocateNewMemory(const DWORD areas);
 
    //data
    CMutex   m_Mutex;

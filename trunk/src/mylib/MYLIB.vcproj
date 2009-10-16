@@ -298,24 +298,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\simulators\mod_RSsim\MicroTick.cpp"
+				RelativePath=".\MicroTick.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="mylib.cpp"
@@ -441,7 +425,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\simulators\mod_RSsim\MicroTick.h"
+				RelativePath=".\MicroTick.h"
 				>
 			</File>
 			<File

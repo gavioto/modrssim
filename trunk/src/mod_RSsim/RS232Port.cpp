@@ -173,7 +173,7 @@ LONG index, i;
 // --------------------------------- OpenPort ---------------------------
 BOOL CRS232Port::OpenPort(LPCTSTR oPortName)
 {
-CHAR longPortName[MAX_PORT_NAME];
+CHAR longPortName[MAX_COMPORT_NAME];
 BOOL  error;
 CString msg;
 

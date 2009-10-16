@@ -34,9 +34,9 @@
 #define IDD_SERVERSETTINGS_232          129
 #define IDR_MAINZETH                    129
 #define IDD_EDITMEMCELL                 130
-#define IDR_MAINZDF1                    130
-#define IDD_ANIMATE                     131
-#define IDR_MAINJOY                     131
+#define IDR_MAINZDF1                    131
+#define IDD_ANIMATE                     132
+#define IDR_MAINJOY                     133
 #define IDC_MYHANDCURSOR                135
 #define IDD_FAULTSDLG                   138
 #define IDR_TOOLBAR1                    139
