@@ -1262,11 +1262,11 @@
 					>
 				</File>
 				<File
-					RelativePath="help\anim.gif"
+					RelativePath="help\images\anim.gif"
 					>
 				</File>
 				<File
-					RelativePath="help\images\anim.gif"
+					RelativePath="help\anim.gif"
 					>
 				</File>
 				<File
@@ -1278,11 +1278,11 @@
 					>
 				</File>
 				<File
-					RelativePath="help\images\juice.gif"
+					RelativePath="help\juice.gif"
 					>
 				</File>
 				<File
-					RelativePath="help\juice.gif"
+					RelativePath="help\images\juice.gif"
 					>
 				</File>
 				<File
@@ -1294,19 +1294,19 @@
 					>
 				</File>
 				<File
-					RelativePath="help\images\shot1.gif"
-					>
-				</File>
-				<File
 					RelativePath="res\shot1.gif"
 					>
 				</File>
 				<File
-					RelativePath="help\images\shot2.gif"
+					RelativePath="help\images\shot1.gif"
 					>
 				</File>
 				<File
 					RelativePath="help\shot2.gif"
+					>
+				</File>
+				<File
+					RelativePath="help\images\shot2.gif"
 					>
 				</File>
 				<File
@@ -1317,5 +1317,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="mod_RSsim.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
