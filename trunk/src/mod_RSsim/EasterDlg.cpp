@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CEasterDlg message handlers
 
-#define BANNER_LINES    66    // # lines of text
+#define BANNER_LINES    68    // # lines of text
 #define _USER_EGG       "<<USER>>" 
 #define _AUTHOR_MAIL	"<<AUTHORMAIL>>"
 
@@ -67,7 +67,7 @@ char starBannerText[BANNER_LINES][50] =
    "\"If this code works...\"",   //15
    "Baldvin Hansson -",   //16
    " Colored ComboBox",    //17
-   "JP Arendse",
+   "JP Arendse -",
    "CFileEditCtrl",
    "www.codeguru.com -",   
    " Great sources",   
@@ -83,6 +83,8 @@ char starBannerText[BANNER_LINES][50] =
    "dialog resizer",
    "Ernest Laurentin - ",
    "Script engine addition",
+   "Melvin Philips -",
+   "Beer money",
    "",   //            TODO: Add credits here...
    "Thanks to:",
    "My wife,", // 

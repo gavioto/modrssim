@@ -268,7 +268,9 @@ CString selectionText;
 // Use this function to tread the LB contents if U used FillSerialCBoxUsedResources()
 void ClearPortUseMark(LPSTR name)
 {
-   if (strtok(name, PORT_INUSESTR))
+char *next_token1 = NULL;
+ 
+   if (strtok_s(name, PORT_INUSESTR, &next_token1 ))
    {  // empty statement, since strtok modifies the string.
    }
 } // ClearPortUseMark
@@ -384,7 +386,7 @@ PCHAR strPtr = longValueStr;
       return(FAILED);
 
    *bcdValue = 0;
-   sprintf(strPtr, "%08ld", longValue);
+   sprintf_s(strPtr, sizeof(longValueStr), "%08ld", longValue);
 
    for(i=8 ; i > (8-bcdDigits) ; i--)
    {
@@ -405,7 +407,7 @@ CHAR temp[256];
    cBox->ResetContent();
    for (count = 0; count < tableLen; count++)
    {
-      sprintf(temp,"%ld",(DWORD *)table[count]);
+      sprintf_s(temp, sizeof(temp), "%ld",(DWORD *)table[count]);
       cBox->AddString(temp);  //strTablePtr[count]);
       cBox->SetItemData(count,  *(table + count));
       if (*(table + count) == currentsetting)

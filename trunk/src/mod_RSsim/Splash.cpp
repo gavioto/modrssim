@@ -172,7 +172,7 @@ CString tempText;
       memset(&logFont,0,sizeof(logFont));
       logFont.lfHeight = 18;
       logFont.lfWeight = 700;
-      strcpy(logFont.lfFaceName, "Arial");
+      strcpy_s(logFont.lfFaceName, sizeof(logFont.lfFaceName), "Arial");
       m_pFont = new CFont;
       m_pFont->CreateFontIndirect(&logFont);
       

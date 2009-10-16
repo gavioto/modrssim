@@ -324,7 +324,7 @@ int nColumnCount;
       {
          // provide headdings for bit addresses
          strcpy(szString[0],  TEXT(" Address") );
-         for (int i=0 ; i<=15 ; i++)
+         for (i=0 ; i<=15 ; i++)
          {
             if (cloneAddressing)
                sprintf(szString[i+1], TEXT(" +%d"), i );

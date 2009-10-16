@@ -173,6 +173,8 @@
 //         8.8     14/08/08 - CDB Removed SCRIPTTEXT_ISPERSISTENT flag from scripting site since it caused creep (it now has a CPU load hit)
 //         8.09    25/11/08 - CDB addresses as displayed in the edit item dialog are now 400000 not 40000 to cattter for >10000 registers.
 //         8.10    29/03/09 - CDB force multiple coils no longer forces a multiple of 8 coils (thanks to Alex Shinkin)
+//         8.11    16/10/09 - CDB Convert project to VS9 mesage-handlers prototypes fixed - lots of CRT_SECURE type warnings to still patch-up
+//                            station tickbox array overflow bug fixed
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
@@ -189,5 +191,5 @@
 
 #include "stdafx.h"  // ha ha
 
-const CHAR lpsMyAppVersion[10] = "8.10\0";
+const CHAR lpsMyAppVersion[10] = "8.11\0";
 
