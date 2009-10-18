@@ -367,7 +367,7 @@ BEGIN_MESSAGE_MAP(CMOD_simDlg, CDialog)
 	ON_COMMAND(IDC_CSVIMPORT, OnCsvImportPop)
 	//}}AFX_MSG_MAP
    ON_WM_GETMINMAXINFO()
-#if     _MSC_VER > 600	//VC 9
+#if     _MSC_VER > 1200	//VC 9
    ON_REGISTERED_MESSAGE( wm_LoadRegisters, OnLoad_ )
 #else
    ON_REGISTERED_MESSAGE( wm_LoadRegisters, OnLoad )
@@ -1760,7 +1760,11 @@ CString fmt;
    // CFile :: pDlg->m_logFileName
    CFile logFile;
    logFile.Open(pDlg->LogFileName(), CFile::modeWrite|CFile::modeNoTruncate|CFile::modeCreate);
+#if     _MSC_VER > 1200	//VC 9
    if (logFile.m_hFile != INVALID_HANDLE_VALUE)
+#else
+   if (logFile.m_hFile != (DWORD)INVALID_HANDLE_VALUE)
+#endif
    {
       logFile.SeekToEnd();
       logFile.Write(fmt, fmt.GetLength());
@@ -2262,7 +2266,11 @@ DWORD dwRuntime = GetTickCount();
          file.Open(moduleName, CFile::shareDenyNone | CFile::modeRead | CFile::typeBinary);
          file.GetStatus( moduleFileStatus );
          nBuf = (long)(moduleFileStatus.m_size + 1);
+#if     _MSC_VER > 1200	//VC 9
          if (file.m_hFile == INVALID_HANDLE_VALUE)
+#else
+         if (file.m_hFile == (DWORD)INVALID_HANDLE_VALUE)
+#endif
          {
             deb.Format("Error opening script file '%s'", moduleName);
          }
@@ -2728,7 +2736,7 @@ void CMOD_simDlg::OnZeroes()
    ZeroRegisterValues();
 }
 
-#if _MSC_VER > 600
+#if _MSC_VER > 1200
 // compile for VS2008 (version 9)
 LRESULT CMOD_simDlg::OnLoad_(WPARAM,LPARAM)
 {
