@@ -173,6 +173,10 @@ SOURCE=.\message.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\MicroTick.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MOD232CommsProcessor.cpp
 # End Source File
 # Begin Source File
@@ -327,6 +331,10 @@ SOURCE=.\MemWriteLock.h
 # Begin Source File
 
 SOURCE=.\message.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\MicroTick.h
 # End Source File
 # Begin Source File
 

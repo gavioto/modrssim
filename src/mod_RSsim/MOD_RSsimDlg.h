@@ -400,7 +400,7 @@ public:
 	afx_msg void OnZeroes();
 	// VC 6 MFC version
 	afx_msg void OnLoad();
-#if     _MSC_VER > 600	//VC 9
+#if     _MSC_VER > 1200	//VC 9
 	afx_msg LRESULT OnLoad_(WPARAM,LPARAM);
 #endif
 	afx_msg void OnSave();

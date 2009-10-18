@@ -109,10 +109,6 @@ SOURCE=.\dregkey.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\simulators\mod_RSsim\MicroTick.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\mylib.cpp
 # End Source File
 # Begin Source File
