@@ -367,7 +367,11 @@ BEGIN_MESSAGE_MAP(CMOD_simDlg, CDialog)
 	ON_COMMAND(IDC_CSVIMPORT, OnCsvImportPop)
 	//}}AFX_MSG_MAP
    ON_WM_GETMINMAXINFO()
+#if     _MSC_VER > 600	//VC 9
    ON_REGISTERED_MESSAGE( wm_LoadRegisters, OnLoad_ )
+#else
+   ON_REGISTERED_MESSAGE( wm_LoadRegisters, OnLoad )
+#endif
 END_MESSAGE_MAP()
 
 CMOD_simDlg *pGlobalDialog;
@@ -2724,11 +2728,15 @@ void CMOD_simDlg::OnZeroes()
    ZeroRegisterValues();
 }
 
+#if _MSC_VER > 600
+// compile for VS2008 (version 9)
 LRESULT CMOD_simDlg::OnLoad_(WPARAM,LPARAM)
 {
    OnLoad();
    return(0);
 }
+#endif
+
 
 
 // --------------------------------- OnLoad ----------------------------
