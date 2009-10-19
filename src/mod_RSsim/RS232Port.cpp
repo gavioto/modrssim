@@ -46,7 +46,7 @@ CRS232Port* portPtr;
       }
       else
       {
-         sprintf_s(debugStr2, sizeof(debugStr2), "CRS232Port AsyncFriend pointer corruption!!!!\n");
+         strcpy_s(debugStr2, sizeof(debugStr2), "CRS232Port AsyncFriend pointer corruption!!!!\n");
          OutputDebugString(debugStr2);
       }
    }

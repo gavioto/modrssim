@@ -24,6 +24,26 @@
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxdlgs.h>
+#if     _MSC_VER > 1200	//VC 9
+	#ifndef _WIN32_WINNT
+	#define _WIN32_WINNT 0x502   // Target XP SP2
+	#endif
+#else
+	// "unsafe" CRT functions which I've changed to use the safe version in subsequent CRT.
+	// macros defined here temporally bypass the non-existent safe versions.
+	#define strncpy_s(a,b,c,d)		strncpy(a,c,d)
+	#define strcpy_s(a,b,c)			strcpy(a,c)
+	#define strtok_s(a,b,c)			strtok(a,b)
+	#define sprintf_s(a,b,c,d)		sprintf(a,c,d)
+	#define sscanf_s(a,b,c)			sscanf(a,b,c)
+
+	#define _itoa_s(a,b,c,d)				itoa(a,b,d)
+	#define _ltoa_s(a,b,c,d)				ltoa(a,b,d)
+	#define _ultoa_s(a,b,c,d)				ultoa(a,b,d)
+	#define _gcvt_s(a,b,c,d)				gcvt(c,d,a)
+
+#endif
+
 #include "ado.h"
 #include "statlink.h"
 #include "colorstatic.h"

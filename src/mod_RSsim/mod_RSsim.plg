@@ -7,7 +7,7 @@
 </h3>
 <h3>Command Lines</h3>
 Creating command line "rc.exe /l 0x409 /fo"Release/mylib.res" /d "NDEBUG" /d "_AFXDLL" "C:\source\CVS\modrssim\modrssim\trunk\src\mylib\mylib.rc"" 
-Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C5.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP53.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Release/MYLIB.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\source\CVS\modrssim\modrssim\trunk\src\mylib\ado.cpp"
@@ -20,14 +20,14 @@ Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C5.tmp" with conte
 "C:\source\CVS\modrssim\modrssim\trunk\src\mylib\Resizer.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mylib\StatLink.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C5.tmp" 
-Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C6.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP53.tmp" 
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP54.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Release/MYLIB.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\source\CVS\modrssim\modrssim\trunk\src\mylib\StdAfx.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C6.tmp" 
-Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C7.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP54.tmp" 
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP55.tmp" with contents
 [
 /nologo /out:"Release\MYLIB.lib" 
 .\Release\ado.obj
@@ -42,13 +42,11 @@ Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C7.tmp" with conte
 .\Release\StdAfx.obj
 .\Release\mylib.res
 ]
-Creating command line "link.exe -lib @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C7.tmp"
+Creating command line "link.exe -lib @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP55.tmp"
 <h3>Output Window</h3>
 Compiling resources...
 Compiling...
 StdAfx.cpp
-C:\source\CVS\modrssim\modrssim\trunk\src\mylib\stdafx.h(24) : warning C4005: 'sprintf_s' : macro redefinition
-        C:\source\CVS\modrssim\modrssim\trunk\src\mylib\stdafx.h(23) : see previous definition of 'sprintf_s'
 Compiling...
 ado.cpp
 ColorPickerCB.cpp
@@ -67,7 +65,7 @@ Creating library...
 <h3>Command Lines</h3>
 Creating command line "midl.exe /nologo /D "NDEBUG" /tlb "Release/mod_RSsim.tlb" /mktyplib203 /win32 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\mod_RSsim.odl""
 Creating command line "rc.exe /l 0x409 /fo"Release/mod_RSsim.res" /i "Release" /d "NDEBUG" /d "_AFXDLL" "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\mod_RSsim.rc"" 
-Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C8.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP56.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_RSsim.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\_README.CPP"
@@ -90,6 +88,7 @@ Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C8.tmp" with conte
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\MemoryEditorList.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\MemWriteLock.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\message.cpp"
+"C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\MicroTick.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\MOD232CommsProcessor.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\mod_RSsim.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\mod_RSsimDlg.cpp"
@@ -108,16 +107,16 @@ Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C8.tmp" with conte
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\StarWarsCtrl.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\TrainingSimDlg.cpp"
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\UTIL.CPP"
-"C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\MicroTick.cpp"
+"C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\FileEditCtrl.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C8.tmp" 
-Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C9.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP56.tmp" 
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP57.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_RSsim.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\StdAfx.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1C9.tmp" 
-Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1CA.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP57.tmp" 
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP58.tmp" with contents
 [
 wsock32.lib ..\mylib\release\mylib.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/mod_RSsim.pdb" /machine:I386 /out:"Release/mod_RSsim.exe" 
 .\Release\_README.OBJ
@@ -140,6 +139,7 @@ wsock32.lib ..\mylib\release\mylib.lib /nologo /subsystem:windows /incremental:n
 .\Release\MemoryEditorList.obj
 .\Release\MemWriteLock.obj
 .\Release\message.obj
+.\Release\MicroTick.obj
 .\Release\MOD232CommsProcessor.obj
 .\Release\mod_RSsim.obj
 .\Release\mod_RSsimDlg.obj
@@ -160,10 +160,10 @@ wsock32.lib ..\mylib\release\mylib.lib /nologo /subsystem:windows /incremental:n
 .\Release\TrainingSimDlg.obj
 .\Release\UTIL.OBJ
 .\Release\mod_RSsim.res
-.\Release\MicroTick.obj
+.\Release\FileEditCtrl.obj
 \source\CVS\modrssim\modrssim\trunk\src\mylib\Release\MYLIB.lib
 ]
-Creating command line "link.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1CA.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP58.tmp"
 <h3>Output Window</h3>
 Creating Type Library...
 Processing C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\mod_RSsim.odl
@@ -179,8 +179,6 @@ wtypes.idl
 Compiling resources...
 Compiling...
 StdAfx.cpp
-C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\stdafx.h(26) : warning C4005: 'sprintf_s' : macro redefinition
-        C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\stdafx.h(25) : see previous definition of 'sprintf_s'
 Compiling...
 _README.CPP
 ABComms.cpp
@@ -204,6 +202,7 @@ MemWriteLock.cpp
 message.cpp
 Generating Code...
 Compiling...
+MicroTick.cpp
 MOD232CommsProcessor.cpp
 mod_RSsim.cpp
 mod_RSsimDlg.cpp
@@ -212,8 +211,6 @@ MyHostProxy.cpp
 PLCApplication.cpp
 RS232Noise.cpp
 RS232Port.cpp
-C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\RS232Port.cpp(49) : warning C4003: not enough actual parameters for macro 'sprintf_s'
-C:\source\CVS\modrssim\modrssim\trunk\src\mod_RSsim\RS232Port.cpp(49) : error C2059: syntax error : ')'
 serverRS232array.cpp
 ServerSettings232Dlg.cpp
 ServerSettingsEthDlg.cpp
@@ -224,10 +221,10 @@ Splash.cpp
 StarWarsCtrl.cpp
 TrainingSimDlg.cpp
 UTIL.CPP
-MicroTick.cpp
+FileEditCtrl.cpp
 Generating Code...
-Error executing cl.exe.
-Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1D0.tmp" with contents
+Linking...
+Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP5F.tmp" with contents
 [
 /nologo /o"Release/mod_RSsim.bsc" 
 .\Release\StdAfx.sbr
@@ -251,6 +248,7 @@ Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1D0.tmp" with conte
 .\Release\MemoryEditorList.sbr
 .\Release\MemWriteLock.sbr
 .\Release\message.sbr
+.\Release\MicroTick.sbr
 .\Release\MOD232CommsProcessor.sbr
 .\Release\mod_RSsim.sbr
 .\Release\mod_RSsimDlg.sbr
@@ -269,15 +267,15 @@ Creating temporary file "C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1D0.tmp" with conte
 .\Release\StarWarsCtrl.sbr
 .\Release\TrainingSimDlg.sbr
 .\Release\UTIL.SBR
-.\Release\MicroTick.sbr]
-Creating command line "bscmake.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP1D0.tmp"
+.\Release\FileEditCtrl.sbr]
+Creating command line "bscmake.exe @C:\DOCUME~1\Conrad\LOCALS~1\Temp\RSP5F.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 
 
 
 <h3>Results</h3>
-mod_RSsim.exe - 1 error(s), 3 warning(s)
+mod_RSsim.exe - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>
