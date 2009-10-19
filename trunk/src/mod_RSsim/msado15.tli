@@ -1,9 +1,9 @@
-// Created by Microsoft (R) C/C++ Compiler Version 12.00.8447.0 (583e8e3b).
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8168.0 (583e8e3b).
 //
 // msado15.tli
 //
 // Wrapper implementations for Win32 type library C:\Program Files\Common Files\System\ADO\msado15.dll
-// compiler-generated file created 04/28/07 at 09:28:24 - DO NOT EDIT!
+// compiler-generated file created 10/19/09 at 08:00:10 - DO NOT EDIT!
 
 #pragma once
 

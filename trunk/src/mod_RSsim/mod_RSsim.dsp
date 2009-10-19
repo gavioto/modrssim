@@ -153,6 +153,10 @@ SOURCE=.\FaultsDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FileEditCtrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\htmloutput.cpp
 # End Source File
 # Begin Source File
