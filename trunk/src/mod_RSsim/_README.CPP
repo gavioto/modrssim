@@ -175,6 +175,7 @@
 //         8.10    29/03/09 - CDB force multiple coils no longer forces a multiple of 8 coils (thanks to Alex Shinkin)
 //         8.11    16/10/09 - CDB Convert project to VS9 mesage-handlers prototypes fixed - lots of CRT_SECURE type warnings to still patch-up
 //                            station tickbox array overflow bug fixed
+//         8.12    27/10/09 - CDB splash updated
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
@@ -186,10 +187,11 @@
 //    feature: A way to make quick-changes on running values... with a USER-created forms
 // TODO:
 //       UDP support for WAGO controllers
+// TODO: write single coil returns and address 2 bits out.
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"  // ha ha
 
-const CHAR lpsMyAppVersion[10] = "8.11\0";
+const CHAR lpsMyAppVersion[10] = "8.12\0";
 

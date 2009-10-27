@@ -189,25 +189,25 @@ CString tempText;
    // blue text
    dc.SetBkMode(TRANSPARENT);
    dc.SetTextColor(RGB(5,5,255));
-   tempText = "MODBUS Serial-RTU, TCP/IP and";
-   dc.TextOut(LEFTMARGIN, 170, tempText);
-   tempText = "Allen Bradley DF1 Protocols with \"Simulation\"";
-   dc.TextOut(LEFTMARGIN, 200, tempText);
+   //tempText = "MODBUS Serial-RTU, TCP/IP and";
+   //dc.TextOut(LEFTMARGIN, 170, tempText);
+   //tempText = "Allen Bradley DF1 Protocols with \"Simulation\"";
+   //dc.TextOut(LEFTMARGIN, 200, tempText);
    tempText.Format("Version %s", lpsMyAppVersion);
-   dc.TextOut(LEFTMARGIN, 230, tempText);
+   dc.TextOut(LEFTMARGIN, 235, tempText);
 
    // smaller white text
    dc.SetTextColor(RGB(255,255,255));
    dc.SelectObject(m_pFont);
-   tempText = "MOD_SIM is an unsupported utility, created";
+   tempText = "Mod_RSSim is an unsupported utility, created";
    dc.TextOut(LEFTMARGIN,305, tempText);
-   tempText = "for testing communications drivers for Adroit(tm).";
+   tempText = "for testing communications protocol drivers.";
    dc.TextOut(LEFTMARGIN,325, tempText);
    tempText = "This application may be freely distributed without re-";
    dc.TextOut(LEFTMARGIN,345, tempText);
    tempText = "compilation as long as this notice is not removed.";
    dc.TextOut(LEFTMARGIN,365, tempText);
-   tempText = "HOME: www.plcsimulator.org";
+   tempText = "WEB: www.plcsimulator.org";
    dc.TextOut(LEFTMARGIN,385, tempText);
    tempText.Format("Comments, mail the author : %s", lpAuthor_email); //conradb@adroit.co.za";
    dc.TextOut(LEFTMARGIN,425, tempText);
