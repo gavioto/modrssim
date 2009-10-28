@@ -111,7 +111,7 @@ char *fmtPtr = (char*)fmt;
 
    if(m_reset)
       fmtPtr++;  // 
-   if (strlen(fmtPtr)+1 < bufferlength) // incl null byte
+   if ((int)(strlen(fmtPtr)+1) < bufferlength) // incl null byte
    {
          scanned = sprintf(buffer, fmtPtr, data);
          m_reset = false;

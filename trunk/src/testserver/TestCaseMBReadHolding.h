@@ -37,7 +37,7 @@ public:
 
 protected:
    bool OpenChannel();
-   CloseChannel();
+   int CloseChannel();
 
 
 private:
