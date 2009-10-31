@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="TestSvr"
-	ProjectGUID="{4A1C2561-D092-483A-A85C-B52F42F9EA0A}"
+	ProjectGUID="{1DEDB04B-C0BB-4D11-A6A7-164BC6A5B899}"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="0"
 	>
