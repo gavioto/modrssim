@@ -13,8 +13,6 @@
 #include "resource.h"
 
 
-
-
 //IMPLEMENT_DYNAMIC( CCSVTextLine, CString)
 
 //////////////////////////////////////////////////////////////////////////////
@@ -132,7 +130,7 @@ double * varPtr = &m_values[0];
 // the contents get copied into an array.
 CCSVTextImporter::CCSVTextFile::CCSVTextFile(LPCTSTR fileName, UINT flags) : CFile(fileName, flags)
 {
-   m_length = GetLength();
+   m_length = (DWORD)GetLength();
    m_data = (BYTE*)malloc(m_length + 1);
 
    Read((void*)m_data, m_length);
@@ -341,7 +339,7 @@ BOOL CCSVTextImporter::HandleTimer(LPCTSTR importFolder, CRegisterUpdaterIF *pPa
       CTime    localTime(currentTime);
       CTime    lastTime(m_lastInterval);
       CTimeSpan elapsedTime = localTime - lastTime;
-      int stale = elapsedTime.GetTotalMinutes();
+      LONGLONG stale = elapsedTime.GetTotalMinutes();
    
       if (stale > 15)
       {

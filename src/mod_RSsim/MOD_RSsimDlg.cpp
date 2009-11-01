@@ -1952,26 +1952,26 @@ LONG     conServers, totServers;
 
 char *plantSim_registerNames[PS_LASTREGISTER+1] =
 {
-   "Plant I/O Controls      (r/w)",    // 0
-   "Plant I/O feedback      (r)",
-   "Mixer run-time          (r/w)",
-   "Tank level              (r/w)",
-   "Tank Max. level         (r/w)",
-   "H20 Tank level          (r/w)",
-   "H20 Tank max level      (r/w)",
-   "Conc. Tank level        (r/w)",
-   "Conc. Tank max level    (r/w)",
-   "Tank temp. (x100)       (r/w)",
-   "Temp. SP (for auto)     (r/w)",         //10
-   "Heater current          (r)",
-   "Heater eff.             (r)",
-   "Time: (ms)              (r)",
-   "Time: (sec)             (r)",
-   "Time: (min)             (r)",
-   "Time: (hour)            (r)",
-   "Time: (day)             (r)",
-   "Time:(weekday Sun=0)    (r)",
-   "Random 0-65535          (r)"            // 19
+   "Plant I/O Controls    (r/w)",    // 0
+   "Plant I/O feedback    (r)",
+   "Mixer run-time        (r/w)",
+   "Tank level            (r/w)",
+   "Tank Max. level       (r/w)",
+   "H20 Tank level        (r/w)",
+   "H20 Tank max level    (r/w)",
+   "Conc. Tank level      (r/w)",
+   "Conc. Tank max level  (r/w)",
+   "Tank temp. (x100)     (r/w)",
+   "Temp. SP (for auto)   (r/w)",         //10
+   "Heater current        (r)",
+   "Heater eff.           (r)",
+   "Time: (ms)            (r)",
+   "Time: (sec)           (r)",
+   "Time: (min)           (r)",
+   "Time: (hour)          (r)",
+   "Time: (day)           (r)",
+   "Time:(weekday Sun=0)  (r)",
+   "Random 0-65535        (r)"            // 19
 };
 
 float heatingEfficiencyTable[] = 

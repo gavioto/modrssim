@@ -194,7 +194,7 @@ CString tempText;
    //tempText = "Allen Bradley DF1 Protocols with \"Simulation\"";
    //dc.TextOut(LEFTMARGIN, 200, tempText);
    tempText.Format("Version %s", lpsMyAppVersion);
-   dc.TextOut(LEFTMARGIN, 235, tempText);
+   dc.TextOut(LEFTMARGIN, 240, tempText);
 
    // smaller white text
    dc.SetTextColor(RGB(255,255,255));
@@ -209,7 +209,7 @@ CString tempText;
    dc.TextOut(LEFTMARGIN,365, tempText);
    tempText = "WEB: www.plcsimulator.org";
    dc.TextOut(LEFTMARGIN,385, tempText);
-   tempText.Format("Comments, mail the author : %s", lpAuthor_email); //conradb@adroit.co.za";
+   tempText.Format("Comments, mail the author : %s", lpAuthor_email); //zaphodikus@hotmail.com";
    dc.TextOut(LEFTMARGIN,425, tempText);
    
    // registration code
