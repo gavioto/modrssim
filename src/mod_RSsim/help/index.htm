@@ -5,7 +5,6 @@
 <TITLE>MODBUS RTU, TCP/IP and Allen Bradley DF1 Simulator (Adroit)</TITLE>
 </HEAD>
 <BODY background="images\portA.gif">
-
 <a name="Top"></a>
 <H1>MODBUS RTU, TCP/IP and Allen Bradley DF1 PLC Simulator</H1>
 <p>Use the back button in your browser to aid navigation</p>
@@ -32,8 +31,6 @@
 </UL>
 <HR>
 </p>
-
-<!------------------------------------------------------------------------------------>
 <!------------------------------------- Overview ------------------------------------->
 <a name="Overview"></a>
 <H2>Overview</H2>
@@ -43,19 +40,15 @@ itself to use as a "virtual" PLC for training.
 <p>Setting up the simulation for use will cover it's configuration for different applications in detail. The
 first point we come to however is which <A HREF="#Media Types">media type</A> the simulation should use.
 </p>
-
 <h3>Purpose & features</h3>
-
 <p>This simulator was written to allow the testing of a MODBUS RTU serial driver
 without having to get 255 little MODBUS PLCs into one office. It is not, by any
 means, a full implementation of the protocol; it implements only the common functions
 used in MODBUS and other protocols supported here.</p>
 <p align="center"><IMG SRC="images\toolbar.gif" ALT="Easy access to the important features" BORDER=0>
 </p>
-
 <p>It surpasses the limitations in other programs we have found in the
 past by:</p>
-
 <ul>
   <li>Simulate more than one RTU at once. (register values shared for all RTUs).</li>
   <li>Allows editing and display of all the registers.</li>
@@ -78,7 +71,6 @@ situation.</li>
   <li>It does handle noisy comms properly.</li>
   <li>Almost totally <b>free</b>, just mail the author for a key (or compile your own).</li>
 </ul>
-
 <h3>Not supported</h3>
 <ul>
   <li>MODBUS ASCII protocol support :-(.</li>
@@ -86,15 +78,11 @@ situation.</li>
     it is not commercially supported and no liability is held for any damage or application changes made as
     a result of it's use.</li>
 </ul>
-
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!----------------------------------- Running ---------------------------------------->
 <a name="Running"></a>
 <h2>Running this program</h2>
 <p>This is not a full feature list, just the basics, which most will get in 5 minutes anyway.</p>
-
 <ul>
   <li>Launch the application, &quot;mod_rssim.exe&quot; and it should open the 1st free (RS-232 by default)port,
     select the desired protocol (if Ethernet, no serial port is used/needed), and then
@@ -126,8 +114,6 @@ situation.</li>
   <li>Report any problems after trying for at least a day to figure out what U got wrong :-)</li>
 </ul>
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!------------------------------- Ethernet Setup ------------------------------------->
 <a name="Ethernet setup"></a>
 <H2>Modbus Ethernet Setup</H2>
@@ -143,8 +129,6 @@ situation.</li>
 </UL>
 <p><b>Note:</b> If the station indicator button for a station is off, the simulator will not respond to data requests for that station ID, even though the client is connected.</p>
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!-------------------------------- RS232 Setup --------------------------------------->
 <a name="RS-232 Setup"></a>
 <H2>RS-232 Setup</H2>
@@ -164,7 +148,6 @@ situation.</li>
 </ul>
 </p>
 <BR>
-
 <a name="RS232C diagram"></a>
 <H4>RS232 Wiring</H4>
 <p>
@@ -215,11 +198,7 @@ list-box view whenever a line-state changes.</p>
 <p>Using a modem with this simulator does work, and even 232/485 converters. The slave (receiving) side of a dial-up will not 
 auto-answer however, U need to put the modem into auto-answer and suppress the modem connect messages yourself using AT codes.
 </p>
-
 <HR>
-
-
-<!------------------------------------------------------------------------------------>
 <!-------------------------------- Protocols --------------------------------------->
 <a name="Protocols"></a>
 <H2>Protocols</H2>
@@ -239,14 +218,12 @@ section goes on to explain what the parameters mean and what affect that have.</
   <li><b>Modify coils/regs. before responding</b> Allows the returned register value in telegrams that return the current register contents to either reflect the new values, or not in the responses.</li>
   <li><b>Disable writing of coils/regs</b> .</li>
 </UL>
-
 <a name="ProtocolsDF1Master"></a>
 <H4>Allen Bradley DF1</H4>
 <p>This protocol has no settings actually, all PLC files (0-250) all have 255 words!)</p>
 <UL>
   <li><b>PDU (data portion) size</b> Max length of the data in a message frame.</li>
 </UL>
-
 <p> </p>
 <a name="ProtocolsJoy"></a>
 <H4>JOY SCC386 Protocol</H4>
@@ -265,16 +242,12 @@ section goes on to explain what the parameters mean and what affect that have.</
 
 </ul>
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!-------------------------------- Animation ----------------------------------------->
 <a name="Animation"></a>
 <H2>Animation</H2>
 <p align="center"><IMG SRC="images\anim.GIF" ALT="?" BORDER=0>
 </p>
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!-------------------------------- Juice Plant --------------------------------------->
 <a name="Juice Plant"></a>
 <H2>Juice Plant</H2>
@@ -283,8 +256,6 @@ section goes on to explain what the parameters mean and what affect that have.</
 <p>The <i>juice plant</i> diagnostic dialog is shown below</p>
 <p align="center"><IMG SRC="images\juice.GIF" ALT="?" BORDER=0>
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!--------------------------------- Script Automation -------------------------------->
 <a name="Script Automation"></a>
 <H2>Script Automation</H2>
@@ -348,9 +319,8 @@ Typical to this kind of scripting, some automation functions have been provided.
 	<LI><b><font color="#0000FF">TransactionBusy () As long</b></font><BR>
 	       Returns TRUE if this simulation device supports master-mode, and is not busy with a transaction at this time.<BR>
 </UL>
-
 <p><b><font color="#008000">Sample script code:</font></b></p>
-<!-------------------  ------------------------------->
+<!---------     ---------->
 <TABLE width="500" border=0 >
 <TR>
 <TD width="30">&nbsp;
@@ -382,17 +352,14 @@ SetRegisterValue 3, 242, station
 station = station + 1
 if station > 12 then station = 0
 </PRE>
-
 </TD>
 </TR>
 </TABLE>
-
 <p>The above sample illustrates how to increment a few registers, and
 also turn the communication for the 1st 12 stations on and off continuously. The script runs on every
 animation update.
 </p>
 <HR>
-
 <!------------------------------------- TERMINOLOGY SUB-SECTION ----------------------------------->
 <a name="Media Types"></a>
 <H4>Media Types</H4>
@@ -413,10 +380,8 @@ of a protocol. (To be true Ethernet is a protocol, but still referred to as a ge
 <BR>
 The simulator supports 2 media types: <A HREF="#RS-232 Setup">Serial</A> and <a HREF="#Ethernet Setup">Ethernet</a>.
 </p>
-
 <a name="PDU"></a>
 <H4>PDU - Protocol Data Unit</H4>
-
 <p>A protocol data unit is that part of a protocol message or frame that contains the data. Data in 99% of protocols
 is not simply send without some kind of mechanism to format the data, explain what data it is, and ensure data integrity
 and/or security. In total these mechanisms make up a message frame. The message frame contains the data, and since a
@@ -425,8 +390,6 @@ the maximum amount of data transmittable in one packet, and will differ as the m
 <p>DF1 specifies a PDU of 234 , 223 bytes if over IP : for SLC5/03 or 5/04<BR>
 for the SLC 5/01 or 5/02 only 82 bytes (equivalent to 41 words)</p>
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!--------------------------------- Hotkeys ------------------------------------------>
 <a name=Hotkeys>
 <h2>Hotkeys ,UI and Launch</h2></a>
@@ -501,16 +464,12 @@ just change the comm port number by itself leave all other settings
 <b>mod_rssim 19200,n,e,8,p</b><br>
 use the older DOS parameter set which have a 'p' at the end.</PRE>
 </p>
-
 <p>It's not advisable (nor necessary) to have multiple TCP simulator sessions, since the concept of memory block separation is described in the <A HREF="#Protocols">Modbus Advanced Emulation Settings</a> screen.</p> Settings changed from the command-line take effect for any future sessions of the simulator that get launched without parameters too.
 <p>&nbsp</p>
 <HR>
-
-<!------------------------------------------------------------------------------------>
 <!--------------------------------- More (... F.A.Q.) -------------------------------->
 <a name=More>
 <h2>F.A.Q. More info.</h2></a>
-
 <ul>
   <li><b>Q:&nbsp;</b>What is a MODBUS RTU? <BR>
     <b>A:</b>&nbsp;It's a PLC, if that does not
@@ -530,7 +489,6 @@ use the older DOS parameter set which have a 'p' at the end.</PRE>
      </li>
   <li><b>Questions/problems :</b> mail me at <a href="mailto:conradb@adroit.co.za">conradb@adroit.co.za</a>.</li>
 </ul>
-
 <a name=Links>
 <H4>Links</H4>
 <UL>
@@ -542,7 +500,6 @@ use the older DOS parameter set which have a 'p' at the end.</PRE>
    <LI><a href="http:\\www.codeguru.com\network\mod_rssim.html">Codeguru : Mod_RSsim home</a>
 </UL>
 <BR>
-
 <H4>Versions</H4>
 <ul type=square>
    <li>2.3b    xx/xx/xx   CDB Initial rev submitted to site
@@ -640,17 +597,14 @@ Help text updated to show command-line stuff from rev 8.04
 <li>8.6     26/06/08 - CDB released a debug build by mistake. Fixed ASSERTion in the animation dialog. Fixed Easter-egg scroller only
 showling first 11 lines of text.
 <li>8.7     30/06/08 - CDB Added RTS indication on serial modbus protocol title-bar text R-en/R-tg...
-
 </ul>
 <HR>
 <a name=Notices>
 <p><b>Notices</b><BR>Allen-Bradley is a trademark of Rockwell Corporation USA; MODBUS of Modicon USA (owned by Schneider Automation France now); JOY is a trademark of Joy Mining Machinery UK; Windows is a trademark of Microsoft Corporation USA.<br>
 Every attempt to ensure accuracy has <b>not</b> been taken by the author to ensure no accidental damage or injury intentional or otherwise. Reasonable corrections are welcomed.</p>
-
 <p><font size="1">This page was developed using TextPad &quot;http://www.textpad.com/
 &quot;, do not edit it with anything else on fear of death.</font>
 </p>
 <p align="right">Z&aring;PHo&ETH;</p>
-
 </BODY>
 </HTML>
