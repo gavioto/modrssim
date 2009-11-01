@@ -91,7 +91,7 @@ CString title;
    m_hyperlink1.SetHoverCursorHandle(AfxGetApp()->LoadCursor(IDC_MYHANDCURSOR));
    m_hyperlink2.SetHoverCursorHandle(AfxGetApp()->LoadCursor(IDC_MYHANDCURSOR));
    // set the URL that we will actually go to here
-   m_hyperlink1.m_link.LoadString(IDS_ADROITWEBURL);// = "http://www.adroit.co.za/";
+   m_hyperlink1.m_link.LoadString(IDS_ADROITWEBURL);// = "http://www.plcsimulator.org/";
    // set the URL that we will actually go to here
    m_hyperlink2.m_link = "http://www.modicon.com/";
 

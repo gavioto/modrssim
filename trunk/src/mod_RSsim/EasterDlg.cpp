@@ -53,7 +53,7 @@ char starBannerText[BANNER_LINES][50] =
    "this app. was written by",   //1
    "",                           //2
    "Conrad Braam",               //3
-   "<<AUTHORMAIL>>",		     // 4 "conradb@adroit.co.za",       //3 !!!!!!
+   "<<AUTHORMAIL>>",		     // 4 "zaphodikus@hotmail.com",       //3 !!!!!!
    "",                           //5
    "Dedicated to my son",
    "Rhys",

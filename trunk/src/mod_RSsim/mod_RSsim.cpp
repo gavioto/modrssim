@@ -145,20 +145,7 @@ CMOD_simApp::CMOD_simApp()
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
-/*
-void CMOD_simApp::OnHelp()
-{
-   // navigate to someplace for help
-   OutputDebugString("Help()\n");
-   HINSTANCE h = ShellExecute(NULL, "open", "http://www.adroit.co.za\\utilities\\mod_RSsim_home.htm", NULL, NULL, SW_SHOWNORMAL);
-   if ((UINT)h > 32) 
-   {
-   } else 
-   {
-      m_pMainWnd->MessageBox("Unable to open web help URL\nCheck your browser settings.");          // unable to execute file!
-   }
 
-} */
 
 /////////////////////////////////////////////////////////////////////////////
 // The one and only CMOD_simApp object

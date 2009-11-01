@@ -31,12 +31,11 @@
 // 3. Display statuses for all outstations simulated.
 //
 // MORE:
-// I am a programmer at Adroit Technologies
 // This program is not a released work, and can be freely distributed, so 
 // long as this headder is immortalized. (I.e. After I die, any copies of this 
 // must still hold my name.)
-// Visit the place I work at "http://www.adroitscada.com", or mail me at 
-// conradb@adroit.co.za . I dig the code that Paul DiLascia writes.
+// home : www.plcsimulator.org 
+//  . I dig the code that Paul DiLascia writes.
 //
 //
 // PROGRAM STRUCTURE:
@@ -176,6 +175,7 @@
 //         8.11    16/10/09 - CDB Convert project to VS9 mesage-handlers prototypes fixed - lots of CRT_SECURE type warnings to still patch-up
 //                            station tickbox array overflow bug fixed
 //         8.12    27/10/09 - CDB splash updated
+//		   8.13    01/11/09 - thanks to Joan Lluch-Zorrilla write single coil response is now correct. Compile options set for compile size, resources trimmed slightly to shink EXE a little.
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
@@ -193,5 +193,5 @@
 
 #include "stdafx.h"  // ha ha
 
-const CHAR lpsMyAppVersion[10] = "8.12\0";
+const CHAR lpsMyAppVersion[10] = "8.13\0";
 

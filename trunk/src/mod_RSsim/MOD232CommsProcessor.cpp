@@ -254,12 +254,8 @@ BYTE numBytesData;
 
              break;
           case MOD_WRITE_SINGLE_COIL    :
-             //*pWorkArea++ = HIBYTE(address/2);  //coil # 
-             //*pWorkArea++ = LOBYTE(address/2);
-             *pWorkArea++ = HIBYTE(address/2);  //coil #
-             *pWorkArea++ = LOBYTE(address/2);
-             //*pWorkArea++ = (PLCMemory[GetAddressArea(functionCode)][address]?0xFF : 0x00);
-             //*pWorkArea++ = 0x00;
+             *pWorkArea++ = HIBYTE(address);  // fixed thanks to Joan Lluch-Zorrilla
+             *pWorkArea++ = LOBYTE(address);
              break;
           case MOD_READ_DIGITALS  : // in
           case MOD_READ_COILS     : // out

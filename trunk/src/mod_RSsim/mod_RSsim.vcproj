@@ -49,9 +49,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -146,7 +146,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_COMMS_DEBUGGING"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -1266,19 +1266,11 @@
 					>
 				</File>
 				<File
-					RelativePath="help\anim.gif"
-					>
-				</File>
-				<File
 					RelativePath="help\index.htm"
 					>
 				</File>
 				<File
 					RelativePath="help\images\joyshot.gif"
-					>
-				</File>
-				<File
-					RelativePath="help\juice.gif"
 					>
 				</File>
 				<File
@@ -1290,19 +1282,7 @@
 					>
 				</File>
 				<File
-					RelativePath="help\portA.gif"
-					>
-				</File>
-				<File
-					RelativePath="res\shot1.gif"
-					>
-				</File>
-				<File
 					RelativePath="help\images\shot1.gif"
-					>
-				</File>
-				<File
-					RelativePath="help\shot2.gif"
 					>
 				</File>
 				<File
