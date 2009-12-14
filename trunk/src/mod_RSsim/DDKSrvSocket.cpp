@@ -232,6 +232,25 @@ CDDKSrvSocket* DDKSockPtr;
 } // SockAsyncFriend
 
 
+int HexToBin(const char * str, byte *pBuffer)
+{
+	int len=0;
+	while (*str)
+	{
+		ConvertASCIIToByte(str, *pBuffer++);
+		*str++;
+		if (*str)
+			*str++;
+		if (*str)
+			*str++;
+		if (*str)
+			*str++;
+		len++;
+	}
+	return(len);
+}
+
+
 // ------------------------------- Poll -----------------------------------
 //
 void CDDKSrvSocket::Poll(CHAR * debugStr)
@@ -249,6 +268,8 @@ int         addrlength;
 unsigned long  numBytes=0;
 CString        debuggerString;
 LONG           numIdleLoops = MAX_IDLE_LOOPS;
+DWORD		bufSize;
+
 
    m_debuggerStep = 0;
    accepted = FALSE;
@@ -277,7 +298,10 @@ LONG           numIdleLoops = MAX_IDLE_LOOPS;
          exitFlag = true;
          break;
       }
-
+//#ifndef _TEST
+//	bufSize = HexToBin("x06 x7D x00 x00 x00 x06 x01 x05 x00 x01 xFF x00", (byte*)msgPtr);
+//	ProcessData(AcceptedAsyncSocket, msgPtr, bufSize);
+//#endif
       if (!accepted)
       {
          m_debuggerStep = 2;
@@ -407,7 +431,6 @@ LONG           numIdleLoops = MAX_IDLE_LOOPS;
             // process this message as valid data from a PLC
             if (incommingMsgOK)
             {
-            DWORD bufSize;
 
                m_debuggerStep = 11;
                bufSize = numBytes;     // ok so all bytes were read

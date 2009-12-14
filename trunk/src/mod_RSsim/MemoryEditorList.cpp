@@ -71,20 +71,7 @@ char*p = csString.GetBufferSetLength(20);
 }
 
 
-// -------------------------- ConvertASCIIToByte ---------------------
-// reverse the conversion made by ConvertByteToASCII()
-void ConvertASCIIToByte(const char*String, BYTE &bValue)
-{
-   if (strlen(String) > 1)
-   {
-   WORD wordValue;
-      // sscanf it
-      sscanf(String, "x%02X", &wordValue);
-      bValue = (BYTE)wordValue;
-   }
-   else
-      bValue = (BYTE)String[0];
-}
+
 
 // -------------------------- ConvertASCIIToWord ---------------------
 // reverse of ConvertWordToASCII
