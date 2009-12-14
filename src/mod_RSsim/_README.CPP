@@ -176,6 +176,7 @@
 //                            station tickbox array overflow bug fixed
 //         8.12    27/10/09 - CDB splash updated
 //		   8.13    01/11/09 - thanks to Joan Lluch-Zorrilla write single coil response is now correct. Compile options set for compile size, resources trimmed slightly to shink EXE a little.
+//       8.14    14/12/09 - Animation refresh counting not taking effect. Help screenshots updated.
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
@@ -188,10 +189,11 @@
 // TODO:
 //       UDP support for WAGO controllers
 // TODO: write single coil returns and address 2 bits out.
+// TODO: Gracefull socket closure required option.
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"  // ha ha
 
-const CHAR lpsMyAppVersion[10] = "8.13\0";
+const CHAR lpsMyAppVersion[10] = "8.14\0";
 

@@ -577,7 +577,7 @@ BOOL MBUSError = FALSE;
    CString deb;
       MBUSError = TRUE;
       MBUSerrorCode = MOD_EXCEPTION_ILLEGALFUNC;   // 02
-      deb.Format("Writting to registers or I/O is disabled!\n");
+      deb.Format("Writting data or I/O currently disabled, see Advanced Settings!\n");
       OutputDebugString(deb);
       RSDataMessage(deb);
    }
@@ -589,7 +589,7 @@ BOOL MBUSError = FALSE;
       CString deb;
          MBUSError = TRUE;
          MBUSerrorCode = MOD_EXCEPTION_ILLEGALFUNC;   // 02
-         deb.Format("Invalid I/O length!\n");
+         deb.Format("Invalid I/O length, check PDU size!\n");
          OutputDebugString(deb);
          RSDataMessage(deb);
       }
@@ -606,7 +606,7 @@ BOOL MBUSError = FALSE;
    if (MBUSError)
    {
    CString msg;
-      msg.Format("Modbus message in error x%02X\n", MBUSerrorCode);
+      msg.Format("Modbus message in error. Code= x%02X\n", MBUSerrorCode);
       OutputDebugString(msg);
       RSDataMessage(msg);
    }

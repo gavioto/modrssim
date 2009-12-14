@@ -1344,6 +1344,7 @@ DWORD animationType;
    key.QueryValue("EthernetPort2",     &m_otherPort);
 
    key.QueryValue("AnimationIncrement", &m_animationIncValue);
+   key.QueryValue("AnimationPeriod", &m_animationPeriod);
 
    key.QueryValue("RegistrationUserName", m_registeredUser);
    key.QueryValue("RegistrationKey",      m_registeredKey);
@@ -1452,6 +1453,7 @@ DWORD animationType;
    key.SetValue("EthernetPort2", m_otherPort);
 
    key.SetValue("AnimationIncrement", m_animationIncValue);
+   key.SetValue("AnimationPeriod", m_animationPeriod);
    animationType = 0;
    if (m_animationON)
    {
@@ -2479,7 +2481,7 @@ void CMOD_simDlg::DoAnimations()
 
       }      
       // reset the count-down to the next animation cycle
-      m_animationCounter = m_animationPeriod; //m_animationRefreshes;
+      m_animationCounter = m_animationRefreshes;
 
    }
 } // DoAnimations
@@ -2680,8 +2682,10 @@ int retCode;
             ASSERT(0);
             break;
       }
+   SaveApplicationSettings();
    }
    m_busyCreatingServers = FALSE;
+   
 } // OnSettings
 
 // ------------------------------ OnViewhex ------------------------------------
