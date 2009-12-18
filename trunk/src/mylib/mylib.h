@@ -66,6 +66,8 @@
 // dialog-box constants
 #define PORT_INUSESTR      " *"     // appended to LB for used comm ports
 
+int ConvertASCIIToByte(const char*String, BYTE &bValue);
+
 LONG CalcLRC(BYTE * lrcBuffPtr,    //  -> pointer to buffer at start of LRC
              DWORD  buffLen,       //  ->
              BOOL   calc2Comp,     //  -> Calculate 2's Complement also (last call)

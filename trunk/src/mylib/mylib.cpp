@@ -2,6 +2,26 @@
 
 #include "stdafx.h"
 
+// -------------------------- ConvertASCIIToByte ---------------------
+// reverse the conversion made by ConvertByteToASCII()
+int ConvertASCIIToByte(const char*String, BYTE &bValue)
+{
+int ret;
+	if (strlen(String) > 1)
+	{
+	DWORD wordValue=0;
+      // sscanf it
+      ret = sscanf(String, "x%02X", &wordValue);
+      bValue = (BYTE)wordValue;
+	}
+	else
+	{
+	   ret = 0;
+      bValue = (BYTE)String[0];
+	}
+   return(ret);
+}
+
 // ------------------------ CalcCRC (Local Generic) --------------------------------------
 // PURPOSE: Calculates a CRC value.
 // It is the responsibility of the caller of this routine to make sure
