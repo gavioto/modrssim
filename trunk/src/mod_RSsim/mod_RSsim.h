@@ -33,7 +33,7 @@ extern lpfnSetLayeredWindowAttributes m_pSetLayeredWindowAttributes;
 
 extern BOOL GetTNImport();
 
-extern const CHAR lpsMyAppVersion[10];
+extern CHAR lpsMyAppVersion[10];
 #define __MY_APPVERSION__      (lpsMyAppVersion)
 
 #define SIMULATOR_WINDOW_CLASSNAME  "MYSimulator_Window_Classname"

@@ -15,7 +15,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
+#ifndef WINVER
+#define WINVER 0x0500      //Win2000
+#endif
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 

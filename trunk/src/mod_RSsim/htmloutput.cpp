@@ -204,7 +204,7 @@ CString outputTextBuffer;
                sharingRetries--;
             }
          } while ((ERROR_SHARING_VIOLATION == errCode) && (sharingRetries>0));
-         DWORD len = m_inputFile.GetLength();
+         DWORD len = (DWORD)m_inputFile.GetLength();
          m_inputTextBuffer = "";
          CHAR *buff = m_inputTextBuffer.GetBufferSetLength(len+1);
          m_inputFile.Read(buff, len);  //TODO: if the read fails, we may leak the string!

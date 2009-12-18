@@ -78,7 +78,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wsock32.lib ..\mylib\release\mylib.lib"
+				AdditionalDependencies="wsock32.lib ..\mylib\release\mylib.lib version.lib"
 				OutputFile=".\Release/mod_RSsim.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -174,7 +174,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wsock32.lib ..\mylib\debug\mylib.lib"
+				AdditionalDependencies="wsock32.lib ..\mylib\debug\mylib.lib version.lib"
 				OutputFile=".\Debug/mod_RSsim.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -974,6 +974,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\UpdateCheck.cpp"
+				>
+			</File>
+			<File
 				RelativePath="UTIL.CPP"
 				>
 				<FileConfiguration
@@ -1151,6 +1155,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\UpdateCheck.h"
+				>
+			</File>
+			<File
 				RelativePath="util.h"
 				>
 			</File>
@@ -1295,6 +1303,10 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\versioninfo.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

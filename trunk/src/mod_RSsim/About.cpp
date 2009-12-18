@@ -7,6 +7,7 @@
 #include "About.h"
 #include "StarWarsCtrl.h"
 #include "EasterDlg.h"
+#include "UpdateCheck.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,8 +15,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CAboutDlg dialog
 char *pArrCreditPre = { "MOD_RSSIM Version %s\t||"
       "IDB_CREDITBMP1^|"
       "Simulator for MODBUS RTU, Ethernet,$|"
@@ -44,8 +43,97 @@ char *pArrCreditPre = { "MOD_RSSIM Version %s\t||"
 
 };
 
+/////////////////////////////////////////////////////////////////////////////
+// CRegistrationTest 'nag-screen'
+//
+CRegistrationTest::CRegistrationTest()
+{
+   m_registeredOK = FALSE;
+   m_registrationTimerStart = GetTickCount();
+   m_demoPeriodEnded = FALSE;
+}
 
 
+// ----------------------------- CheckRegistrationKey ---------------------
+// New function that verifes some regisry values with a modbus CRC (twice)
+// USERNAME + CRC + CRC
+BOOL CRegistrationTest::CheckRegistrationKey(LPCTSTR name, LPCTSTR key)
+{
+BOOL ret;
+
+CString userName(name);
+CHAR *input;
+WORD sum1=0;
+CString appendSumText, totalSumText;
+
+   // build CRC of the USER NAME
+   input = userName.GetBuffer(userName.GetLength()+1);
+   CalcCRC((BYTE*)input, strlen(input), &sum1);
+   userName.ReleaseBuffer();
+   appendSumText.Format("%02X%02X", HIBYTE(sum1), LOBYTE(sum1));
+   userName +=appendSumText;
+   totalSumText = appendSumText;
+
+   // build CRC of the USER NAME+ previous CRC, to generate a stronger CRC
+   input = userName.GetBuffer(userName.GetLength()+1);
+   CalcCRC((BYTE*)input, strlen(input), &sum1);
+   userName.ReleaseBuffer();
+   appendSumText.Format("%02X%02X", HIBYTE(sum1), LOBYTE(sum1));
+   
+   // both CRC's together form the new CRC, check for a match
+   totalSumText += appendSumText;
+   ret = (strcmp(key, totalSumText) == 0);
+
+   if (!ret)
+   {
+      // "Unregistered version!"
+      ShowRegistrationMessage();
+   }
+   // remember our state
+   m_registeredOK = ret;
+   return(ret);
+}
+
+
+// ----------------------------------- RegistrationReminder --------------------------
+// call this regularly, if the registration has expired it will do the nagging.
+// the nag is so that you contact me, and I can trace actual prorgam useage
+void CRegistrationTest::RegistrationReminder()
+{
+   if (!m_registeredOK)
+   {
+   BOOL expired = FALSE;
+
+      // test if it's time to remind the user yet
+      if (((GetTickCount() - m_registrationTimerStart )> (DEMOSECONDS*1000)))
+         m_demoPeriodEnded = TRUE;
+      if (m_demoPeriodEnded)
+      {
+         // test if time to anoy the user
+         if ((GetTickCount() - m_registrationTimerStart )> (60000)) // repeats every 60 seconds
+            expired = TRUE;
+         if (expired)
+         {
+            ShowRegistrationMessage();
+            m_registrationTimerStart = GetTickCount();
+            m_demoPeriodEnded = TRUE;
+         }
+      }
+   }
+} // RegistrationReminder
+
+
+// ------------------------------------ ShowRegistrationMessage --------------------------
+void CRegistrationTest::ShowRegistrationMessage()
+{
+   AfxMessageBox("This is a fully functional version of MOD-SIM but without a key; \
+\nit will show this message after 45 minutes, and then just try to annoy U after that.\
+\n\nTo obtain a totally free key, see the Help-About window!", MB_ICONINFORMATION );
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CAboutDlg dialog
+//
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CAboutDlg::IDD, pParent)
 {
@@ -70,6 +158,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
 	ON_BN_CLICKED(IDC_SPLASH, OnSplash)
 	//}}AFX_MSG_MAP
+   ON_BN_CLICKED(IDB_CHECKUPDATES, &CAboutDlg::OnBnClickedCheckupdates)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -213,4 +302,12 @@ void CAboutDlg::OnSplash()
    CSplashWnd::m_splashShowDelay = 7;
    CSplashWnd::ShowSplashScreen(this); 	
 	
+}
+
+void CAboutDlg::OnBnClickedCheckupdates()
+{
+   CUpdateCheck checker;
+
+		checker.Check(CString ("http://sites.google.com/site/plcsimulator/Home/versioninfo.txt?attredirects=0&d=1"));
+
 }

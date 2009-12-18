@@ -96,15 +96,15 @@ char starBannerText[BANNER_LINES][50] =
    "Visit Adroit",
    "on their website",
    "www.adroitscada.com",
-   "follow the links to drivers",
-   "(you are running this",
-   "for the communications?)",
-   "and check out the page.",    //
+   "or",
+   "www.adroit.co.za",
+   "",
+   "",    //
    "",
    "<<USER>>", // Greets-
    "",
-   "Also check out the ",
-   "Adroit products!",
+   "",
+   "",
    "",
    "",
    "[ESC] key ends.",   // 
