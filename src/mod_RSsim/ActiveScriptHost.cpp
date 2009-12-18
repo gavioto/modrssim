@@ -155,6 +155,7 @@ BOOL CActiveScriptHost::CreateEngine(LPCOLESTR pstrProgID)
 	}
 	catch(HRESULT hr){
 		TRACE("### Script Error: %x ###", hr);
+      UNREFERENCED_PARAMETER(hr);
 		ReleaseObjects();
 	}
 
@@ -187,6 +188,7 @@ BOOL CActiveScriptHost::AddScriptItem(LPCOLESTR pstrNamedItem, LPUNKNOWN lpUnkno
 	}
 	catch(HRESULT hr){
 		TRACE("### Script Error: %x ###", hr);
+      UNREFERENCED_PARAMETER(hr);
 	}
 	return FALSE;
 }
@@ -217,6 +219,7 @@ BOOL CActiveScriptHost::AddScriptCode(LPCOLESTR pstrScriptCode)
 
       m_xActiveScriptSite.m_running = FALSE;  //script will not be running
       TRACE("### Script Error: %x ###", hr);
+      UNREFERENCED_PARAMETER(hr);
 	}
 	return FALSE;
 }
@@ -250,6 +253,7 @@ BOOL CActiveScriptHost::AddScriptlet(LPCOLESTR pstrDefaultName, LPCOLESTR pstrCo
 	}
 	catch(HRESULT hr){
 		TRACE("### Script Error: %x ###", hr);
+      UNREFERENCED_PARAMETER(hr);
 	}
 	return FALSE;
 }

@@ -2,14 +2,14 @@
 //
 // FILE: README.cpp
 //
-// Code is: (c) Adroit Technologies (Pty) Ltd. 1993,2000
+// Code is: (c) Embedded Intelligence Ltd. 1993,2009
+// AUTHOR: Conrad Braam. 
+// WEB: www.plcsimulator.org
 //
-// AUTHOR:
-// Conrad Braam
 // In the words of Paul DiLascia: If this code works, it was 
 // written by Conrad Braam.
 // If not, I don't know who wrote it.
-// Compiles with Visual C++ 6.0, and runs on NT4, Windows 2000, XP, 98b and probably 95 too.
+// Compiles with Visual C++ 6.0, VC 9.0 . Runs on NT4, Windows 2000, XP, 98b and probably 95 too.
 //
 // LIMITATIONS:
 // Not all of this code is production code, and as such is not fully tested. 
@@ -177,6 +177,7 @@
 //         8.12    27/10/09 - CDB splash updated
 //		   8.13    01/11/09 - thanks to Joan Lluch-Zorrilla write single coil response is now correct. Compile options set for compile size, resources trimmed slightly to shink EXE a little.
 //       8.14    14/12/09 - Animation refresh counting not taking effect. Help screenshots updated.
+//       8.15    18/12/09 - Version update check added to About Box. Application version resource added. Internal help updated
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
@@ -195,5 +196,6 @@
 
 #include "stdafx.h"  // ha ha
 
-const CHAR lpsMyAppVersion[10] = "8.14\0";
+//const CHAR lpsMyAppVersion[10] = "8.15\0";
+char lpsMyAppVersion[10] = "n.n";
 

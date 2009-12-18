@@ -88,8 +88,9 @@ BEGIN
     LTEXT           "zaphodikus@hotmail.com",IDC_EMAILLINK,66,145,164,8
     LTEXT           "Registration info",IDC_REGISTRATIONINFO,13,155,213,8
     LTEXT           "",IDC_SINKSTAT2,7,133,232,37,SS_SUNKEN
-    PUSHBUTTON      "Click for\nStart-up\nSplash",IDC_SPLASH,248,133,50,37,BS_CENTER | BS_MULTILINE
+    PUSHBUTTON      "Start-up\nSplash",IDC_SPLASH,248,146,50,24,BS_CENTER | BS_MULTILINE
     LTEXT           "Static",IDC_CREDITSTATIC,7,7,232,120,0,WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "Updates",IDB_CHECKUPDATES,248,23,50,14,WS_GROUP
 END
 
 IDD_TI_SIM_DIALOG DIALOGEX 0, 0, 434, 247
@@ -735,6 +736,9 @@ BEGIN
     IDOK                    "Accept settings and close this dialog"
     IDCANCEL                "Exit"
     IDS_PORTTOGGLE          "Port open/close"
+    IDS_UPDATE_AVAILABLE    "You are currently running version %u.%u .\nThe newest version %u.%u is available online.\n\n Would you like to visit the website update page now?"
+    IDS_UPDATE_NO           "No Updates available."
+    IDS_UPDATE_NOCHECK      "Unable to check for updates."
 END
 
 STRINGTABLE 
@@ -942,6 +946,44 @@ BEGIN
     END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 8,15,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080904b0"
+        BEGIN
+            VALUE "FileDescription", "mod_RSsim protocol test simulator"
+            VALUE "FileVersion", "8, 15, 0, 1"
+            VALUE "InternalName", "mod_RSsim"
+            VALUE "LegalCopyright", "Copyright (C) 2009"
+            VALUE "OriginalFilename", "mod_RSsim.exe"
+            VALUE "ProductName", "mod_RSsim Simulator"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x809, 1200
+    END
+END
 
 #endif    // English (U.K.) resources
 /////////////////////////////////////////////////////////////////////////////

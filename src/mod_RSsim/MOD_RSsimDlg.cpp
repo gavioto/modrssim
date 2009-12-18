@@ -22,6 +22,7 @@
 #include "ABCommsProcessor.h"
 #include "JoySCCEmulation.h"
 #include "CSVFileImportDlg.h"
+#include "updatecheck.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -30,7 +31,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #define LOADREGMSGSTRING   "LOADREGISTERS"
-#define DEMOSECONDS        (60*45)     // 45 minutes
 #define ASSERTMICROBOX(a) ASSERT(a >=0);ASSERT(a <STATIONTICKBOXES);
 
 const UINT    wm_LoadRegisters = RegisterWindowMessage( LOADREGMSGSTRING );
@@ -92,94 +92,18 @@ DWORD PLCDataFormatsTable[] =
 extern CHAR * ViewerFormatNames[6];
 
 
-CRegistrationTest::CRegistrationTest()
-{
-   m_registeredOK = FALSE;
-   m_registrationTimerStart = GetTickCount();
-   m_demoPeriodEnded = FALSE;
-}
-
-
-// ----------------------------- CheckRegistrationKey ---------------------
-// New function that verifes some regisry values with a modbus CRC (twice)
-// USERNAME + CRC + CRC
-BOOL CRegistrationTest::CheckRegistrationKey(LPCTSTR name, LPCTSTR key)
-{
-BOOL ret;
-
-CString userName(name);
-CHAR *input;
-WORD sum1=0;
-CString appendSumText, totalSumText;
-
-   // build CRC of the USER NAME
-   input = userName.GetBuffer(userName.GetLength()+1);
-   CalcCRC((BYTE*)input, strlen(input), &sum1);
-   userName.ReleaseBuffer();
-   appendSumText.Format("%02X%02X", HIBYTE(sum1), LOBYTE(sum1));
-   userName +=appendSumText;
-   totalSumText = appendSumText;
-
-   // build CRC of the USER NAME+ previous CRC, to generate a stronger CRC
-   input = userName.GetBuffer(userName.GetLength()+1);
-   CalcCRC((BYTE*)input, strlen(input), &sum1);
-   userName.ReleaseBuffer();
-   appendSumText.Format("%02X%02X", HIBYTE(sum1), LOBYTE(sum1));
-   
-   // both CRC's together form the new CRC, check for a match
-   totalSumText += appendSumText;
-   ret = (strcmp(key, totalSumText) == 0);
-
-   if (!ret)
-   {
-      // "Unregistered version!"
-      ShowRegistrationMessage();
-   }
-   // remember our state
-   m_registeredOK = ret;
-   return(ret);
-}
-
-
-// ----------------------------------- RegistrationReminder --------------------------
-// call this regularly, if the registration has expired it will do the nagging.
-// the nag is so that you contact me, and I can trace actual prorgam useage
-void CRegistrationTest::RegistrationReminder()
-{
-   if (!m_registeredOK)
-   {
-   BOOL expired = FALSE;
-
-      // test if it's time to remind the user yet
-      if (((GetTickCount() - m_registrationTimerStart )> (DEMOSECONDS*1000)))
-         m_demoPeriodEnded = TRUE;
-      if (m_demoPeriodEnded)
-      {
-         // test if time to anoy the user
-         if ((GetTickCount() - m_registrationTimerStart )> (60000)) // repeats every 60 seconds
-            expired = TRUE;
-         if (expired)
-         {
-            ShowRegistrationMessage();
-            m_registrationTimerStart = GetTickCount();
-            m_demoPeriodEnded = TRUE;
-         }
-      }
-   }
-} // RegistrationReminder
-
-
-// ------------------------------------ ShowRegistrationMessage --------------------------
-void CRegistrationTest::ShowRegistrationMessage()
-{
-   AfxMessageBox("This is a fully functional version of MOD-SIM but without a key; \
-\nit will show this message after 45 minutes, and then just try to annoy U after that.\
-\n\nTo obtain a totally free key, see the Help-About window!", MB_ICONINFORMATION );
-}
-
-
 /////////////////////////////////////////////////////////////////////////////
 // CMOD_simDlg dialog
+
+void CMOD_simDlg::InitGlobals()
+{
+DWORD major,minor;
+   CUpdateCheck::GetFileVersion(major, minor);
+   sprintf_s(lpsMyAppVersion, sizeof(lpsMyAppVersion), "%d.%d", HIWORD(major),LOWORD(major));
+
+   pGlobalDialog = this;
+}
+
 
 CMOD_simDlg::CMOD_simDlg(CWnd* pParent /*=NULL*/)
 : CDialog(CMOD_simDlg::IDD, pParent)
@@ -192,10 +116,14 @@ CMOD_simDlg::CMOD_simDlg(CWnd* pParent /*=NULL*/)
 	m_hIconDF1 = AfxGetApp()->LoadIcon(IDR_MAINZDF1);
 	m_hIconJOY = AfxGetApp()->LoadIcon(IDR_MAINJOY);
 
+   // set version # and other globals
+   CMOD_simDlg::InitGlobals();
+
    // m_pNoiseSettings = new CRS232Noise;
    m_pNoiseSettings = NULL; // disabled in version 7.7
    //m_pNoiseSettings->SetErrorTypes(FALSE,0);   // init noise obj, copy it each time
- 	EnableAutomation();
+
+   EnableAutomation();
    m_scriptEngineInitilized = FALSE;
    m_reloadAnimationScript = TRUE;
    m_lastRuntime = -1;
@@ -237,7 +165,6 @@ CMOD_simDlg::CMOD_simDlg(CWnd* pParent /*=NULL*/)
 
    InitializeCriticalSection(&dispCritSection);
    InitializeCriticalSection(&debuggerCritSection);
-   pGlobalDialog = this;
 
    m_animationIncValue = 10;
    m_animationON = FALSE;
@@ -4171,8 +4098,8 @@ void CMOD_simDlg::OnCsvImportPop()
 {
 CCSVFileImportDlg dlg;
 
-   dlg.m_importFolder = m_importFolder;//"D:\\source\\source\\adroit\\protdrv\\UTILS\\mod_RSsim\\CSVdata";
-   dlg.m_logFileName = m_logFileName;//"D:\\source\\source\\adroit\\protdrv\\UTILS\\mod_RSsim\\csreport.log";
+   dlg.m_importFolder = m_importFolder;//"..\\CSVdata";
+   dlg.m_logFileName = m_logFileName;//"..\\CSVData\\csreport.log";
    dlg.m_csvImportEnable =  m_csvImportEnable;
    if (IDOK == dlg.DoModal())
    {

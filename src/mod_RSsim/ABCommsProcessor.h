@@ -173,7 +173,7 @@ public:
    CString m_lastTX;
    // JOY
    DWORD m_ABMasterSource;   // this ID
-   DWORD m_ABMasterDest;     // Adroit/slave station ID
+   DWORD m_ABMasterDest;     // SCADA/slave station ID
    DWORD m_ABMasterNumFiles;
    BOOL  m_ABMasterRunMode;
    BOOL  m_ABMasterReadVariables;

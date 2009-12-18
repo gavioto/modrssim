@@ -2,10 +2,10 @@
 //
 // FILE: MOD_simDlg.h : headder file
 //
-// Code is: (c) Adroit Technologies (Pty) Ltd. 1993,2000
-//
-// See _README.CPP
-//
+// Code is: (c) Embedded Intelligence Ltd. 1993,2009
+// Author: Conrad Braam. 
+// Web: www.plcsimulator.org
+// See: _README.CPP
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -22,6 +22,7 @@ class CControllerMemory;
 class CRS232Noise;
 
 #include "SimCmdLine.h"
+#include "About.h"
 
 extern CMOD_simDlg * pGlobalDialog;    // global ptr to the dialog
 extern CControllerMemory PLCMemory;
@@ -38,28 +39,6 @@ extern WORD PLCMemPrefixes[MAX_MOD_MEMTYPES];
 #define PROTOCOL_SELMAX       (PROTOCOL_SELABMASTER232) // last protocol
 #define PROTOCOL_SELNONE      -1
 
-/////////////////////////////////////////////////////////////////////////////////
-// A Dialog and methods to remind the user they must 'register'.
-// Basically you e-mail me and I send a free .REG file key
-//
-class CRegistrationTest
-{
-public:
-   CRegistrationTest();
-
-   static void ShowRegistrationMessage();
-   void RegistrationReminder();
-
-   // perform the check
-   BOOL CheckRegistrationKey(LPCTSTR name, LPCTSTR key);
-
-   BOOL IsRegistered() {return(m_registeredOK);};
-
-private:
-   BOOL    m_registeredOK;
-   DWORD   m_registrationTimerStart;
-   BOOL    m_demoPeriodEnded;
-}; // CRegistrationTest
 
 
 // This function is a patch that overcomes MFC bug of
@@ -94,6 +73,8 @@ class CMOD_simDlg : public CDialog
 public:
 	CMOD_simDlg(CWnd* pParent = NULL);	// standard constructor
    ~CMOD_simDlg();
+
+   void InitGlobals();
    
    // GUI methods
    void FillComboBox(UINT id, char ** strTable, const DWORD currentsetting);
@@ -235,7 +216,7 @@ public:
    DWORD m_startAsOff;
    //
    DWORD m_ABMasterSourceStation;     // SCC station ID
-   DWORD m_ABMasterDestStation;       // destination (Adroit) station ID
+   DWORD m_ABMasterDestStation;       // destination (SCADA) station ID
    DWORD m_ABMasterNumFiles;        // # shields starting from AB file #101
    DWORD m_ABMasterRunMode;           // emulate ON/OFF
    DWORD m_ABMasterReadVariables;

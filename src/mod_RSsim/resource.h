@@ -1,8 +1,11 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by mod_RSsim.rc
 //
 #define IDS_PORTTOGGLE                  3
+#define IDS_UPDATE_AVAILABLE            4
+#define IDS_UPDATE_NO                   5
+#define IDS_UPDATE_NOCHECK              6
 #define IDM_ABOUTBOX                    0x0010
 #define IDM_ALPHA_60                    0x0020
 #define IDB_ALPHABLEND                  0x0020
@@ -299,6 +302,7 @@
 #define IDC_IMPORTLOGNAME               1222
 #define IDC_IMPORTENABLED               1223
 #define IDC_QUICKIMPORT                 1224
+#define IDB_CHECKUPDATES                1225
 #define IDC_SHOWCOMMSTIME               1300
 #define IDB_ALPHABLEND60                32779
 #define IDB_ALPHABLEND70                32780
@@ -338,7 +342,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        164
 #define _APS_NEXT_COMMAND_VALUE         32800
-#define _APS_NEXT_CONTROL_VALUE         1225
+#define _APS_NEXT_CONTROL_VALUE         1226
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif
