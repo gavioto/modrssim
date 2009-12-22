@@ -11,7 +11,7 @@ int ret;
 	{
 	DWORD wordValue=0;
       // sscanf it
-      ret = sscanf(String, "x%02X", &wordValue);
+      ret = sscanf_s(String, "x%02X", &wordValue);
       bValue = (BYTE)wordValue;
 	}
 	else
