@@ -15,20 +15,14 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_4F340058B9654A08B1BF8A0C1E29C087"
-        "OwnerKey" = "8:_9F8FF748D27C4E4CB90D3A81805748B2"
+        "MsmKey" = "8:_106CAED0BA914EA6A764E16445A77A06"
+        "OwnerKey" = "8:_E9BC31E015B2417FBB94568D0F8CA582"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_5A4494D33D5CDAB6EA029B36E12CF670"
-        "OwnerKey" = "8:_9F8FF748D27C4E4CB90D3A81805748B2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6A881743D4584C8DA05268E9D8938665"
-        "OwnerKey" = "8:_ED85F859AABD465B9DFCBB72C47DA0B1"
+        "MsmKey" = "8:_672A7A77B09A4183AE96379E31E29A42"
+        "OwnerKey" = "8:_8D3F5F3890864722A9893363F170D9E0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -45,14 +39,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9F8FF748D27C4E4CB90D3A81805748B2"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_8D3F5F3890864722A9893363F170D9E0"
+        "OwnerKey" = "8:_9F8FF748D27C4E4CB90D3A81805748B2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A684AB036192400CBC2696D5E3E0268B"
-        "OwnerKey" = "8:_4F340058B9654A08B1BF8A0C1E29C087"
+        "MsmKey" = "8:_9F8FF748D27C4E4CB90D3A81805748B2"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -69,7 +63,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_ED85F859AABD465B9DFCBB72C47DA0B1"
+        "MsmKey" = "8:_E9BC31E015B2417FBB94568D0F8CA582"
         "OwnerKey" = "8:_9F8FF748D27C4E4CB90D3A81805748B2"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -170,26 +164,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A4494D33D5CDAB6EA029B36E12CF670"
-            {
-            "SourcePath" = "8:msado15.dll"
-            "TargetName" = "8:msado15.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_755370B6D8694AC2ABCC23E7BDD63415"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_798361ED25CEC694758397508EBA0231"
             {
             "SourcePath" = "8:VERSION.dll"
@@ -206,7 +180,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -226,7 +200,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -246,7 +220,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -266,7 +240,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -327,7 +301,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mod_RSsim"
         "ProductCode" = "8:{A0466DD7-F335-427E-BDE1-3CA371477E1F}"
-        "PackageCode" = "8:{F1497756-368D-4407-94B1-8C50A5009A09}"
+        "PackageCode" = "8:{BB7AB1F8-3DFF-488C-A8EB-1444ED1AA0F2}"
         "UpgradeCode" = "8:{3E333120-2EE5-4CC0-897C-F9A3039016B4}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
@@ -336,7 +310,7 @@
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:EmbeddedIntelligence"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:www.plcsimulator.org/support"
+        "ARPHELPLINK" = "8:http://www.plcsimulator.org/support"
         "Title" = "8:Modbus RTU,TCP simulator"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Conrad Braam"
@@ -842,11 +816,11 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_4F340058B9654A08B1BF8A0C1E29C087"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_106CAED0BA914EA6A764E16445A77A06"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:policy_9_0_Microsoft_VC90_CRT_x86.msm"
+            "SourcePath" = "8:microsoft_vc90_debugmfc_x86.msm"
                 "Properties"
                 {
                 }
@@ -856,11 +830,11 @@
             "Feature" = "8:"
             "IsolateTo" = "8:"
             }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_6A881743D4584C8DA05268E9D8938665"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_672A7A77B09A4183AE96379E31E29A42"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:microsoft_vc90_mfc_x86.msm"
+            "SourcePath" = "8:microsoft_vc90_debugcrt_x86.msm"
                 "Properties"
                 {
                 }
@@ -870,11 +844,11 @@
             "Feature" = "8:"
             "IsolateTo" = "8:"
             }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_A684AB036192400CBC2696D5E3E0268B"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_8D3F5F3890864722A9893363F170D9E0"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:microsoft_vc90_crt_x86.msm"
+            "SourcePath" = "8:policy_9_0_Microsoft_VC90_DebugCRT_x86.msm"
                 "Properties"
                 {
                 }
@@ -884,11 +858,11 @@
             "Feature" = "8:"
             "IsolateTo" = "8:"
             }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_ED85F859AABD465B9DFCBB72C47DA0B1"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_E9BC31E015B2417FBB94568D0F8CA582"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:policy_9_0_Microsoft_VC90_MFC_x86.msm"
+            "SourcePath" = "8:policy_9_0_Microsoft_VC90_DebugMFC_x86.msm"
                 "Properties"
                 {
                 }
@@ -903,7 +877,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9F8FF748D27C4E4CB90D3A81805748B2"
             {
-            "SourcePath" = "8:..\\mod_RSsim\\Release\\mod_RSsim.exe"
+            "SourcePath" = "8:..\\mod_RSsim\\Debug\\mod_RSsim.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_755370B6D8694AC2ABCC23E7BDD63415"

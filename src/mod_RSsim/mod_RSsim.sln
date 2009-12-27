@@ -22,7 +22,9 @@ Global
 		{492645C1-2BFF-4C83-8C77-6F82D91CC490}.Release|Win32.ActiveCfg = Release|Win32
 		{492645C1-2BFF-4C83-8C77-6F82D91CC490}.Release|Win32.Build.0 = Release|Win32
 		{6F3BD965-FA28-4D9B-84E3-D99A64CA530B}.Debug|Win32.ActiveCfg = Debug
+		{6F3BD965-FA28-4D9B-84E3-D99A64CA530B}.Debug|Win32.Build.0 = Debug
 		{6F3BD965-FA28-4D9B-84E3-D99A64CA530B}.Release|Win32.ActiveCfg = Release
+		{6F3BD965-FA28-4D9B-84E3-D99A64CA530B}.Release|Win32.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
