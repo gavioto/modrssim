@@ -382,15 +382,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CSVFileImportDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CSVReader.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CSVReader.h"
 				>
 			</File>
 			<File
@@ -495,10 +487,6 @@
 			</File>
 			<File
 				RelativePath=".\FileEditCtrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FileEditCtrl.h"
 				>
 			</File>
 			<File
@@ -868,10 +856,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SimCmdLine.h"
-				>
-			</File>
-			<File
 				RelativePath="simport.cpp"
 				>
 				<FileConfiguration
@@ -1027,6 +1011,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CSVFileImportDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CSVReader.h"
+				>
+			</File>
+			<File
 				RelativePath="DDKSocket.h"
 				>
 			</File>
@@ -1048,6 +1040,10 @@
 			</File>
 			<File
 				RelativePath="FaultsDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FileEditCtrl.h"
 				>
 			</File>
 			<File
@@ -1099,10 +1095,6 @@
 				>
 			</File>
 			<File
-				RelativePath="ReadMe.txt"
-				>
-			</File>
-			<File
 				RelativePath="Resource.h"
 				>
 			</File>
@@ -1128,6 +1120,10 @@
 			</File>
 			<File
 				RelativePath="ServerSocketArray.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SimCmdLine.h"
 				>
 			</File>
 			<File
@@ -1303,6 +1299,14 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\license.txt"
+			>
+		</File>
+		<File
+			RelativePath="ReadMe.txt"
+			>
+		</File>
 		<File
 			RelativePath=".\versioninfo.txt"
 			>

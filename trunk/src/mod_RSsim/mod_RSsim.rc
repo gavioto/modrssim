@@ -954,7 +954,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,15,0,1
+ FILEVERSION 8,16,0,1
  PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -970,10 +970,12 @@ BEGIN
     BEGIN
         BLOCK "080904b0"
         BEGIN
+            VALUE "Comments", "GNU GLP v3"
+            VALUE "CompanyName", "Embedded Intelligence Limited"
             VALUE "FileDescription", "mod_RSsim protocol test simulator"
-            VALUE "FileVersion", "8, 15, 0, 1"
+            VALUE "FileVersion", "8, 16, 0, 1"
             VALUE "InternalName", "mod_RSsim"
-            VALUE "LegalCopyright", "Copyright (C) 2009"
+            VALUE "LegalCopyright", "Copyright (C) 2009 Embedded Intelligence Limited"
             VALUE "OriginalFilename", "mod_RSsim.exe"
             VALUE "ProductName", "mod_RSsim Simulator"
             VALUE "ProductVersion", "1, 0, 0, 1"
