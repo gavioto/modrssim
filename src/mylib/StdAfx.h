@@ -17,10 +17,11 @@
 
 #include <afx.h>
 #include <afxwin.h>
+#include <math.h>
 
 // TODO: reference additional headers your program requires here
 #include "mylib.h"
-#include "ado.h"
+//#include "ado.h"
 #include "statlink.h"
 #include "colorstatic.h"
 

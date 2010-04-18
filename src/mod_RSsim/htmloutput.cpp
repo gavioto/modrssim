@@ -48,9 +48,10 @@ CHTMLOutput::~CHTMLOutput()
    if (m_hInputFileEvent)
    {
       CloseHandle(m_hInputFileEvent);  // turn off notification
+      WaitForSingleObject(m_hThreadDoneEvent,15000);
    }
-   WaitForSingleObject(m_hThreadDoneEvent,15000);
-   Sleep(100);
+   
+   //Sleep(100);
    if (m_hShutDownEvent)
    {
       CloseHandle(m_hShutDownEvent);

@@ -79,7 +79,7 @@ CRS232Port* portPtr;
    portPtr->m_listenThreadStatus = RS232_EX_TERMINATED;
    {
    CString d;
-      d.Format("[Comms thread %4d Terminating.]\n", GetCurrentThreadId());
+      d.Format("[Comms thread %4X Terminating.]\n", GetCurrentThreadId());
       OutputDebugString(d);
    }
    portPtr->m_threadDeadEvent.SetEvent();// CEvent

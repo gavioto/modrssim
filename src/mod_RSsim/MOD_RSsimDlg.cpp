@@ -285,6 +285,7 @@ BEGIN_MESSAGE_MAP(CMOD_simDlg, CDialog)
 	ON_COMMAND(IDH_ABOUT, OnAbout)
 	ON_COMMAND(IDH_TRANSPARENCY, OnTransparencyToggle)
 	ON_COMMAND(IDH_TOGGLEDISP, OnToggleDisplay)
+	ON_COMMAND(IDH_COPYCLIP, OnCopyToClipBoard)
 	ON_BN_CLICKED(IDC_PAUSECOMMS, OnPausecomms)
 	ON_BN_CLICKED(IDC_TRACKCOMMS, OnTrackcomms)
 	ON_WM_VSCROLL()
@@ -1075,8 +1076,14 @@ BOOL ret;
 
       m_appSettingAdressHex = m_listCtrlData.IsAddressFormatHex();
       registryPath = APPREGISTRY_SETTINGSKEY;
-      key.Open(DRegKey::local_machine, registryPath);
-      key.QueryValue("WindowPositionX", &x);//(rect.left+ rect.right<<16)); 
+      key.Open(DRegKey::current_user, registryPath);
+      if (ERROR_SUCCESS != key.QueryValue("WindowPositionX", &x))	// gracefull upgrade
+	  {
+		  // re-open and retry using local-machine
+		  key.Close();
+		  key.Open(DRegKey::local_machine, registryPath);
+		  key.QueryValue("WindowPositionX", &x);
+	  }
       key.QueryValue("WindowPositionY", &y);//(rect.top+ rect.bottom<<16)); 
       rect.left = x & 0xFFFF;
       rect.right = x >> 16;
@@ -1234,7 +1241,12 @@ DWORD animationType;
    registryPath = APPREGISTRY_SETTINGSKEY;
 
    key.Open(DRegKey::local_machine, registryPath);
-   key.QueryValue("Port", m_portNameShort, &len); 
+   if (ERROR_SUCCESS != key.QueryValue("Port", m_portNameShort, &len))
+   {
+		key.Close();
+      key.Open(DRegKey::current_user, registryPath);
+      key.QueryValue("Port", m_portNameShort, &len);
+   }
    key.QueryValue("BaudRate",    &m_baud);
    key.QueryValue("ByteSize",    &m_byteSize);
    key.QueryValue("Parity",      &m_parity);
@@ -1342,8 +1354,13 @@ DWORD animationType;
    m_appSettingAdressHex = m_listCtrlData.IsAddressFormatHex();
    // Save the baud rate etc
    registryPath = APPREGISTRY_SETTINGSKEY;
-   key.Open(DRegKey::local_machine, registryPath);
-   key.SetValue("Port", m_portNameShort, strlen(m_portNameShort)); 
+   // for save, writting to current user
+   key.Open(DRegKey::current_user, registryPath);
+   if (ERROR_SUCCESS != key.SetValue("Port", m_portNameShort, strlen(m_portNameShort)))
+   {
+      pGlobalDialog->AddCommsDebugString("unable to save reg. values.");
+   }
+   
    key.SetValue("BaudRate", m_baud);
    key.SetValue("ByteSize", m_byteSize);
    key.SetValue("Parity", m_parity);
@@ -1426,6 +1443,9 @@ void CMOD_simDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
    switch (nID & 0xFFF0) 
    {
+   case ID_EDIT_COPY:
+      OnAboutboxBn();
+      break;
    case IDM_ABOUTBOX:
       OnAboutboxBn();
       break;
@@ -2793,7 +2813,9 @@ void CMOD_simDlg::OnCancel()
       m_appSettingAdressHex = m_listCtrlData.IsAddressFormatHex();
       // Save the baud rate etc
       registryPath = APPREGISTRY_SETTINGSKEY;
-      key.Open(DRegKey::local_machine, registryPath);
+      
+      // save to current user
+      key.Open(DRegKey::current_user, registryPath);
       key.SetValue("WindowPositionX", (rect.left+ (rect.right<<16))); 
       key.SetValue("WindowPositionY", (rect.top+ (rect.bottom<<16))); 
    }
@@ -3416,6 +3438,51 @@ void CMOD_simDlg::OnTransparencyToggle()
 {
 	// TODO: Add your command handler code here
    OnAlphablendFlip();	
+}
+
+// ------------------------------ SendToClipboard ------------------------------
+BOOL CMOD_simDlg::SendToClipboard(const CString & s)
+{
+   HGLOBAL mem = ::GlobalAlloc(GMEM_MOVEABLE, s.GetLength() + 1);
+   if(mem == NULL)
+      return FALSE;
+   LPTSTR p = (LPTSTR)::GlobalLock(mem);
+   lstrcpy(p, (LPCTSTR)s);
+   ::GlobalUnlock(mem);
+
+   if(!OpenClipboard())
+   {
+      ::GlobalFree(mem);
+      return FALSE;
+   }
+   EmptyClipboard();
+   SetClipboardData(CF_TEXT, mem);
+   CloseClipboard();
+   return TRUE;
+}
+
+// ---------------------------------- OnCopyToClipBoard ------------------------
+// CTRL-Insert (Copy contents of the debugger list to the clipboard)
+void CMOD_simDlg::OnCopyToClipBoard()
+{
+   CString data;
+   CString itemBuff;
+   CWaitCursor wait;    // display wait cursor - long running loop.
+
+   EnterCriticalSection(&debuggerCritSection);
+   // dump the comms debugger listbox into a string
+   int items = m_commsListBox.GetCount();
+   int itemIndex =0;
+   while (itemIndex < items)
+   {
+      m_commsListBox.GetText( itemIndex, itemBuff);
+      itemBuff += "\r\n";
+      data += itemBuff;
+      itemIndex++;
+   }
+   LeaveCriticalSection(&debuggerCritSection);
+
+   SendToClipboard(data);
 }
 
 /////////////////////////////////////////////////////////////////////////////////

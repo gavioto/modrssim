@@ -332,6 +332,8 @@
 #define IDS_MSGCSVSTARTPROCESSING       32799
 #define ID_BUTTONHELP                   32799
 #define IDS_MSGCSVSTARTPROCESSING_MAN   32800
+#define ID_COPYCLIP                     32800
+#define IDH_COPYCLIP                    32800
 #define IDS_MYBLOGURL                   32801
 #define IDS_HOMEPAGEURL                 32802
 #define IDH_SETTINGS                    57664
@@ -341,7 +343,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        164
-#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_COMMAND_VALUE         32802
 #define _APS_NEXT_CONTROL_VALUE         1226
 #define _APS_NEXT_SYMED_VALUE           117
 #endif

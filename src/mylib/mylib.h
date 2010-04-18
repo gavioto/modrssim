@@ -44,7 +44,7 @@
 
 #endif
 
-#include "ado.h"
+//#include "ado.h"
 #include "statlink.h"
 #include "colorstatic.h"
 #include "microtick.h"
