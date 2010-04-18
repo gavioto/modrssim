@@ -2,8 +2,9 @@
 //
 // FILE: README.cpp
 //
-// Mod_RSSim (c) Embedded Intelligence Ltd. 1993,2009
-// AUTHOR: Conrad Braam.  http://www.plcsimulator.org
+// Mod_RSSim (c) Embedded Intelligence Ltd. 1993,2009 http://www.embeddedintelligence.co.uk
+// AUTHOR: Conrad Braam.  
+// Homepage: http://www.plcsimulator.org
 // email: zaphodikus@hotmail.com
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -193,6 +194,7 @@
 //       8.14    14/12/09 - Animation refresh counting not taking effect. Help screenshots updated.
 //       8.15    18/12/09 - Version update check added to About Box. Application version resource added. Internal help updated
 //       8.16    27/12/09 - GPL v3. 
+//       8.17    18/04/10 - Shutdown does not dither waiting for HTML publisher shutdown. CTRL-Insert coppies debugger contents to clipboard. Registyr key setting move from HKLM to HKCU
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
@@ -211,6 +213,6 @@
 
 #include "stdafx.h"  // ha ha
 
-//const CHAR lpsMyAppVersion[10] = "8.15\0";
+//const CHAR lpsMyAppVersion[10] = "8.15\0"; moed ro resource VS_VERSION_INFO
 char lpsMyAppVersion[10] = "n.n";
 

@@ -600,17 +600,18 @@ IDB_SINGLESLAVEMODE     BITMAP                  "res\\multisla.bmp"
 
 IDD_TI_SIM_DIALOG ACCELERATORS 
 BEGIN
-    "A",            IDH_SAVE,               VIRTKEY, CONTROL, NOINVERT
     "B",            IDH_ABOUT,              VIRTKEY, CONTROL, NOINVERT
-    "C",            IDH_TOGGLEDISP,         VIRTKEY, CONTROL, NOINVERT
+    "M",            IDH_EMULATION,          VIRTKEY, CONTROL, NOINVERT
     "E",            IDH_ERASE,              VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          IDH_HELPKEY,            VIRTKEY, NOINVERT
     "J",            IDH_INJECTERROR,        VIRTKEY, CONTROL, NOINVERT
     "L",            IDH_LOAD,               VIRTKEY, CONTROL, NOINVERT
-    "M",            IDH_EMULATION,          VIRTKEY, CONTROL, NOINVERT
     "N",            IDH_NOISE,              VIRTKEY, CONTROL, NOINVERT
+    "A",            IDH_SAVE,               VIRTKEY, CONTROL, NOINVERT
     "S",            IDH_SETTINGS,           VIRTKEY, CONTROL, NOINVERT
+    "C",            IDH_TOGGLEDISP,         VIRTKEY, CONTROL, NOINVERT
     "T",            IDH_TRANSPARENCY,       VIRTKEY, CONTROL, NOINVERT
-    VK_F1,          IDH_HELPKEY,            VIRTKEY, NOINVERT
+    VK_INSERT,      IDH_COPYCLIP,           VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -954,7 +955,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,16,0,1
+ FILEVERSION 8,17,0,1
  PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -973,7 +974,7 @@ BEGIN
             VALUE "Comments", "GNU GLP v3"
             VALUE "CompanyName", "Embedded Intelligence Limited"
             VALUE "FileDescription", "mod_RSsim protocol test simulator"
-            VALUE "FileVersion", "8, 16, 0, 1"
+            VALUE "FileVersion", "8, 17, 0, 1"
             VALUE "InternalName", "mod_RSsim"
             VALUE "LegalCopyright", "Copyright (C) 2009 Embedded Intelligence Limited"
             VALUE "OriginalFilename", "mod_RSsim.exe"

@@ -2179,7 +2179,7 @@ BOOL CFileEditCtrl::SetFlags(DWORD dwFlags)
         }
         if (!m_pBROWSEINFO)
         {   // create the BROWSEINFO structure
-            m_pBROWSEINFO = new BROWSEINFO();
+            m_pBROWSEINFO = (BROWSEINFO*)malloc(sizeof(BROWSEINFO));
             if (!m_pBROWSEINFO)
             {
                 TRACE (_T("CFileEditCtrl::SetFlags() : Failed to create the BROWSEINFO structure\n"));
@@ -2231,13 +2231,13 @@ BOOL CFileEditCtrl::SetFlags(DWORD dwFlags)
                 ASSERT (FALSE);
                 return FALSE;
             }
-            if (m_pBROWSEINFO)
-            {
-                delete m_pBROWSEINFO;               // delete the BROWSEINFO structure
-                m_pBROWSEINFO = NULL;
-            }
         }
         
+         if (m_pBROWSEINFO)
+         {
+             free(m_pBROWSEINFO);               // delete the BROWSEINFO structure
+             m_pBROWSEINFO = NULL;
+         }
         m_pCFileDialog->SetOpenSave(bOpen);
 
         if (bOpen)

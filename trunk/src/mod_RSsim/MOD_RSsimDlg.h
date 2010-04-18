@@ -110,6 +110,7 @@ public:
    void SetupListViewControl(const DWORD cols);
    void LoadApplicationSettings();
    void SaveApplicationSettings();
+   BOOL SendToClipboard(const CString & s);
 
    DWORD GetWordValue(const LONG area, const DWORD startBit, const DWORD numBits);
    void  SetWordValue(const LONG area, const DWORD startBit, const DWORD dwValue, const DWORD numBits);
@@ -396,6 +397,7 @@ public:
 	afx_msg void OnAbout();
 	afx_msg void OnTransparencyToggle();
 	afx_msg void OnToggleDisplay();
+   afx_msg void OnCopyToClipBoard();
 	afx_msg void OnPausecomms();
 	afx_msg void OnTrackcomms();
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
