@@ -192,6 +192,7 @@
 //		   8.13    01/11/09 - thanks to Joan Lluch-Zorrilla write single coil response is now correct. Compile options set for compile size, resources trimmed slightly to shink EXE a little.
 //       8.14    14/12/09 - Animation refresh counting not taking effect. Help screenshots updated.
 //       8.15    18/12/09 - Version update check added to About Box. Application version resource added. Internal help updated
+//       8.16    27/12/09 - GPL v3. 
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit

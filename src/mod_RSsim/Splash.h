@@ -1,10 +1,29 @@
+// Splash.h : header file
+//
 // CG: This file was added by the Splash Screen component.
+//
+// Mod_RSSim (c) Embedded Intelligence Ltd. 1993,2009
+// AUTHOR: Conrad Braam.  http://www.plcsimulator.org
+// email: zaphodikus@hotmail.com
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU Affero General Public License as
+//    published by the Free Software Foundation, either version 3 of the
+//    License, or (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU Affero General Public License for more details.
+//
+//    You should have received a copy of the GNU Affero General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 
 #ifndef _SPLASH_SCRN_
 #define _SPLASH_SCRN_
 
-// Splash.h : header file
-//
+#define INVALID_SPLASH_TXT_COLOR    (0xFF000000)
 
 /////////////////////////////////////////////////////////////////////////////
 //   Splash Screen class
@@ -43,11 +62,13 @@ protected:
 	void HideSplashScreen();
 	static BOOL c_bShowSplashWnd;
 	static CSplashWnd* c_pSplashWnd;
+   void AddDrawText(CPaintDC& dc, const char *text, COLORREF color= INVALID_SPLASH_TXT_COLOR);
 
    static int   m_splashShowCount;
    CFont *  m_pFont;
    CFont *  m_pLargeFont;
 
+   int m_textDrawPosY;    // used by AddDrawText()
 
 // Generated message map functions
 protected:

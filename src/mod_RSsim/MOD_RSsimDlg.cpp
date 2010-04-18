@@ -1302,7 +1302,7 @@ DWORD animationType;
 
 
    if (!m_registration.CheckRegistrationKey(m_registeredUser, m_registeredKey))
-      CSplashWnd::SetWaitCount(5); // splash screen stays up longer if U not registered
+      CSplashWnd::SetWaitCount(9); // splash screen stays up longer if U not registered
    else
       CSplashWnd::GetSWnd()->InvalidateRect(NULL); // Force a splash re-paint with registration info
 
