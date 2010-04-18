@@ -37,12 +37,18 @@ CSplashWnd* CSplashWnd::c_pSplashWnd;
 int   CSplashWnd::m_splashShowCount;
 int   CSplashWnd::m_splashShowDelay=1;
 
+// Dynamic-text area control constants
+#define LEFTMARGIN         36
+#define TOPMARGIN          236      // 305
+
+
 // ------------------------------- CSplashWnd --------------------------------
 // constructor
 CSplashWnd::CSplashWnd()
 {
    m_pFont = NULL;
    m_pLargeFont = NULL;
+   m_textDrawPosY = TOPMARGIN;
 }
 
 CSplashWnd::~CSplashWnd()
@@ -157,13 +163,26 @@ int CSplashWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-#define LEFTMARGIN 45
+// ------------------------------- AddDrawText --------------------------
+// output a line of text on top of the splash, and incremnt a vertical pixel position
+void CSplashWnd::AddDrawText(CPaintDC& dc, const char *text, COLORREF color/*= INVALID_SPLASH_TXT_COLOR*/)
+{
+LOGFONT logFont;
+   if (color != INVALID_SPLASH_TXT_COLOR)
+      dc.SetTextColor(color);
+   dc.TextOut(LEFTMARGIN, m_textDrawPosY, text);
+   
+   // increment vertical positioning
+   dc.GetCurrentFont()->GetLogFont(&logFont);
+   m_textDrawPosY += (int)(logFont.lfHeight * 0.95f); //DRAWTEXT_HEIGHT;
+}
+
 
 // --------------------------------- OnPaint ------------------------------
 void CSplashWnd::OnPaint()
 {
 CFont *pOldFont;
-CRect clientRect;
+//CRect clientRect;
 CString tempText;
 
    CPaintDC dc(this);
@@ -186,8 +205,8 @@ CString tempText;
    LOGFONT logFont;
 
       memset(&logFont,0,sizeof(logFont));
-      logFont.lfHeight = 18;
-      logFont.lfWeight = 700;
+      logFont.lfHeight = 16;
+      logFont.lfWeight = 400;
       strcpy_s(logFont.lfFaceName, sizeof(logFont.lfFaceName), "Arial");
       m_pFont = new CFont;
       m_pFont->CreateFontIndirect(&logFont);
@@ -200,44 +219,40 @@ CString tempText;
 
    ASSERT(NULL != m_pFont);
    pOldFont = (CFont*)dc.SelectObject(m_pLargeFont);
-   GetClientRect(&clientRect);
+   //GetClientRect(&clientRect);
 
-   // blue text
    dc.SetBkMode(TRANSPARENT);
-   dc.SetTextColor(RGB(5,5,255));
-   //tempText = "MODBUS Serial-RTU, TCP/IP and";
-   //dc.TextOut(LEFTMARGIN, 170, tempText);
-   //tempText = "Allen Bradley DF1 Protocols with \"Simulation\"";
-   //dc.TextOut(LEFTMARGIN, 200, tempText);
+
    tempText.Format("Version %s", lpsMyAppVersion);
-   dc.TextOut(LEFTMARGIN, 240, tempText);
+   AddDrawText(dc, tempText, RGB(5,5,255));   // blue
 
    // smaller white text
-   dc.SetTextColor(RGB(255,255,255));
    dc.SelectObject(m_pFont);
-   tempText = "Mod_RSSim is an unsupported utility, created";
-   dc.TextOut(LEFTMARGIN,305, tempText);
-   tempText = "for testing communications protocol drivers.";
-   dc.TextOut(LEFTMARGIN,325, tempText);
-   tempText = "This application may be freely distributed without re-";
-   dc.TextOut(LEFTMARGIN,345, tempText);
-   tempText = "compilation as long as this notice is not removed.";
-   dc.TextOut(LEFTMARGIN,365, tempText);
-   tempText = "WEB: www.plcsimulator.org";
-   dc.TextOut(LEFTMARGIN,385, tempText);
-   tempText.Format("Comments, mail the author : %s", lpAuthor_email); //zaphodikus@hotmail.com";
-   dc.TextOut(LEFTMARGIN,425, tempText);
-   
+
+   AddDrawText(dc, "Mod_RSSim is a test utility used to test communications protocol", RGB(255,255,255));  // white
+   AddDrawText(dc, "drivers. (c) 1993,2009 Embedded Intelligence Limited"); 
+   tempText.Format("Email: %s or WEB: www.plcsimulator.org", lpAuthor_email); //zaphodikus@hotmail.com";
+   AddDrawText(dc, tempText);
+   AddDrawText(dc, " ");
+   AddDrawText(dc, "This program is free software: you can redistribute it and/or modify");
+   AddDrawText(dc, "it under the terms of the GNU General Public License as published by");
+   AddDrawText(dc, "the Free Software Foundation, either version 3 of the License, or");
+   AddDrawText(dc, "(at your option) any later version.");
+   AddDrawText(dc, "This program is distributed in the hope that it will be useful,");
+   AddDrawText(dc, "but WITHOUT ANY WARRANTY; without even the implied warranty of");
+   AddDrawText(dc, "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+   AddDrawText(dc, "GNU General Public License for more details.");
+   AddDrawText(dc, " ");
+
    // registration code
-   dc.SetTextColor(RGB(175,5,5));
    if (pGlobalDialog->m_registration.IsRegistered())
       tempText.Format("Registered user: %s   Key: %s", pGlobalDialog->m_registeredUser, pGlobalDialog->m_registeredKey);
    else
       tempText.Format("Unregistered user");
-   dc.TextOut(LEFTMARGIN,275, tempText);
+   AddDrawText(dc, tempText, RGB(175,5,5));   // dark red
 
 
-   //////////////////////////////////////////////////////////
+   // release DC resources
    dc.SelectObject(pOldFont);
 	dcImage.SelectObject(pOldBitmap);
 }
