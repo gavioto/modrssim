@@ -91,6 +91,7 @@ BEGIN
     PUSHBUTTON      "Start-up\nSplash",IDC_SPLASH,248,146,50,24,BS_CENTER | BS_MULTILINE
     LTEXT           "Static",IDC_CREDITSTATIC,7,7,232,120,0,WS_EX_CLIENTEDGE
     DEFPUSHBUTTON   "Updates",IDB_CHECKUPDATES,248,23,50,14,WS_GROUP
+    DEFPUSHBUTTON   "Register",IDB_EDITREGISTRATION,248,40,50,14,WS_GROUP
 END
 
 IDD_TI_SIM_DIALOG DIALOGEX 0, 0, 434, 247
@@ -929,6 +930,20 @@ BEGIN
     PUSHBUTTON      "Load File...",IDC_QUICKIMPORT,369,42,50,14
 END
 
+IDD_REGISTRATIONDLG DIALOGEX 0, 0, 209, 92
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "User Self Registration:"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,49,71,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,111,71,50,14
+    EDITTEXT        IDC_USERNAME,69,18,118,14,ES_AUTOHSCROLL
+    LTEXT           "User Name",IDC_STATIC,18,21,36,8
+    GROUPBOX        "Enter Registration key codes",IDC_STATIC,7,7,195,52
+    EDITTEXT        IDC_REGISTRATION_KEY,69,37,53,14,ES_AUTOHSCROLL
+    LTEXT           "KEY (hex)",IDC_STATIC,19,41,32,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -944,6 +959,14 @@ BEGIN
         RIGHTMARGIN, 419
         TOPMARGIN, 7
         BOTTOMMARGIN, 74
+    END
+
+    IDD_REGISTRATIONDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 202
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 85
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -974,7 +997,7 @@ BEGIN
             VALUE "Comments", "GNU GLP v3"
             VALUE "CompanyName", "Embedded Intelligence Limited"
             VALUE "FileDescription", "mod_RSsim protocol test simulator"
-            VALUE "FileVersion", "8, 17, 0, 1"
+            VALUE "FileVersion", "8, 18, 0, 1"
             VALUE "InternalName", "mod_RSsim"
             VALUE "LegalCopyright", "Copyright (C) 2009 Embedded Intelligence Limited"
             VALUE "OriginalFilename", "mod_RSsim.exe"

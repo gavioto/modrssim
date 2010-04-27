@@ -195,6 +195,7 @@
 //       8.15    18/12/09 - Version update check added to About Box. Application version resource added. Internal help updated
 //       8.16    27/12/09 - GPL v3. 
 //       8.17    18/04/10 - Shutdown does not dither waiting for HTML publisher shutdown. CTRL-Insert coppies debugger contents to clipboard. Registyr key setting move from HKLM to HKCU
+//       8.18    27/04/10 - UAC - should now be Vista compliant, Registration dialog screen added.
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
@@ -213,6 +214,7 @@
 
 #include "stdafx.h"  // ha ha
 
-//const CHAR lpsMyAppVersion[10] = "8.15\0"; moed ro resource VS_VERSION_INFO
+//const CHAR lpsMyAppVersion[10] = "8.15\0"; // moved to resource mod_rssim.rc : VS_VERSION_INFO
+// remember to update versioninfo.txt
 char lpsMyAppVersion[10] = "n.n";
 

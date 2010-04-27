@@ -25,6 +25,7 @@
 #include "StarWarsCtrl.h"
 #include "EasterDlg.h"
 #include "UpdateCheck.h"
+#include "SelfRegistrationDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,10 +76,9 @@ CRegistrationTest::CRegistrationTest()
 // ----------------------------- CheckRegistrationKey ---------------------
 // New function that verifes some regisry values with a modbus CRC (twice)
 // USERNAME + CRC + CRC
-BOOL CRegistrationTest::CheckRegistrationKey(LPCTSTR name, LPCTSTR key)
+BOOL CRegistrationTest::CheckRegistrationKey(LPCTSTR name, LPCTSTR key, bool suppressUI )
 {
 BOOL ret;
-
 CString userName(name);
 CHAR *input;
 WORD sum1=0;
@@ -98,18 +98,23 @@ CString appendSumText, totalSumText;
    userName.ReleaseBuffer();
    appendSumText.Format("%02X%02X", HIBYTE(sum1), LOBYTE(sum1));
    
-   // both CRC's together form the new CRC, check for a match
-   totalSumText += appendSumText;
-   ret = (strcmp(key, totalSumText) == 0);
+	// both CRC's together form the new CRC, check for a match
+	totalSumText += appendSumText;
+	ret = (strcmp(key, totalSumText) == 0);
+	if (( !suppressUI ) && ( !ret ))
+		{
+			// "Unregistered version!"
+			ShowRegistrationMessage();
+		}
+	return(ret);
+}
 
-   if (!ret)
-   {
-      // "Unregistered version!"
-      ShowRegistrationMessage();
-   }
-   // remember our state
-   m_registeredOK = ret;
-   return(ret);
+BOOL CRegistrationTest::CheckRegistrationKey(LPCTSTR name, LPCTSTR key)
+{
+	BOOL ret = CheckRegistrationKey(name, key, FALSE);
+	// remember our state
+	m_registeredOK = ret;
+	return(ret);
 }
 
 
@@ -177,6 +182,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	ON_BN_CLICKED(IDC_SPLASH, OnSplash)
 	//}}AFX_MSG_MAP
    ON_BN_CLICKED(IDB_CHECKUPDATES, &CAboutDlg::OnBnClickedCheckupdates)
+   ON_BN_CLICKED(IDB_EDITREGISTRATION, &CAboutDlg::OnBnClickedEditregistration)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -185,7 +191,6 @@ END_MESSAGE_MAP()
 BOOL CAboutDlg::OnInitDialog() 
 {
 CString mailLink,versionStr;
-CString reg;   //registration info
 CString title;
 	
    CDialog::OnInitDialog();
@@ -211,11 +216,7 @@ CString title;
    mailLink.Format("mailto:%s?subject=%s%s", lpAuthor_email, "mod_rssim", lpsMyAppVersion);  // append it
    m_emaillink1.m_link = mailLink;
 
-   if (m_registeredOK)
-      reg.Format("Registered user: %s   Key: %s", m_registeredUser, m_registeredKey);
-   else
-      reg.Format("Unregistered user");
-   SetDlgItemText(IDC_REGISTRATIONINFO, reg);
+   SetRegStatus();
    //TOOLTIPS START
    m_ToolTip.Create (this);
    m_ToolTip.Activate (TRUE);
@@ -250,6 +251,16 @@ CString title;
 
    return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION; OCX Property Pages should return FALSE
+}
+
+void CAboutDlg::SetRegStatus()
+{
+CString reg;   //registration info
+   if (m_registeredOK)
+      reg.Format("Registered user: %s   Key: %s", m_registeredUser, m_registeredKey);
+   else
+      reg.Format("Unregistered user");
+   SetDlgItemText(IDC_REGISTRATIONINFO, reg);
 }
 
 // ------------------------ OnTTN_NeedText ---------------------------------
@@ -328,4 +339,18 @@ void CAboutDlg::OnBnClickedCheckupdates()
 
 		checker.Check(CString ("http://sites.google.com/site/plcsimulator/Home/versioninfo.txt?attredirects=0&d=1"));
 
+}
+
+void CAboutDlg::OnBnClickedEditregistration()
+{
+	// TODO: Add your control notification handler code here
+	CSelfRegistrationDlg dlg;
+
+	if (IDOK == dlg.DoModal())
+	{
+		m_registeredOK = TRUE;
+		m_registeredUser= dlg.m_username;
+		m_registeredKey = dlg.m_registrationkey;
+		SetRegStatus();
+	}
 }

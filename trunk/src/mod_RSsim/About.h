@@ -55,7 +55,7 @@ protected:
    // TOOLTIPS
    CToolTipCtrl    m_ToolTip;
    BOOL     OnTTN_NeedText( UINT id, NMHDR * pTTTStruct, LRESULT * pResult );
-
+	void SetRegStatus();
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
@@ -77,6 +77,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
    afx_msg void OnBnClickedCheckupdates();
+   afx_msg void OnBnClickedEditregistration();
 };
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +96,7 @@ public:
 
    // perform the check
    BOOL CheckRegistrationKey(LPCTSTR name, LPCTSTR key);
+   static BOOL CheckRegistrationKey(LPCTSTR name, LPCTSTR key, bool suppressUI);
 
    BOOL IsRegistered() {return(m_registeredOK);};
 

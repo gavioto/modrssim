@@ -772,6 +772,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\SelfRegistrationDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath="serverRS232array.cpp"
 				>
 				<FileConfiguration
@@ -1104,6 +1108,10 @@
 			</File>
 			<File
 				RelativePath="RS232Port.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SelfRegistrationDlg.h"
 				>
 			</File>
 			<File

@@ -182,7 +182,6 @@ LOGFONT logFont;
 void CSplashWnd::OnPaint()
 {
 CFont *pOldFont;
-//CRect clientRect;
 CString tempText;
 
    CPaintDC dc(this);
@@ -219,9 +218,9 @@ CString tempText;
 
    ASSERT(NULL != m_pFont);
    pOldFont = (CFont*)dc.SelectObject(m_pLargeFont);
-   //GetClientRect(&clientRect);
 
    dc.SetBkMode(TRANSPARENT);
+   m_textDrawPosY = TOPMARGIN;
 
    tempText.Format("Version %s", lpsMyAppVersion);
    AddDrawText(dc, tempText, RGB(5,5,255));   // blue
