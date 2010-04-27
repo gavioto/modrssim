@@ -64,6 +64,7 @@
 #define IDM_READONLY                    0x00A0
 #define IDB_SINGLESLAVEMODE             161
 #define IDD_CSV_IMPORTDLG               161
+#define IDD_REGISTRATIONDLG             164
 #define IDC_DATALIST                    1000
 #define IDC_COMBOAREA                   1001
 #define IDC_SETTINGS                    1002
@@ -303,6 +304,10 @@
 #define IDC_IMPORTENABLED               1223
 #define IDC_QUICKIMPORT                 1224
 #define IDB_CHECKUPDATES                1225
+#define IDC_USERNAME                    1226
+#define IDB_CHECKUPDATES2               1226
+#define IDB_EDITREGISTRATION            1226
+#define IDC_REGISTRATION_KEY            1227
 #define IDC_SHOWCOMMSTIME               1300
 #define IDB_ALPHABLEND60                32779
 #define IDB_ALPHABLEND70                32780
@@ -342,9 +347,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_RESOURCE_VALUE        165
 #define _APS_NEXT_COMMAND_VALUE         32802
-#define _APS_NEXT_CONTROL_VALUE         1226
+#define _APS_NEXT_CONTROL_VALUE         1227
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif
