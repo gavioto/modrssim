@@ -65,7 +65,6 @@ WORD UnPackASCIIField(BYTE **pBuffer, WORD length, BOOL &);
 
 WORD SwapBytes(WORD wrd);
 
-void PackASCIIField(CHAR **pBuffer, WORD value, WORD length);
 
 LONG RegDelete(  HKEY hParentKey,	// handle of open key 
                  LPCTSTR lpSubKey 	// address of name of subkey to delete 

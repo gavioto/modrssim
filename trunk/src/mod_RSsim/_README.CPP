@@ -195,7 +195,8 @@
 //       8.15    18/12/09 - Version update check added to About Box. Application version resource added. Internal help updated
 //       8.16    27/12/09 - GPL v3. 
 //       8.17    18/04/10 - Shutdown does not dither waiting for HTML publisher shutdown. CTRL-Insert coppies debugger contents to clipboard. Registyr key setting move from HKLM to HKCU
-//       8.18    27/04/10 - UAC - should now be Vista compliant, Registration dialog screen added.
+//       8.18    27/04/10 - (ver 8.17) UAC - should now be Vista compliant, Registration dialog screen added.
+//       8.19    03/05/10 - Source cleaned up, eliminated timer/CPU starvation for animation updates updating all registers
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit

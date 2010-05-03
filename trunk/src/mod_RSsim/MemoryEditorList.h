@@ -18,13 +18,10 @@
 // Address | bit 0..15 | total      (digitals)
 //
 #define NUMBER_LISTCOLS    18    // max # columns including the left-index
-#define WIDTH_LISTCOL1     80    // index col width
+#define WIDTH_LISTCOL1     86    // index col width
 #define WIDTH_LISTCOLS     53    // other cols width
 #define WIDTH_LISTCOLBIT   33    // if col is a bit, make it narrower
 #define WIDTH_LISTCOLTOTAL 65    // bit "total" col width
-
-//DWORD SwopWords(DWORD * x);
-//DWORD GetPLCMemoryLimit(DWORD area);
 
 
 /////////////////////////////////////////////////////////////////////////////

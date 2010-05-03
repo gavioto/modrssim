@@ -78,7 +78,7 @@ public:
    
    // GUI methods
    void FillComboBox(UINT id, char ** strTable, const DWORD currentsetting);
-   BOOL MyProcessingLoop(const int loops);
+   BOOL MyProcessingLoop(int loops);
    void SetupMySystemMenu(CMenu *pSysMenu);
    void SetupMyToolBar();
    void DoPlantSimulation();

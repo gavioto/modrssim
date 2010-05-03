@@ -25,6 +25,7 @@
 #include "stdafx.h"
 #include "MemoryEditorList.h"
 #include "EditMemoryDlg.h"
+#include "stringcvt.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,118 +57,7 @@ CHAR * ViewerFormatNames[8] =
    "char string"  //   VIEWFORMAT_CHAR
 };
 
-// ----------------------------- ConvertByteToASCII --------------------------
-void ConvertByteToASCII(CHAR * szString, const BYTE bValue)
-{
-   if (isgraph(bValue))
-      sprintf(szString, "%c", bValue);
-   else
-      sprintf(szString, "x%02X", bValue);
-}
 
-// ----------------------------- ConvertWordToASCII --------------------------
-// return ASCII text for a 16-bit register's contents.
-// This function maps non-printable chars into <xx> mnemonics
-void ConvertWordToASCII(CHAR * szString, const WORD wValue)
-{
-   ConvertByteToASCII(szString, HIBYTE(wValue));
-   strcat(szString," ");
-   ConvertByteToASCII(&szString[strlen(szString)], LOBYTE(wValue));
-}
-
-// CString overload of above function
-void ConvertWordToASCIICS(CString& csString, const WORD wValue)
-{
-char*p = csString.GetBufferSetLength(20);
-
-   ConvertWordToASCII(p, wValue);
-   csString.ReleaseBuffer();
-}
-
-
-
-
-// -------------------------- ConvertASCIIToWord ---------------------
-// reverse of ConvertWordToASCII
-void ConvertASCIIToWord(const char*String, WORD &wValue)
-{
-CString hiByteCS, loByteCS, inputString(String);
-int pos;
-BYTE hiByte, loByte;
-   // search for a space, split into 2 there
-   // check for x and interpret as hex
-   // else just convert it
-
-   pos = inputString.Find(' ');
-   if (pos >=1)
-   {
-      hiByteCS = inputString.Left(pos);
-      loByteCS = inputString.Mid(pos+1);
-      ConvertASCIIToByte(hiByteCS, hiByte);
-      ConvertASCIIToByte(loByteCS, loByte);
-      wValue = loByte + (hiByte<<8);
-   }
-   else
-   {
-      if (inputString.GetLength() == 2)
-      {
-         inputString.Insert(1, ' ');
-         ConvertASCIIToWord(inputString, wValue);
-      }
-      else
-      {
-         ConvertASCIIToByte(inputString, hiByte);
-         wValue = hiByte;
-      }
-   }
-}
-
-// ------------------------- GetPLCMemoryLimit --------------------------------
-DWORD CMOD_simDlg::GetPLCMemoryLimit(DWORD area)
-{
-   //if (m_busyCreatingServers)
-   //   return(0);
-   return PLCMemory[area].GetSize();
-}
-
-// ---------------------------- GetPLCMemoryValue -----------------------------
-DWORD CMOD_simDlg::GetPLCMemoryValue(DWORD area, DWORD offset, WORD type)
-{
-DWORD dwValue=0;
-
-   ASSERT(area < (DWORD)GetNumMemoryAreas());
-   if (offset >= MAX_MOD_MEMWORDS)
-      return (0);
-   //ASSERT(offset < MAX_MOD_MEMWORDS);
-   switch(type)
-   {
-   case CMemoryEditorList::VIEWFORMAT_DECIMAL:
-   case CMemoryEditorList::VIEWFORMAT_HEX:
-   case CMemoryEditorList::VIEWFORMAT_WORD:
-      dwValue = PLCMemory[area][offset];
-      break;
-   case CMemoryEditorList::VIEWFORMAT_DWORD:
-   case CMemoryEditorList::VIEWFORMAT_LONG:
-      dwValue = PLCMemory[area][offset]<<16;
-      if (offset < MAX_MOD_MEMWORDS)
-         dwValue += PLCMemory[area][offset+1];
-      break;
-   case CMemoryEditorList::VIEWFORMAT_FLOAT:
-      dwValue = PLCMemory[area][offset]<<16;
-      if (offset < MAX_MOD_MEMWORDS)
-         dwValue += PLCMemory[area][offset+1];
-      if (pGlobalDialog->IsClone())
-         SwopWords(&dwValue);          //clone PLC's have a swapped float
-      break;
-   case CMemoryEditorList::VIEWFORMAT_CHAR:
-      dwValue = PLCMemory[area][offset];
-      break;
-   default:
-      ASSERT(0);
-      break;
-   }
-   return (dwValue);
-} // GetPLCMemoryValue
 
 /////////////////////////////////////////////////////////////////////////////
 // CMemoryEditorList
@@ -761,16 +651,16 @@ TCHAR szString[MAX_PATH];
          sprintf(szString, addrFormat, offset+absItemNumber, offset+addrEndItem);
          lstrcpyn(lpdi->item.pszText, szString, lpdi->item.cchTextMax);
       }
+   }
 
-      if(lpdi->item.mask & LVIF_IMAGE)
-      {
-         lpdi->item.iImage = 0;
-      }
+   if(lpdi->item.mask & LVIF_IMAGE)
+   {
+      lpdi->item.iImage = 0;
+   }
 
-      if(lpdi->item.mask & LVIF_INDENT)
-      {
-         lpdi->item.iIndent = 0;
-      }
+   if(lpdi->item.mask & LVIF_INDENT)
+   {
+      lpdi->item.iIndent = 0;
    }
    
    return 0;
@@ -781,8 +671,6 @@ TCHAR szString[MAX_PATH];
 void CMemoryEditorList::OnCustomdrawMyList ( NMHDR* pNMHDR, LRESULT* pResult )
 {
 NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
-//int      viewDataFormat = GetViewFormat();
-
 
     // Take the default processing unless we set this to something else below.
     *pResult = CDRF_DODEFAULT;
@@ -811,18 +699,18 @@ NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
         // The background color will be light blue for column 0, red for
         // column 1, and black for column 2.
     
-        COLORREF crText, crBkgnd;
+         COLORREF crText, crBkgnd;
         
-        if (( 0 == pLVCD->iSubItem ) || (!pGlobalDialog->PLCIsBitMemory(m_memAreaDisplayed)) || (17 == pLVCD->iSubItem))
-            {
+         if (( 0 == pLVCD->iSubItem ) || (17 == pLVCD->iSubItem) || (!pGlobalDialog->PLCIsBitMemory(m_memAreaDisplayed)) )
+         {
             crText = RGB(0,0,0);
             crBkgnd = m_backSysColor;//RGB(255,255,255);
-            }
-        else 
-        {
-         LV_DISPINFO di;
-         CHAR chText[80];
-         int    nItem = static_cast<int>( pLVCD->nmcd.dwItemSpec );
+         }
+         else 
+         {  // Display a data item, which is a BIT data type:
+            LV_DISPINFO di;
+            CHAR chText[20];
+            int    nItem = static_cast<int>( pLVCD->nmcd.dwItemSpec );
 
             di.item.iItem = nItem;
             di.item.iSubItem = pLVCD->iSubItem;
@@ -832,9 +720,7 @@ NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 
             GetListViewDISPINFO((LPARAM)&di);
             if (di.item.pszText[0] == '1')
-            {
-               //crText = RGB(255,50,50);
-               //crBkgnd = m_backSysColor;
+            {  // display digital 1 with gray background for better LCD contrast
                crText = RGB(0,0,0);
                crBkgnd = m_backSysColorFade;//RGB(205,205,205);//m_backSysColor;
             }
@@ -844,18 +730,6 @@ NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
                crBkgnd = m_backSysColor;
             }
         }
-        /*
-           if ( 1 == pLVCD->iSubItem )
-            {
-            crText = RGB(0,255,0);
-            crBkgnd = m_backSysColor;//RGB(255,0,0);
-            }
-        else
-            {
-            crText = RGB(128,128,255);
-            crBkgnd = m_backSysColor;//RGB(0,0,0);
-            }
-        */
         // Store the colors back in the NMLVCUSTOMDRAW struct.
         pLVCD->clrText = crText;
         pLVCD->clrTextBk = crBkgnd;

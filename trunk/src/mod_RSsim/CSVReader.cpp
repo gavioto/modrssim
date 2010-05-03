@@ -16,27 +16,22 @@
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-/* class CCSVTextImporter
- *         the class that imports a 17-column CSV file
- * [internal]
- * class CCSVTextLine implementation
- *       CCSVTextFile implementation
- *       CCSVLineArray implementation
- *
- *
- *****************************************************************************/
+// class CCSVTextImporter
+//         the class that imports a 17-column CSV file
+// [internal]
+// class CCSVTextLine implementation
+//       CCSVTextFile implementation
+//       CCSVLineArray implementation
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "resource.h"
 
 
-//IMPLEMENT_DYNAMIC( CCSVTextLine, CString)
-
 //////////////////////////////////////////////////////////////////////////////
 // class CCSVTextLine
-// implementation
-
-// this class is an extension of CString, all it does is contruct from 
+// implementation:  this class is an extension of CString, all it does is contruct from 
 // a standard string. Then it allows you to interrogate the string which
 // is seperated CSV style.
 // --------------------------- CCSVTextLine::CCSVTextLine ------------------

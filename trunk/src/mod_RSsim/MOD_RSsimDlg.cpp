@@ -44,8 +44,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define LOADREGMSGSTRING   "LOADREGISTERS"
-#define ASSERTMICROBOX(a) ASSERT(a >=0);ASSERT(a <STATIONTICKBOXES);
+#define LOADREGMSGSTRING      "LOADREGISTERS"
+#define ASSERTMICROBOX(a)     ASSERT(a >=0);ASSERT(a <STATIONTICKBOXES);
+#define ANIMATION_ANTISTARVATION_MS (50)
+#define MAX_COMMSDEBUGGER_BUFFER    (1000)   // max size for the pause buffer
+#define MAX_COMMSDEBUGGER_ENTRIES   (2000)   // listbox
+
 
 const UINT    wm_LoadRegisters = RegisterWindowMessage( LOADREGMSGSTRING );
 
@@ -257,6 +261,53 @@ LRESULT CMOD_simDlg::OnGetDefID(WPARAM wp, LPARAM lp)
     return MAKELONG(0,DC_HASDEFID); 
 }
 
+// ------------------------- GetPLCMemoryLimit --------------------------------
+DWORD CMOD_simDlg::GetPLCMemoryLimit(DWORD area)
+{
+   //if (m_busyCreatingServers)
+   //   return(0);
+   return PLCMemory[area].GetSize();
+}
+
+// ---------------------------- GetPLCMemoryValue -----------------------------
+DWORD CMOD_simDlg::GetPLCMemoryValue(DWORD area, DWORD offset, WORD type)
+{
+DWORD dwValue=0;
+
+   ASSERT(area < (DWORD)GetNumMemoryAreas());
+   if (offset >= MAX_MOD_MEMWORDS)
+      return (0);
+   //ASSERT(offset < MAX_MOD_MEMWORDS);
+   switch(type)
+   {
+   case CMemoryEditorList::VIEWFORMAT_DECIMAL:
+   case CMemoryEditorList::VIEWFORMAT_HEX:
+   case CMemoryEditorList::VIEWFORMAT_WORD:
+      dwValue = PLCMemory[area][offset];
+      break;
+   case CMemoryEditorList::VIEWFORMAT_DWORD:
+   case CMemoryEditorList::VIEWFORMAT_LONG:
+      dwValue = PLCMemory[area][offset]<<16;
+      if (offset < MAX_MOD_MEMWORDS)
+         dwValue += PLCMemory[area][offset+1];
+      break;
+   case CMemoryEditorList::VIEWFORMAT_FLOAT:
+      dwValue = PLCMemory[area][offset]<<16;
+      if (offset < MAX_MOD_MEMWORDS)
+         dwValue += PLCMemory[area][offset+1];
+      if (pGlobalDialog->IsClone())
+         SwopWords(&dwValue);          //clone PLC's have a swapped float
+      break;
+   case CMemoryEditorList::VIEWFORMAT_CHAR:
+      dwValue = PLCMemory[area][offset];
+      break;
+   default:
+      ASSERT(0);
+      break;
+   }
+   return (dwValue);
+} // GetPLCMemoryValue
+
 
 BEGIN_MESSAGE_MAP(CMOD_simDlg, CDialog)
    ON_MESSAGE(DM_GETDEFID, OnGetDefID)
@@ -331,16 +382,14 @@ CMOD_simDlg *pGlobalDialog;
 //
 // A HourGlass cursor during this time is used to precent anyone clicking buttons and 
 // getting us into any killer loops.
-BOOL CMOD_simDlg::MyProcessingLoop(const int loops)
+BOOL CMOD_simDlg::MyProcessingLoop(int loops)
 {
-LONG loopCount=loops;
-MSG msg;
+   MSG msg;
    
    // Secondary message loop
-   
-   while ((PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))&&(loopCount>=0))
+   while ((PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))&&(loops>=0))
    {
-      loopCount--;
+      loops--;
       if (msg.message == WM_QUIT)
       {
          // Repost the QUIT message so that it will be retrieved by the
@@ -353,21 +402,19 @@ MSG msg;
       DispatchMessage(&msg);
    }
    return(TRUE);
-} // MyProcessingLoop
+}
 
 // -------------------------- PacketsReceivedInc -------------------------
 void CMOD_simDlg::PacketsReceivedInc()
 {
-   //
    m_PacketsReceived++;
-} // PacketsReceivedInc
+}
 
 // ---------------------------- PacketsSentInc ----------------------------
 void CMOD_simDlg::PacketsSentInc()
 {
-   //
    m_PacketsSent++;
-} // PacketsSentInc
+}
 
 // ------------------------------- GetWordValue -------------------------------
 // return (typically 16) bits as an integer value
@@ -1754,6 +1801,7 @@ void CMOD_simDlg::OnTimer(UINT nIDEvent)
 {
 static int tickerCount=0;
 int stationIndex, firstVisibleStation, lastVisibleStation;
+static DWORD   lastTickCountOut=0, tickCount;
 
    // Vinay
    if (3== nIDEvent)
@@ -1848,10 +1896,13 @@ int stationIndex, firstVisibleStation, lastVisibleStation;
    LeaveCriticalSection(&dispCritSection);
 
    UpdateStatusLine();
-   
-   // do animations and value zeroing + execute simulation script
-   DoAnimations();
-
+   tickCount = GetTickCount();   
+   if (tickCount - lastTickCountOut > ANIMATION_ANTISTARVATION_MS)
+   { // timer fires @500ms interval, if we took >450ms to service it, skip
+      // do animations and value zeroing + execute simulation script
+      DoAnimations();
+      lastTickCountOut = GetTickCount();
+   }
    CDialog::OnTimer(nIDEvent);
 } // OnTimer
 
@@ -2390,7 +2441,7 @@ void CMOD_simDlg::DoAnimations()
          else
             DoPlantSimulation();
       }
-      else //  ((!m_plantAnimation) || (m_zeroValues))
+      else //  animation
       {
          // loop thru all mem areas
          for (areaIndex=0; areaIndex < GetNumMemoryAreas()/*MAX_MOD_MEMTYPES*/; areaIndex++)
@@ -2443,7 +2494,6 @@ void CMOD_simDlg::DoAnimations()
       }      
       // reset the count-down to the next animation cycle
       m_animationCounter = m_animationRefreshes;
-
    }
 } // DoAnimations
 
@@ -3552,7 +3602,6 @@ void CMOD_simDlg::OnToggleDisplay()
    SetDisplayToggleButton();
 }
 
-#define MAX_COMMSDEBUGGER_ENTRIES      1000
 
 // ---------------------------- AddCommsDebugString -----------------------
 // call from any thread
@@ -3565,7 +3614,7 @@ int pos;
    if (!strlen(string))
       return;
    pString = new CString;
-   //check if user wanted time
+   // check if we wanted timestamps
    if (m_commsTimes)
    {
    SYSTEMTIME sysTime;
@@ -3607,10 +3656,10 @@ int sel, killed=0;
    {
       //check that there are not too many entries in the list, 
       EnterCriticalSection(&debuggerCritSection);
-      if (m_debugDataQueue.GetCount()>2000)
+      if (m_debugDataQueue.GetCount() > MAX_COMMSDEBUGGER_BUFFER)
       {
          // drop items
-         for (killed=0; killed <200 ; killed++)
+         for (killed=0; killed < (MAX_COMMSDEBUGGER_BUFFER/20) ; killed++)   // cull top 5% of entries
          {
            pString = m_debugDataQueue.RemoveHead();
            delete pString;
@@ -3635,7 +3684,7 @@ int sel, killed=0;
       {  // delete a couple of them from the top if the list so that the 
          // list never gets very long, as this affects list performance badly
          sel = m_commsListBox.GetCurSel();
-         for (killed=0;killed <10 ; killed++)
+         for (killed=0;killed < (MAX_COMMSDEBUGGER_ENTRIES/20) ; killed++) // cull topmost 5% of entries
             m_commsListBox.DeleteString(0); // 1 for now
          if (!m_commsTobottom)
             m_commsListBox.SetCurSel(sel - killed);
@@ -3832,7 +3881,7 @@ int stationIndex;
       m_ToolTip.UpdateTipText(GetToolTipForStation(stationIndex), &m_microTicks[stationIndex-firstTick], 0);
       count++;
    }
-   while (count < STATIONTICKBOXES)
+   while (count < STATIONTICKBOXES) // if the bottom row is only partial, hide some controls
    {
       ASSERTMICROBOX(stationIndex-firstTick)
       m_microTicks[stationIndex-firstTick].ShowWindow(SW_HIDE);
@@ -3940,7 +3989,7 @@ DWORD sel;
    sel = m_protocolCombo.GetCurSel();
    if (sel == LB_ERR)
       return;
-	// TODO: Add your control notification handler code here
+
    if (sel != m_selectedProtocol)
    {
    CString msg, lbText;
@@ -4005,14 +4054,15 @@ DWORD sel;
 // Training sim "diagnostics" animating dialog.
 void CMOD_simDlg::OnTraining() 
 {
-	// TODO: Add your control notification handler code here
 CTrainingSimDlg   dlg;
 
    dlg.DoModal();
 }
 
 // ------------------------------- MasterBusy ----------------------------
-// TransactionBusy()
+// implements the scripting host method.
+// maps to: VT_I4 TransacationBusy (VTS_NONE)
+// 
 LONG CMOD_simDlg::MasterBusy()
 {
 CCommsProcessor *pCPU;
@@ -4029,7 +4079,8 @@ CCommsProcessor *pCPU;
 }
 
 // ------------------------------ MasterTransmit ----------------------------
-// Called by the xTransmitRegisters function
+// scripting host method:
+// implements VT_I4,  TransmitRegisters(VTS_I2 VTS_I2 VTS_I4 VTS_I4 VTS_I4)
 LONG CMOD_simDlg::MasterTransmit(short sourceStation, 
                                  short destinationStation, 
                                  long file_areaNumber, 
@@ -4173,7 +4224,8 @@ void CMOD_simDlg::OnTogglePortState()
       OnClosePort();
 }
 
-
+// ------------------------------- OnCsvImportPop --------------------------
+// pop the CSV import dialog
 // Vinay
 void CMOD_simDlg::OnCsvImportPop() 
 {
@@ -4192,5 +4244,3 @@ CCSVFileImportDlg dlg;
       m_csvImportEnable =  dlg.m_csvImportEnable;
    }   
 }
-
-

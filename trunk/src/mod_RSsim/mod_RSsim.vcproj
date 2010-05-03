@@ -942,6 +942,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\stringcvt.cpp"
+				>
+			</File>
+			<File
 				RelativePath="TrainingSimDlg.cpp"
 				>
 				<FileConfiguration
@@ -1152,6 +1156,10 @@
 			</File>
 			<File
 				RelativePath="StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stringcvt.h"
 				>
 			</File>
 			<File
