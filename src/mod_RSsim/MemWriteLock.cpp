@@ -134,6 +134,7 @@ CControllerMemory::~CControllerMemory()
 // --------------------------- SetSize -----------------------------
 void CControllerMemory::SetSize(const DWORD numAreas)
 {
+CMemWriteLock  lock(&m_Mutex);  // interlock access while resizing
 
    FreeOldMemory();
    CObArray::SetSize(numAreas);

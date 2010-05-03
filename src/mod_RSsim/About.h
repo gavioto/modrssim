@@ -1,12 +1,7 @@
 #if !defined(AFX_ABOUT_H__E2C72AC3_9FBF_4BB0_A2C7_0A07706C57A8__INCLUDED_)
 #define AFX_ABOUT_H__E2C72AC3_9FBF_4BB0_A2C7_0A07706C57A8__INCLUDED_
-
-
-// About.h : header file
-//
-#include "CreditStatic.h"
-
 /////////////////////////////////////////////////////////////////////////////
+// About.h : header file
 // CAboutDlg dialog
 //
 // Mod_RSSim (c) Embedded Intelligence Ltd. 1993,2009
@@ -25,6 +20,8 @@
 //
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#include "CreditStatic.h"
 
 class CAboutDlg : public CDialog
 {

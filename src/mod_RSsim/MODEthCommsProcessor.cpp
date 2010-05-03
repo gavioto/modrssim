@@ -33,21 +33,6 @@ static char THIS_FILE[]=__FILE__;
 
 #define MAX_MOD_MESSAGELENGTH  2048
 
-// --------------------------------- PackASCIIField ------------------------------
-void PackASCIIField(CHAR **pBuffer, WORD value, WORD length)
-{
-CHAR tempStr[80];
-CHAR formatStr[80];
-
-   // build a format string
-   sprintf(formatStr, "%%0%dX", length);
-   // plonk it in
-   sprintf(tempStr, formatStr, value);
-   strncpy(*pBuffer, tempStr, length);
-   // increment pointer
-   *pBuffer+=length;
-   **pBuffer = '\0'; // add a null
-}
 
 
 // ------------------------- GetBCC ---------------------------------
