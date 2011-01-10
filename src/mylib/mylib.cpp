@@ -208,7 +208,7 @@ CHAR tempPortName[MAX_COMPORT_NAME];
 
    if (strlen(portName) > strlen("COM1"))
    {
-      if (0==strncmp(portName, "COM",3))
+      if (0!=strncmp(portName, "\\\\.\\",4))
       {
          sprintf_s(tempPortName, MAX_COMPORT_NAME, "\\\\.\\%s", portName);
          strcpy_s(portName, MAX_COMPORT_NAME, tempPortName);
@@ -235,12 +235,11 @@ CHAR * GetLongComPortName(LPCTSTR portName, LPSTR newName)
 // It tests this by opening and closing the port.
 BOOL PortInUse(LPCTSTR portName)
 {
-//CHAR * GetLongComPortName(LPCTSTR portName, LPSTR newName);
 CHAR port[MAX_COMPORT_NAME];
 HANDLE   hPort;
 
    GetLongComPortName(portName, port);
-   hPort =  CreateFile( port,                    // PIP 1823-400-1997
+   hPort =  CreateFile( port,
                         GENERIC_READ | GENERIC_WRITE,
                         (DWORD)NULL,   // exclusive access
                         NULL,          // no security
