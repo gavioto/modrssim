@@ -197,7 +197,7 @@ CString msg;
    // little catch and we have to be compatible.
 
    portName = longPortName;
-   h232Port =  CreateFile( portName,                    // PIP 1823-400-1997
+   h232Port =  CreateFile( portName,
                                GENERIC_READ | GENERIC_WRITE,
                                (DWORD)NULL,   // exclusive access
                                NULL,          // no security
