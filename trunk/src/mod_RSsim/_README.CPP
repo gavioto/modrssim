@@ -197,6 +197,7 @@
 //       8.17    18/04/10 - Shutdown does not dither waiting for HTML publisher shutdown. CTRL-Insert coppies debugger contents to clipboard. Registyr key setting move from HKLM to HKCU
 //       8.18    27/04/10 - (ver 8.17) UAC - should now be Vista compliant, Registration dialog screen added.
 //       8.19    03/05/10 - Source cleaned up, eliminated timer/CPU starvation for animation updates updating all registers
+//       8.20    10/01/11 - COM port name UNC prefix \\.\ expanding changed to work with com0com ports with alternative naming convention
 //
 // TODO: Settable timout for 'lost' tcp client socket recovery
 //       Allow bitswize 1/0 entry for integer values as 16-bit
